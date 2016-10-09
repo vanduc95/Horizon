@@ -1,0 +1,82 @@
+2016-10-09 11:35:38.205 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:38.205 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:38.206 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:38.206 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher     raise exc.InvalidInput(error_message=msg)
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:40.250 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:40.251 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:40.251 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher     raise exc.InvalidInput(error_message=msg)
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:42.212 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:42.213 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:42.213 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher     raise exc.InvalidInput(error_message=msg)
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:44.211 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:44.212 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:44.212 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher     raise exc.InvalidInput(error_message=msg)
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:46.209 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:46.210 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:46.210 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher     raise exc.InvalidInput(error_message=msg)
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher InvalidInput: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:48.207 5572 ERROR oslo_messaging.rpc.dispatcher
+2016-10-09 11:35:48.208 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Returning exception Invalid input for operation: Network type value 'gre' not supported. to caller
+2016-10-09 11:35:48.209 5572 ERROR oslo_messaging._drivers.common [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] ['Traceback (most recent call last):\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply\n    incoming.message))\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch\n    return self._do_dispatch(endpoint, method, ctxt, args)\n', '  File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch\n    result = func(ctxt, **new_args)\n', '  File "/usr/lib/python2.7/dist-packages/neutron/plugins/ml2/drivers/type_tunnel.py", line 385, in tunnel_sync\n    raise exc.InvalidInput(error_message=msg)\n', "InvalidInput: Invalid input for operation: Network type value 'gre' not supported.\n"]
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher [req-ad23b780-dd01-4dff-aada-e5ad25057bc7 - - - - -] Exception during message handling: Invalid input for operation: Network type value 'gre' not supported.
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher Traceback (most recent call last):
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 138, in _dispatch_and_reply
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher     incoming.message))
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 185, in _dispatch
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher     return self._do_dispatch(endpoint, method, ctxt, args)
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher   File "/usr/lib/python2.7/dist-packages/oslo_messaging/rpc/dispatcher.py", line 127, in _do_dispatch
+2016-10-09 11:35:50.209 5572 ERROR oslo_messaging.rpc.dispatcher     result = func(ctxt, **new_args)

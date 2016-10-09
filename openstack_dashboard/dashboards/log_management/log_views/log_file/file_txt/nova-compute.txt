@@ -1,0 +1,135 @@
+2016-10-01 11:23:08.777 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-01 11:23:09.235 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-02 11:23:09.236 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:23:09.279 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:24:09.688 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:24:10.145 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:24:10.146 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:24:10.198 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:25:11.920 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:25:12.404 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:25:12.405 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:25:12.447 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:25:16.348 3689 WARNING nova.compute.manager [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] While synchronizing instance power states, found 3 instances in the database and 7 instances on the hypervisor.
+2016-10-09 11:26:11.735 3689 INFO Keystone.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:26:12.220 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:26:12.220 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:26:12.264 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:27:13.785 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:27:14.235 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:27:14.236 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:27:14.283 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:28:15.769 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:28:16.213 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:28:16.214 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:28:16.259 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:29:15.707 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:29:16.167 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:29:16.168 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:29:16.216 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:30:17.868 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:30:18.339 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:30:18.340 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:30:18.378 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:31:17.787 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:31:18.263 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:31:18.263 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:31:18.307 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:32:17.785 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:32:18.251 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:32:18.252 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:32:18.297 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:33:18.773 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:33:19.233 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:33:19.233 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:33:19.276 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:34:20.811 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:34:21.284 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:34:21.285 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:34:21.327 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:35:22.861 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:35:23.328 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:35:23.329 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:35:23.371 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:35:38.383 3689 WARNING nova.compute.manager [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] While synchronizing instance power states, found 3 instances in the database and 7 instances on the hypervisor.
+2016-10-09 11:36:24.732 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:36:25.196 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:36:25.197 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:36:25.238 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:37:26.785 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:37:27.262 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:37:27.263 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:37:27.305 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:38:26.715 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:38:27.216 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:38:27.217 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:38:27.262 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:39:27.726 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:39:28.188 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:39:28.189 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:39:28.230 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:40:28.095 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:40:28.579 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:40:28.580 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:40:28.620 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:41:28.719 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:41:29.175 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:41:29.176 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:41:29.230 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:42:30.765 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:42:31.207 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:42:31.208 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:42:31.248 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:43:30.731 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:43:31.187 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:43:31.188 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:43:31.227 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:44:30.787 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:44:31.231 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:44:31.232 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:44:31.274 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:45:30.722 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:45:31.160 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:45:31.161 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:45:31.203 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:45:41.363 3689 WARNING nova.compute.manager [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] While synchronizing instance power states, found 3 instances in the database and 7 instances on the hypervisor.
+2016-10-09 11:46:31.836 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:46:32.359 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:46:32.359 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:46:32.400 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:47:30.211 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:47:30.670 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:47:30.670 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:47:30.709 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:48:32.215 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:48:32.764 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:48:32.765 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:48:32.817 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:49:33.209 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:49:33.651 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:49:33.651 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:49:33.693 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:50:36.779 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:50:37.233 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:50:37.234 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:50:37.278 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:51:38.852 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:51:39.305 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:51:39.306 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:51:39.347 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:52:39.739 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:52:40.210 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:52:40.211 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:52:40.253 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:53:40.704 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:53:41.225 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:53:41.226 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:53:41.265 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:54:40.765 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:54:41.229 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:54:41.230 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:54:41.279 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16
+2016-10-09 11:55:40.739 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Auditing locally available compute resources for node bkcloud16
+2016-10-09 11:55:41.220 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Total usable vcpus: 16, total allocated vcpus: 4
+2016-10-09 11:55:41.221 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Final resource view: name=bkcloud16 phys_ram=16033MB used_ram=6720MB phys_disk=441GB used_disk=61GB total_vcpus=16 used_vcpus=4 pci_stats=[]
+2016-10-09 11:55:41.261 3689 INFO nova.compute.resource_tracker [req-d5083c1c-496d-47c0-81a9-7921c26e8055 - - - - -] Compute_service record updated for bkcloud16:bkcloud16

@@ -3,7 +3,7 @@ from django.utils.translation import ungettext_lazy
 
 from horizon import exceptions
 from horizon import tables
-
+import os
 
 class ContainerFilter(tables.FilterAction):
     name = 'container_filter'
@@ -31,7 +31,22 @@ class DeleteLog(tables.DeleteAction):
     def delete(self, request, log_index):
         # docker_host = log_index
         try:
-            pass
+            arr = log_index.split(':')
+            filePath = os.path.join(arr[1])
+            line_index = arr[0]
+            print(filePath)
+            print(line_index)
+            file = open(filePath, "r")
+            lines = file.readlines()
+            file.close()
+
+            file_reopen = open(filePath, "w")
+            count =1
+            for line in lines:
+                if (count!=int(line_index)):
+                    file_reopen.write(line)
+                count += 1
+            file_reopen.close()
             msg = _('Log is Deleted ! %s')
         except Exception:
             msg = (_('Failed to remove docker host "%(host_name)s"') %
@@ -50,7 +65,7 @@ class LogTable(tables.DataTable):
     resources = tables.Column('resources',
                               verbose_name=_("Resources"))
     message = tables.Column('message',
-                            verbose_name=_("Message"))
+                            verbose_name=_("Message"),truncate=30)
 
     def __init__(self, request, *args, **kwargs):
         super(LogTable, self).__init__(request, *args, **kwargs)
@@ -63,10 +78,10 @@ class LogTable(tables.DataTable):
 
 
 class LogData:
-    def __init__(self, index, file_name, time, project, level, resource, message):
+    def __init__(self, index, file_name, time, project, level, resources, message):
         self.id = index + ":" + file_name
         self.time = time
         self.project = project
         self.level = level
-        self.resource = resource
+        self.resources = resources
         self.message = message

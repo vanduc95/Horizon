@@ -13,7 +13,7 @@
 from horizon import tables
 from django.utils.translation import ugettext_lazy as _
 from openstack_dashboard.dashboards.log_management.log_views import  tables as log_tables
-
+from openstack_dashboard.dashboards.log_management.log_views.log_file.log_nova import handleFile
 
 class IndexView(tables.DataTableView):
     # A very simple class-based view...
@@ -22,5 +22,11 @@ class IndexView(tables.DataTableView):
     page_title = _("Log Views")
 
     def get_data(self):
-        # Add data to the context here...
-        return []
+        project = 'NOVA'
+        level = 'ALL'
+        timeStart = ''
+        timeEnd = ''
+        context = handleFile(project,level,timeStart,timeEnd)
+        return context
+
+
