@@ -10,9 +10,17 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from horizon import exceptions
 from horizon import tables
 from django.utils.translation import ugettext_lazy as _
-from openstack_dashboard.dashboards.log_management.log_views import  tables as log_tables
+from openstack_dashboard.dashboards.log_management.log_views import tables as log_tables
+import datetime
+
+
+class ChoiceValue:
+    def __init__(self, name, is_selected):
+        self.name = name
+        self.is_selected = is_selected
 
 
 class IndexView(tables.DataTableView):
@@ -23,4 +31,97 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         # Add data to the context here...
-        return []
+        project = "NOVA"
+        level = 'ALL'
+        start = ''
+        end = ''
+        if self.request.method == 'POST':
+            project = self.request.POST['project']
+            level = self.request.POST['level']
+            start = self.request.POST['start']
+            end = self.request.POST['end']
+            try:
+                check_input_data(project, level, start, end)
+            except ValueError, e:
+                data = []
+                msg = _(repr(e))
+                exceptions.handle(self.request, msg)
+        data = get_log_data(project, level, start, end)
+        return data
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            project = self.request.POST['project']
+            level = self.request.POST['level']
+            start = self.request.POST['start']
+            end = self.request.POST['end']
+
+            project_choices = []
+            for choice in ['NOVA', 'NEUTRON', 'GLANCE', 'KEYSTONE']:
+                if (choice == project):
+                    project_choices.append(ChoiceValue(choice, 'yes'))
+                else:
+                    project_choices.append(ChoiceValue(choice, 'no'))
+
+            level_choices = []
+            for choice in ['ALL', 'DEBUG', 'WARNING', 'ERROR', 'INFO']:
+                if (choice == level):
+                    level_choices.append(ChoiceValue(choice, 'yes'))
+                else:
+                    level_choices.append(ChoiceValue(choice, 'no'))
+
+            context['project_choices'] = project_choices
+            context['type_choices'] = level_choices
+            context['start'] = start
+            context['end'] = end
+            return context
+        # context["agents"] = neutron_hsk_api.agent_list(request=self.request)
+        else:
+            context['project_choices'] = [ChoiceValue("NOVA", 'yes'),
+                                          ChoiceValue("NEUTRON", 'no'),
+                                          ChoiceValue("GLANCE", 'no'),
+                                          ChoiceValue("KEYSTONE", 'no')
+                                          ]
+            context['type_choices'] = [ChoiceValue("ALL", 'yes'),
+                                       ChoiceValue("DEBUG", 'no'),
+                                       ChoiceValue("WARNING", 'no'),
+                                       ChoiceValue("ERROR", 'no'),
+                                       ChoiceValue("INFO", 'no')
+
+                                       ]
+            context['start'] = ""
+            context['end'] = ""
+            return context
+
+
+def get_log_data(project, level, start, end):
+    pass
+    return []
+
+
+def check_input_data(project, level, start, end):
+    if project not in ['NOVA', 'NEUTRON', 'GLANCE', 'KEYSTONE']:
+        raise ValueError("not valid project input")
+    if level not in ['ERROR', 'INFO', 'DEBUG', 'WARNING']:
+        raise ValueError("not valid level")
+    if start != '':
+        try:
+            start_date = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            raise ValueError("Incorrect input start date")
+    else:
+        start_date = ''
+    if end != '':
+        try:
+            end_date = datetime.datetime.strptime(end, '%Y-%m-%dT%H:%M')
+        except ValueError:
+            raise ValueError("Incorrect input end date")
+    else:
+        end_date = ''
+    if start_date != '' or end_date != '':
+        if start_date == '' or end_date == '':
+            raise ValueError("Incorrect input start_date or end date")
+        else:
+            if start_date > end_date:
+                raise ValueError("Start date must be smaller than end date")
