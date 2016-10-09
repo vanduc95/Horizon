@@ -10,13 +10,17 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from horizon import views
+from horizon import tables
+from django.utils.translation import ugettext_lazy as _
+from openstack_dashboard.dashboards.log_management.log_views import  tables as log_tables
 
 
-class IndexView(views.APIView):
+class IndexView(tables.DataTableView):
     # A very simple class-based view...
     template_name = 'log_management/log_views/index.html'
+    table_class = log_tables.LogTable
+    page_title = _("Log Views")
 
-    def get_data(self, request, context, *args, **kwargs):
+    def get_data(self):
         # Add data to the context here...
-        return context
+        return []
