@@ -12,7 +12,7 @@
 
 from horizon import tables
 from django.utils.translation import ugettext_lazy as _
-from openstack_dashboard.dashboards.log_management.log_views import  tables as log_tables
+from openstack_dashboard.dashboards.log_management.log_views import tables as log_tables
 
 
 class IndexView(tables.DataTableView):
