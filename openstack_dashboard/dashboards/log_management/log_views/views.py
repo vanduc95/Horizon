@@ -13,6 +13,7 @@
 from horizon import exceptions
 from horizon import tables
 from django.utils.translation import ugettext_lazy as _
+from openstack_dashboard.dashboards.log_management.log_views.log_file.log_nova import handleFile
 from openstack_dashboard.dashboards.log_management.log_views import tables as log_tables
 import datetime
 
@@ -46,7 +47,7 @@ class IndexView(tables.DataTableView):
                 data = []
                 msg = _(repr(e))
                 exceptions.handle(self.request, msg)
-        data = get_log_data(project, level, start, end)
+        data = handleFile(project, level, start, end)
         return data
 
     def get_context_data(self, **kwargs):
@@ -103,7 +104,7 @@ def get_log_data(project, level, start, end):
 def check_input_data(project, level, start, end):
     if project not in ['NOVA', 'NEUTRON', 'GLANCE', 'KEYSTONE']:
         raise ValueError("not valid project input")
-    if level not in ['ERROR', 'INFO', 'DEBUG', 'WARNING']:
+    if level not in ['ERROR', 'INFO', 'DEBUG', 'WARNING','ALL']:
         raise ValueError("not valid level")
     if start != '':
         try:
