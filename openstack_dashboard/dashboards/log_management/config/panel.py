@@ -13,13 +13,12 @@
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
+from openstack_dashboard.dashboards.log_management import dashboard
 
 
-class Log_Management(horizon.Dashboard):
-    name = _("Log_Management")
-    slug = "log_management"
-    panels = ('log_views','config')  # Add your panels here.
-    default_panel = 'log_views'  # Specify the slug of the dashboard's default panel.
+class Config(horizon.Panel):
+    name = _("Config")
+    slug = "config"
 
 
-horizon.register(Log_Management)
+dashboard.Log_Management.register(Config)

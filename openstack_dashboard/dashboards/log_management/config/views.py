@@ -10,16 +10,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
-
-import horizon
+from horizon import views
 
 
-class Log_Management(horizon.Dashboard):
-    name = _("Log_Management")
-    slug = "log_management"
-    panels = ('log_views','config')  # Add your panels here.
-    default_panel = 'log_views'  # Specify the slug of the dashboard's default panel.
+class IndexView(views.APIView):
+    # A very simple class-based view...
+    template_name = 'log_management/config/index.html'
 
-
-horizon.register(Log_Management)
+    def get_data(self, request, context, *args, **kwargs):
+        # Add data to the context here...
+        return context
