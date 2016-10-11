@@ -13,8 +13,10 @@
 from django.conf.urls import url
 
 from openstack_dashboard.dashboards.log_management.log_views import views
+from django.conf.urls import patterns
 
-
-urlpatterns = [
+urlpatterns = patterns(
+    'openstack_dashboard.dashboards.admin.metering.views',
     url(r'^$', views.IndexView.as_view(), name='index'),
-]
+    url(r'^log_counts/$', views.LogCountView.as_view(), name='log_counts'),
+)

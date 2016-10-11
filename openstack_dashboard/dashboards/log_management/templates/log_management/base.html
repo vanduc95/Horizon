@@ -3,9 +3,16 @@
 {% block sidebar %}
   {% include 'horizon/common/_sidebar.html' %}
 {% endblock %}
+{% block css %}
+  {% include "_stylesheets.html" %}
+    <link href='{{ STATIC_URL }}log_management/css/log_views.css' type='text/css' media='screen' rel='stylesheet' />
 
+{% endblock %}
 {% block main %}
     {% include "horizon/_messages.html" %}
     {% block log_management_main %}{% endblock %}
 {% endblock %}
 
+{% block js %}
+    {% include "log_management/_scripts.html" %}
+{% endblock %}

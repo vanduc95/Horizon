@@ -9,13 +9,16 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
+import django.views
+from django.views.generic import TemplateView
 from horizon import exceptions
 from horizon import tables
 from django.utils.translation import ugettext_lazy as _
 from openstack_dashboard.dashboards.log_management.log_views.log_file.log_nova import handleFile
 from openstack_dashboard.dashboards.log_management.log_views import tables as log_tables
 import datetime
+from django.http import HttpResponse  # noqa
+import json
 
 
 class ChoiceValue:
@@ -104,7 +107,7 @@ def get_log_data(project, level, start, end):
 def check_input_data(project, level, start, end):
     if project not in ['NOVA', 'NEUTRON', 'GLANCE', 'KEYSTONE']:
         raise ValueError("not valid project input")
-    if level not in ['ERROR', 'INFO', 'DEBUG', 'WARNING','ALL']:
+    if level not in ['ERROR', 'INFO', 'DEBUG', 'WARNING', 'ALL']:
         raise ValueError("not valid level")
     if start != '':
         try:
@@ -126,3 +129,23 @@ def check_input_data(project, level, start, end):
         else:
             if start_date > end_date:
                 raise ValueError("Start date must be smaller than end date")
+
+
+class LogCountView(django.views.generic.TemplateView):
+    def get(self, request, *args, **kwargs):
+        try:
+            project = request.GET.get('project', None)
+            level = request.GET.get('level', None)
+            start = request.GET.get('start', None)
+            end = request.GET.get('end', None)
+        except Exception:
+            return HttpResponse("invalid input!",
+                                status=404)
+        log_types = ['WARNING', 'DEBUG', 'ERROR']
+        logs_data = [
+            {'y': [34, 32, 12], 'x': u'2016-08-27'},
+            {'y': [50, 17, 14], 'x': u'2016-08-28'},
+            {'y': [15, 22, 40], 'x': u'2016-08-29'}
+        ]
+        log_types = {'log_types': log_types, 'logs_data': logs_data}
+        return HttpResponse(json.dumps(log_types), content_type='application/json')

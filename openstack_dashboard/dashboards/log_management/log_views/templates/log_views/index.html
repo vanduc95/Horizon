@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'log_management/base.html' %}
 {% load i18n %}
 {% block title %}{% trans "Log_Views" %}{% endblock %}
 
@@ -51,7 +51,7 @@
             </div>
 
             <div class="col-sm-4" class="form-group">
-                <button class="btn btn-primary"><span class="ng-scope">Filter</span></button>
+                <button id="btn-log-filter" type="button" class="btn btn-primary"><span class="ng-scope">Filter</span></button>
             </div>
         </div>
 
@@ -77,6 +77,27 @@
             </div>
         </div>
     </form>
+
+    <div class="info row detail">
+        <div class="col-sm-12">
+            <h4>{% trans "Statistics nova logs" %}</h4>
+            <hr class="header_rule"/>
+            <div class="info row detail">
+                <div class="col-sm-9 chart_container">
+                    <div class="chart"
+                         data-chart-type="bar_log"
+                         data-chart-width="600"
+                         data-chart-height="450"
+                         data-url="{% url "horizon:log_management:log_views:log_counts" %}"
+                         data-legend-selector="#legend">
+                    </div>
+                    <div class="col-sm-3 legend_container">
+                        <div id="legend"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ table.render }}
 {% endblock %}
