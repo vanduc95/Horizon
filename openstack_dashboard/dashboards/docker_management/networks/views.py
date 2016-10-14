@@ -15,9 +15,11 @@ from docker import Client
 
 from horizon import exceptions
 from horizon import tables
+from horizon import workflows
 from openstack_dashboard.dashboards.docker_management.database import database as docker_host_database
 from openstack_dashboard.dashboards.docker_management.networks import tables as network_tables
 from openstack_dashboard.dashboards.docker_management.networks.tables import DockerSubnetData
+from openstack_dashboard.dashboards.docker_management.networks import workflows as network_create_workflows
 
 
 class IndexView(tables.DataTableView):
@@ -42,10 +44,15 @@ class IndexView(tables.DataTableView):
                     host_name = host.host_name
                     subnets = []
                     for subnet in network['IPAM']['Config']:
-                        subnets.append(DockerSubnetData(subnet['Subnet'], subnet['Gateway']))
+                        subnet_address = subnet['Subnet']
+                        try:
+                            subnet_gateway = subnet['Gateway']
+                        except KeyError:
+                            subnet_gateway = 'No Gateway'
+                        subnets.append(DockerSubnetData(subnet_address, subnet_gateway))
                     docker_networks.append(
                         network_tables.DockerNetworkData(
-                            network_id, name, driver, subnets, scope, host_name
+                            network_id,str(host.id), name, driver, subnets, scope, host_name
                         )
                     )
         except Exception:
@@ -53,3 +60,8 @@ class IndexView(tables.DataTableView):
             msg = _('Network list can not be retrieved.')
             exceptions.handle(self.request, msg)
         return docker_networks
+
+
+class CreateView(workflows.WorkflowView):
+    workflow_class = network_create_workflows.CreateNetwork
+    # ajax_template_name = 'docker_management/networks/create.html'

@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
-
+from django.core.urlresolvers import reverse
 from horizon import exceptions
 from horizon import tables
 from openstack_dashboard.dashboards.docker_management.database import database as docker_host_database
@@ -63,7 +63,7 @@ class DeleteDockerHost(tables.DeleteAction):
         except Exception:
             msg = (_('Failed to remove docker host "%(host_name)s"') %
                    {"host_name": docker_host_id})
-            redirect = self.get_failure_url()
+            redirect = reverse('horizon:docker_management:networks:index')
             exceptions.handle(request, msg, redirect=redirect)
 
 

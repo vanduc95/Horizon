@@ -47,7 +47,19 @@ class IndexView(tables.DataTableView):
                     for network_name, network_detail in container['NetworkSettings']['Networks'].iteritems():
                         ips.append(network_name + " : " + network_detail['IPAddress'])
                     for port in container['Ports']:
-                        ports.append(port['Type'] + ":" + str(port['PublicPort']) + "->" + str(port['PrivatePort']))
+                        try:
+                            port_type =   port['Type']
+                        except KeyError:
+                            port_type = ''
+                        try:
+                                public_port = port['PublicPort']
+                        except KeyError:
+                            public_port = ''
+                        try:
+                            private_port = port['PrivatePort']
+                        except KeyError:
+                            private_port = ''
+                        ports.append(port_type+ ":" + str(public_port) + "->" + str(private_port))
                     docker_container_list.append(
                         container_tables.ContainerData(
                             container_id,host.id, names, state, status, ips, ports, host_name, image
