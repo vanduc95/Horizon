@@ -1,0 +1,4 @@
+ERROR #fc0404
+INFO #4df919
+WARN #faf204
+DEBUG #707b7a
