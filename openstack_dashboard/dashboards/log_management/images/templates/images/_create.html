@@ -1,0 +1,36 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block modal-body-left %}
+  <h3>body left</h3>
+{% endblock %}
+
+{% block modal-body-right %}
+  <h3>{% trans "Description:" %}</h3>
+  <p>{% trans "Create An Image From Dockerfile or change Dockerfile" %}</p>
+{% endblock %}
+
+{% block modal-js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log('dlakjfalskjfd');
+            function handlefile(event) {
+                var files = event.target.files;
+                console.log(files);
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file) {
+                        var fileReader = new FileReader();
+                        fileReader.readAsText(file, 'UTF-8');
+                        fileReader.onload = function (evt) {
+                            console.log(evt.target.result);
+                            document.getElementById('id_textChage').innerHTML = evt.target.result;
+                        };
+                    }
+                }
+            }
+            document.getElementById('id_dockerfile').addEventListener('change', handlefile, false);
+        });
+    </script>
+
+{% endblock %}
