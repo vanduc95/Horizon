@@ -134,6 +134,7 @@ def check_input_data(project, level, start, end):
 
 class LogCountView(django.views.generic.TemplateView):
     def get(self, request, *args, **kwargs):
+        # response = self.render_to_response()
         try:
             project = request.GET.get('project', None)
             level = request.GET.get('level', None)
@@ -143,9 +144,15 @@ class LogCountView(django.views.generic.TemplateView):
             return HttpResponse("invalid input!",
                                 status=404)
 
-        log_color = []
-        for color in handle_file_color.read_file():
-            log_color.append(color.split()[1])
+        # log_color = []
+        # for color in handle_file_color.read_file():
+        #     log_color.append(color.split()[1])
+
+        if self.request.COOKIES.has_key('ERROR'):
+            log_color = [self.request.COOKIES['ERROR'], self.request.COOKIES['INFO'], self.request.COOKIES['WARN'],
+                         self.request.COOKIES['DEBUG']]
+        else:
+            log_color = ['#fe0404', '#4df919', '#faf204', '#707b7a']
 
         log_types = ['ERROR', 'INFO', 'WARN', 'DEBUG']
         logs_data = [
@@ -153,6 +160,5 @@ class LogCountView(django.views.generic.TemplateView):
             {'y': [50, 17, 14, 23], 'x': u'2016-08-28'},
             {'y': [15, 22, 40, 34], 'x': u'2016-08-29'}
         ]
-        # log_color = ["#ff8c00", "#8a89a6", "#7b6888", "#ff3423"]
         log_info = {'log_types': log_types, 'logs_data': logs_data, 'log_color': log_color}
         return HttpResponse(json.dumps(log_info), content_type='application/json')

@@ -6,7 +6,10 @@
     {% include "horizon/common/_page_header.html" with title=_("Config") %}
 {% endblock page_header %}
 
+{#DEFAULT = ['#4df919','#4df919','#faf204','#707b7a']#}
+
 {% block main %}
+
     <form class="form-horizontal" action="/log_management/config/" method="GET">
         {% csrf_token %}
         <div class="form-group">
