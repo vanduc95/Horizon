@@ -16,6 +16,7 @@ from horizon import tables
 from django.utils.translation import ugettext_lazy as _
 from openstack_dashboard.dashboards.log_management.log_views.log_file.log_nova import handleFile
 from openstack_dashboard.dashboards.log_management.log_views import tables as log_tables
+from openstack_dashboard.dashboards.log_management.config.file_config import handle_file_color
 import datetime
 from django.http import HttpResponse  # noqa
 import json
@@ -141,11 +142,17 @@ class LogCountView(django.views.generic.TemplateView):
         except Exception:
             return HttpResponse("invalid input!",
                                 status=404)
-        log_types = ['WARNING', 'DEBUG', 'ERROR']
+
+        log_color = []
+        for color in handle_file_color.read_file():
+            log_color.append(color.split()[1])
+
+        log_types = ['ERROR', 'INFO', 'WARN', 'DEBUG']
         logs_data = [
-            {'y': [34, 32, 12], 'x': u'2016-08-27'},
-            {'y': [50, 17, 14], 'x': u'2016-08-28'},
-            {'y': [15, 22, 40], 'x': u'2016-08-29'}
+            {'y': [34, 32, 12, 10], 'x': u'2016-08-27'},
+            {'y': [50, 17, 14, 23], 'x': u'2016-08-28'},
+            {'y': [15, 22, 40, 34], 'x': u'2016-08-29'}
         ]
-        log_types = {'log_types': log_types, 'logs_data': logs_data}
-        return HttpResponse(json.dumps(log_types), content_type='application/json')
+        # log_color = ["#ff8c00", "#8a89a6", "#7b6888", "#ff3423"]
+        log_info = {'log_types': log_types, 'logs_data': logs_data, 'log_color': log_color}
+        return HttpResponse(json.dumps(log_info), content_type='application/json')

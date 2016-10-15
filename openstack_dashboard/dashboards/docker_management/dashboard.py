@@ -15,11 +15,11 @@ from django.utils.translation import ugettext_lazy as _
 import horizon
 
 
-class Log_Management(horizon.Dashboard):
-    name = _("Log_Management")
-    slug = "log_management"
-    panels = ('log_views','config','images',)  # Add your panels here.
-    default_panel = 'log_views'  # Specify the slug of the dashboard's default panel.
+class Docker_Management(horizon.Dashboard):
+    name = _("Docker Management")
+    slug = "docker_management"
+    panels = ('containers', 'networks', 'hosts', 'docker_monitor',)  # Add your panels here.
+    default_panel = 'containers'  # Specify the slug of the dashboard's default panel.
 
 
-horizon.register(Log_Management)
+horizon.register(Docker_Management)

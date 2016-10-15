@@ -9,17 +9,16 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
 from django.utils.translation import ugettext_lazy as _
-
-import horizon
-
-
-class Log_Management(horizon.Dashboard):
-    name = _("Log_Management")
-    slug = "log_management"
-    panels = ('log_views','config','images',)  # Add your panels here.
-    default_panel = 'log_views'  # Specify the slug of the dashboard's default panel.
+from horizon import tabs
+from openstack_dashboard.dashboards.docker_management.docker_monitor import tabs as docker_tabs
 
 
-horizon.register(Log_Management)
+class IndexView(tabs.TabbedTableView):
+    tab_group_class = docker_tabs.ContainerHostIpTabs
+    template_name = 'docker_management/docker_monitor/index.html'
+    page_title = _("Docker Management")
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        return context

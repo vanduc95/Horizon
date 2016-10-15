@@ -11,8 +11,8 @@ group_bar_chart = {
         self.legend_element = jquery_element.data('legend-selector')
         self.width = jquery_element.data('chart-width');
         self.height = jquery_element.data('chart-height');
-        self.color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        // self.color = d3.scale.ordinal()
+        //     .range(["#ff8c00", "#8a89a6", "#7b6888", "#ff3423"]);
 
         self.refresh = function () {
             var self = this;
@@ -24,6 +24,8 @@ group_bar_chart = {
                     $(self.legend_element).empty();
                     self.log_types = data.log_types;
                     self.logs_data = data.logs_data;
+                    self.color = d3.scale.ordinal()
+                        .range(data.log_color);
                     self.render();
                 },
                 error: function () {

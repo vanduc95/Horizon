@@ -1,0 +1,6 @@
+{% for subnet in subnets %}
+    <ul>
+      <li>
+        Net mask: {{ subnet.net_mask}} - Gateway:{{ subnet.gateway }}
+    </ul>
+{% endfor %}

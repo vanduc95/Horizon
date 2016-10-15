@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Config" %}{% endblock %}
+
+{% block page_header %}
+    {% include "horizon/common/_page_header.html" with title=_("Config") %}
+{% endblock page_header %}
+
+{% block main %}
+    <form class="form-horizontal" action="/log_management/config/" method="GET">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="colorInput">ERROR</label>
+            <div class="col-lg-4">
+                <input type="color" class="form-control" name="ERROR" value="{{ ERROR }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="colorInput">INFO</label>
+            <div class="col-lg-4">
+                <input type="color" class="form-control" name="INFO" value="{{ INFO }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="colorInput">WARN</label>
+            <div class="col-lg-4">
+                <input type="color" class="form-control" name="WARN" value="{{ WARN }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="colorInput">DEBUG</label>
+            <div class="col-lg-4">
+                <input type="color" class="form-control" name="DEBUG" value="{{ DEBUG }}">
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-sm-offset-3" class="form-group">
+            <input type="submit" name="save" value="Save"/>
+            <input type="submit" name="default" value="Default Color"/>
+        </div>
+
+    </form>
+{% endblock %}
+
+

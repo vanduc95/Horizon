@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Containers" %}{% endblock %}
+
+{% block main %}
+    <h3>Container details:</h3>
+    <table class="table">
+      <tbody>
+
+        <tr>
+          <th scope="row">Container Id</th>
+          <td>  {{ container.id }}</td>
+        </tr>
+
+        <tr>
+          <th scope="row">Name</th>
+          <td>
+            {% for name in container.names %}
+                <ul>
+                  <li>
+                    <em>{{ name }}</em>
+                  </li>
+                </ul>
+            {% endfor %}
+          </td>
+        </tr>
+
+        <tr>
+          <th scope="row">Status</th>
+          <td>  {{ container.status }}</td>
+        </tr>
+
+        <tr>
+          <th scope="row">State</th>
+          <td>  {{ container.state }}</td>
+        </tr>
+
+        <tr>
+          <th scope="row">Image</th>
+          <td>  {{ container.image }}</td>
+        </tr>
+
+        <tr>
+          <th scope="row">IPs</th>
+          <td>
+              {% for ip in container.ips %}
+                <ul>
+                  <li>
+                    {{ ip }}
+                  </li>
+                </ul>
+              {% endfor %}
+          </td>
+        </tr>
+
+        <tr>
+          <th scope="row">Public -Privae Ports</th>
+          <td>
+            {% for port in container.ports %}
+                <ul>
+                  <li>
+                    {{ port }}
+                  </li>
+                </ul>
+            {% endfor %}
+          </td>
+        </tr>
+
+        <tr>
+          <th scope="row">Host URL</th>
+          <td>  {{ container.host_url }}</td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}
+
+
