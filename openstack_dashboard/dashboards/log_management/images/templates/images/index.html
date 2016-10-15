@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Images" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Images") %}
+{% endblock page_header %}
+
+{% block main %}
+    <div>
+        <div class="form-group">
+          <label for="stats_attr" class="col-sm-2 control-label">{% trans "DockerDeamon host" %}</label>
+          <div class="col-sm-2">
+            <select data-line-chart-command="select_box_change"
+                    id="stats_attr" name="stats_attr" class="form-control">
+
+              <option selected="selected" value="avg">{% trans "Avg." %}</option>
+              <option value="min">{% trans "Min." %}</option>
+              <option value="max">{% trans "Max." %}</option>
+              <option value="sum">{% trans "Sum." %}</option>
+            </select>
+          </div>
+        </div>
+    </div>
+
+    {{ table.render }}
+{% endblock %}
+
+
