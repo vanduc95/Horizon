@@ -38,6 +38,13 @@ class IndexView(tables.DataTableView):
         return context
 
 
+class AddDockerHost(forms.ModalFormView):
+    form_class = project_form.AddDockerHost
+    modal_header = _('Add Docker Host')
+    template_name = 'log_management/images/add.html'
+    submit_url = reverse_lazy('horizon:log_management:images:index')
+    page_title = _('Add Docker Host')
+
 
 class CreateImage(forms.ModalFormView):
     form_class = project_form.CreateImage

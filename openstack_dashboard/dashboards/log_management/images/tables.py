@@ -12,16 +12,16 @@ class DeleteImage(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ungettext_lazy(
-            u"Delete Log",
-            u"Delete Logs",
+            u"Delete Image",
+            u"Delete Image",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ungettext_lazy(
-            u"Deleted Log",
-            u"Deleted Logs",
+            u"Deleted Image",
+            u"Deleted Image",
             count
         )
 
@@ -46,6 +46,13 @@ class CreateImage(tables.LinkAction):
     classes = ('ajax-modal',)
     icon = 'plus'
 
+class AddDockerHost(tables.LinkAction):
+    name ='addDocker'
+    verbose_name = _('Add Docker Host')
+    url = "horizon:log_management:images:add"
+    classes = ('ajax-modal',)
+    icon = 'plus'
+
 
 class Image(tables.DataTable):
 
@@ -59,7 +66,7 @@ class Image(tables.DataTable):
         name ='image'
         verbose_name= 'Image Docker'
         row_actions = (DeleteImage,)
-        table_actions = (DeleteImage,FilterAction,CreateImage,)
+        table_actions = (DeleteImage,FilterAction,CreateImage,AddDockerHost,)
 
 class ImageObj:
     def __init__(self,repoTags,size,id,parenId):
