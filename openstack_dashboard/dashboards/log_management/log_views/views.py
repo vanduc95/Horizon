@@ -100,6 +100,7 @@ class IndexView(tables.DataTableView):
             return context
 
 
+
 def get_log_data(project, level, start, end):
     pass
     return []

@@ -27,12 +27,17 @@ class DeleteImage(tables.DeleteAction):
 
     # policy_rules = (("network", "delete_network"),)
 
-    def delete(self, request, id_image):
-        cli = Client(base_url='unix://var/run/docker.sock')
+    def delete(self, request, id_image,**kwargs):
+        arr = id_image.split('||')
+        host = arr[1]
+        # print(host)
+        base_url = 'tcp://'+host
+        print(arr[0]+'  ---  '+base_url)
+        cli = Client(base_url='tcp://'+host)
         img_re = None
         imgs = cli.images()
         for img in imgs:
-            if img['Id'] == id_image:
+            if img['Id'] == arr[0]:
                 img_re = img
                 break
         cli.remove_image(image=img_re, force=True)
@@ -60,6 +65,8 @@ class Image(tables.DataTable):
     size = tables.Column('size',verbose_name='Size',)
     id = tables.Column('id',verbose_name='Id',truncate=25,)
     parentId = tables.Column('parentId',verbose_name='ParentId',truncate=25,)
+    host_url = tables.Column('hostUrl',verbose_name='Host URL',)
+    host_port = tables.Column('hostPort',verbose_name='hostPort',)
 
     class Meta(object):
         multi_select = True
@@ -69,8 +76,10 @@ class Image(tables.DataTable):
         table_actions = (DeleteImage,FilterAction,CreateImage,AddDockerHost,)
 
 class ImageObj:
-    def __init__(self,repoTags,size,id,parenId):
-        self.id = id
+    def __init__(self,repoTags,size,id,parenId,host_url,host_port):
+        self.id = id+'||'+host_url+':'+host_port
         self.parentId = parenId
         self.repoTags = repoTags
         self.size = size
+        self.hostUrl=host_url
+        self.hostPort = host_port
