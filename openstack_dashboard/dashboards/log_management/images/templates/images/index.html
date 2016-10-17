@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Images" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Images") %}
+{% endblock page_header %}
+
+{% block main %}
+    <div class="form-group" action="" method="G">
+      <label for="select" class="col-lg-2 control-label">Legend</label>
+      <div class="col-lg-6">
+        <select class="form-control" id="select">
+            {% for docker in docker_host %}
+                    <option value="{{ docker }}">{{ docker }}</option>
+            {% endfor %}
+        </select>
+      </div>
+        <div class="filter_host col-lg-4">
+            <button type="button" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
+{#    <div class="row">#}
+{#        <div class="col-xs-6">#}
+{#            <select class="selectpicker">#}
+{#                {% for docker in docker_host %}#}
+{#                    <option>{{ docker }}</option>#}
+{#                {% endfor %}#}
+{#            </select>#}
+{#        </div>#}
+{#        <div class="filter_host col-xs-6">#}
+{#            <button type="button" class="btn btn-primary">Filter</button>#}
+{#        </div>#}
+{#    </div>#}
+
+    {{ table.render }}
+{% endblock %}
+
+

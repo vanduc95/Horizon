@@ -10,16 +10,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from django.conf.urls import url
 
-import horizon
-
-
-class Log_Management(horizon.Dashboard):
-    name = _("Log_Management")
-    slug = "log_management"
-    panels = ('log_views','config','images',)  # Add your panels here.
-    default_panel = 'log_views'  # Specify the slug of the dashboard's default panel.
+from openstack_dashboard.dashboards.log_management.images import views
 
 
-horizon.register(Log_Management)
+urlpatterns = [
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^create/$',views.CreateImage.as_view(), name='create'),
+    url(r'^add/$',views.AddDockerHost.as_view(), name='add'),
+]

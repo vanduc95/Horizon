@@ -75,6 +75,8 @@ class LogTable(tables.DataTable):
         name = 'log_views'
         table_actions = (DeleteLog,)
         row_actions = ()
+        prev_pagination_param= ''
+        pagination_param =''
 
 
 class LogData:
