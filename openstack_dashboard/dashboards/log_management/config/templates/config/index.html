@@ -10,7 +10,7 @@
 
 {% block main %}
 
-    <form class="form-horizontal" action="/log_management/config/" method="GET">
+    <form class="form-horizontal" action="/log_management/config/" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label class="col-lg-2 control-label" for="colorInput">ERROR</label>
