@@ -10,6 +10,19 @@ class ContainerFilter(tables.FilterAction):
     name = 'container_filter'
 
 
+class RunNewContainerAction(tables.LinkAction):
+    name = "add"
+    verbose_name = _("Run a new container ")
+    url = "horizon:docker_management:containers:create"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+    # policy_rules = (("network", "create_network"),)
+
+    def allowed(self, request, datum=None):
+        return True
+
+
 class UpdateRow(tables.Row):
     ajax = True
 
@@ -98,14 +111,14 @@ class ContainerTable(tables.DataTable):
     class Meta(object):
         verbose_name = "Docker Container"
         name = 'containers'
-        table_actions = (ContainerFixedFilter,)
+        table_actions = (ContainerFixedFilter,RunNewContainerAction,)
         row_class = UpdateRow
         row_actions = ()
 
 
 class ContainerData:
-    def __init__(self, container_id,host_id, names, state, status, ips, ports, host_name, image):
-        self.id = container_id+":"+str(host_id)
+    def __init__(self, container_id, host_id, names, state, status, ips, ports, host_name, image):
+        self.id = container_id + ":" + str(host_id)
         self.names = names
         self.status = status
         self.state = state

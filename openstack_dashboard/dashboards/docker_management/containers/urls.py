@@ -17,6 +17,8 @@ from openstack_dashboard.dashboards.docker_management.containers import views
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^run_new_container/', views.CreateView.as_view(), name='create'),
+
     url(r'^(?P<container_id>[^/]+)/$', views.DetailView.as_view(), name='detail'),
 
 ]
