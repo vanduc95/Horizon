@@ -33,7 +33,6 @@ class AddNetworkForm(forms.SelfHandlingForm):
         label=_("Host IP"),
         required=True,
         initial="",
-        help_text=_("IP of Docker Host which you want to add to system, only support IP v4"),
         # version=forms.IPv4 | forms.IPv6,
         version=forms.IPv4,
         mask=False
