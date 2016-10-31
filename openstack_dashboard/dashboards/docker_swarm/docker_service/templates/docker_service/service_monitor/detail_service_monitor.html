@@ -5,7 +5,7 @@
             <label for="select" class="col-md-1 control-label">Service</label>
             <div class="col-md-3">
                 <select class="form-control" id="select" name="service">
-                    <option value="-1">--Choose Service--</option>
+                    <option value="-1">--choose service--</option>
                     {% for s in services %}
                         {% if selected == s %}
                             <option value="{{ s }}" selected="selected">{{ s }}</option>

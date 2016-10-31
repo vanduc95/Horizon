@@ -44,6 +44,7 @@ class DeleteService(tables.DeleteAction):
 
 class DockerServiceTable(tables.DataTable):
     id = tables.Column('id', verbose_name='Service ID')
+    image = tables.Column('image', verbose_name='Image')
     name = tables.Column('name', verbose_name='Name')
     replicate = tables.Column('replicate', verbose_name='Replicate')
 

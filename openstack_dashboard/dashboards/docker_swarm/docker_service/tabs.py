@@ -7,10 +7,12 @@ from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor 
 
 
 class Service:
-    def __init__(self, serviceID, name, replicate):
+    def __init__(self, serviceID, image, name, replicate):
         self.id = serviceID
+        self.image = image
         self.name = name
         self.replicate = replicate
+
 
 class Container:
     def __init__(self, containerId, image, command, created, state, name, host_ip):
@@ -34,9 +36,10 @@ class ServiceTab(tabs.TableTab):
         services = []
         for service in cli.services():
             id = service['ID']
+            image = service['Spec']['TaskTemplate']['ContainerSpec']['Image']
             name = service['Spec']['Name']
             replicate = service['Spec']['Mode']['Replicated']['Replicas']
-            services.append(Service(id, name, replicate))
+            services.append(Service(id, image, name, replicate))
         return services
 
 
@@ -48,7 +51,7 @@ class ServiceMonitorTab(tabs.TableTab):
     template_name = ("docker_swarm/docker_service/service_monitor/detail_service_monitor.html")
 
     def get_container_in_service_data(self):
-        host_ip = ['0.0.0.0','192.168.2.129','192.168.2.128']
+        host_ip = ['0.0.0.0', '192.168.2.129', '192.168.2.128']
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():
@@ -56,32 +59,26 @@ class ServiceMonitorTab(tabs.TableTab):
             services.append(name)
         containers = []
         if self.request.method == 'GET' and 'service' in self.request.GET \
-                and self.request.GET['service'] != '-1' and self.request.GET['service'] in services:
-            # dict_container = cli.containers(filters={'name': self.request.GET['service']})
-            # for ct in dict_container:
-            #     # convert data
-            #     created = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ct['Created']))
-            #     name = ct['Names'][0][1:]
-            #     containers.append(
-            #         Container(ct['Id'][:12], ct['Image'], ct['Command'], created, ct['State'], name))
-            # return containers
+                and self.request.GET['service'] in services:
+
+            serviceName = self.request.GET['service']
             for ip in host_ip:
                 try:
                     cli = Client(base_url='tcp://' + ip + ':2376')
-                    dict_container = cli.containers(filters={'name': self.request.GET['service']})
+                    dict_container = cli.containers(all=True)
                     for ct in dict_container:
-                        # convert data
-                        created = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ct['Created']))
-                        name = ct['Names'][0][1:]
-                        containers.append(
-                            Container(ct['Id'][:12], ct['Image'], ct['Command'], created, ct['State'], name, ip))
+                        if len(ct['Labels'].keys()) != 0 and ct['Labels']['com.docker.swarm.service.name'] == serviceName:
+                            # convert data
+                            created = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ct['Created']))
+                            name = ct['Names'][0][1:]
+                            containers.append(
+                                Container(ct['Id'][:12], ct['Image'], ct['Command'], created, ct['State'], name, ip))
                 except:
                     print 'Cant connect', ip
 
             return containers
         else:
             return containers
-
 
     def get_context_data(self, request, **kwargs):
         context = super(ServiceMonitorTab, self).get_context_data(request, **kwargs)
@@ -94,7 +91,7 @@ class ServiceMonitorTab(tabs.TableTab):
 
         context['services'] = services
 
-        if self.request.method == 'GET' and 'service' in self.request.GET :
+        if self.request.method == 'GET' and 'service' in self.request.GET:
             # and self.request.GET['service'] in context['services']
             context['selected'] = self.request.GET['service']
         else:

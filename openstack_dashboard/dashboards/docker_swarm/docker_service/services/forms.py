@@ -24,17 +24,20 @@ class CreateServiceForm(forms.SelfHandlingForm):
         required=True,
     )
     name = forms.CharField(max_length=255, label=_("Name Service"), required=True)
-    command = forms.CharField(max_length=255, label=_("Command"), required=True)
+    command = forms.CharField(max_length=255, label=_("Command"), required=False)
     replicate = forms.CharField(max_length=255, label=_("Replicate"), required=False)
 
     def handle(self, request, data):
         try:
             cli = Client(base_url='unix://var/run/docker.sock')
-            arr = data['command'].split(' ')
-            command = []
-            for str in arr:
-                command.append(str)
-            container_spec = docker.types.ContainerSpec(image=data['image'], command=command)
+            if data['command'] == '':
+                container_spec = docker.types.ContainerSpec(image=data['image'])
+            else:
+                arr = data['command'].split(' ')
+                command = []
+                for str in arr:
+                    command.append(str)
+                container_spec = docker.types.ContainerSpec(image=data['image'], command=command)
             task_tmpl = docker.types.TaskTemplate(container_spec)
             if data['replicate'] == '':
                 cli.create_service(task_tmpl, name=data['name'])
