@@ -1,0 +1,51 @@
+{% extends 'docker_swarm/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Chart" %}{% endblock %}
+
+{% block page_header %}
+    {% include "horizon/common/_page_header.html" with title=_("Chart") %}
+{% endblock page_header %}
+
+{% block main %}
+    <div class="info row detail">
+        <div class="col-sm-12">
+            <hr class="header_rule"/>
+            <div class="info row detail">
+                <div class="col-sm-9">
+                    <div class="chart"
+                         data-chart-type="container_line_chart"
+                         data-container-list-url = "{% url "horizon:docker_swarm:chart:container_list" %}"
+                         data-container-detail-url="{% url "horizon:docker_swarm:chart:container_cpu_detail" %}"
+                         data-form-selector='#line_chart_nova_log_form'
+                         data-legend-selector="#legend"
+                         data-smoother-selector="#smoother"
+                         data-slider-selector="#slider">
+                    </div>                        
+                    <div class="legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{#    <div class="info row detail">#}
+{#        <div class="col-sm-12">#}
+{#            <hr class="header_rule"/>#}
+{#            <div class="info row detail">#}
+{#                <div class="col-sm-9">#}
+{#                    <div class="chart"#}
+{#                         data-chart-type="container_line_chart"#}
+{#                         data-container-list-url = "{% url "horizon:docker_swarm:chart:container_list" %}"#}
+{#                         data-container-detail-url="{% url "horizon:docker_swarm:chart:container_ram_detail" %}"#}
+{#                         data-form-selector='#line_chart_nova_log_form'#}
+{#                         data-legend-selector="#legend"#}
+{#                         data-smoother-selector="#smoother"#}
+{#                         data-slider-selector="#slider">                    #}
+{#                    </div>#}
+{#                    <div class="legend"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+
+

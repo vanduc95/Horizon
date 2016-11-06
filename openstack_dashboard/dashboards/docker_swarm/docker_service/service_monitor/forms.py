@@ -1,11 +1,11 @@
-
-
 from horizon import forms
 # from django.contrib import sessions
 import docker
 from openstack_dashboard.dashboards.docker_swarm.docker_service.scale_services import service
 
+
 class ConfigScale(forms.SelfHandlingForm):
+
     TYPE_CHOICE = [['autoScale','Auto Scale'],
                    ['userScale','User Scale']]
 

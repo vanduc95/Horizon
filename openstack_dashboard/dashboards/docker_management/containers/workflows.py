@@ -95,7 +95,8 @@ class CreateContainerInfoAction(workflows.Action):
             docker_cli = Client(base_url='tcp://' + host.host_url + ':2376')
             for image in docker_cli.images():
                 images_choice.append(
-                    (image['Id'] + ":" + str(host.id), CreateContainerInfoAction.get_images_name(image['RepoTags'])))
+                    (image['Id'] + ":" + str(host.id),
+                     CreateContainerInfoAction.get_images_name(image['RepoTags'], image['Id'])))
         self.fields['image_local'].choices = images_choice
 
     def clean(self):
@@ -116,10 +117,13 @@ class CreateContainerInfoAction(workflows.Action):
         return cleaned_data
 
     @staticmethod
-    def get_images_name(image_names):
+    def get_images_name(image_names,id):
         image_join_names = ''
-        for name in image_names:
-            image_join_names += name
+        if isinstance(image_names, list):
+            for name in image_names:
+                image_join_names += name
+        else:
+            image_join_names+=id
         return image_join_names
 
     class Meta(object):
@@ -214,7 +218,7 @@ class SetContainerOptionAction(workflows.Action):
 
 class SetContainerOption(workflows.Step):
     action_class = SetContainerOptionAction
-    contributes = ("is_enable_stdin","is_enable_pseudo_TTY","is_detach","working_dir")
+    contributes = ("is_enable_stdin", "is_enable_pseudo_TTY", "is_detach", "working_dir")
 
 
 class CreateRunningContainer(workflows.Workflow):

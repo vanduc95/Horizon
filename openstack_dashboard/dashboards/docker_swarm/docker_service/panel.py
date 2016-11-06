@@ -20,4 +20,4 @@ class Docker_Service(horizon.Panel):
     slug = "docker_service"
 
 
-dashboard.Docker_Swarm.register(Docker_Service)
+dashboard.DockerSwarm.register(Docker_Service)

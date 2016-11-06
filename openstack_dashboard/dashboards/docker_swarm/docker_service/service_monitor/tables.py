@@ -55,7 +55,6 @@ class UpdateRow(tables.Row):
         self.classes.append('category-' + category)
 
 
-
 class ConfigScale(tables.LinkAction):
     name = "config_scale"
     verbose_name = _("Config Scale")
@@ -79,7 +78,11 @@ class ContainerInServiceTable(tables.DataTable):
         row_class = UpdateRow
         name = "container_in_service"
         verbose_name = _("Container In Service")
+
         table_actions = (ContainerFixedFilter,ConfigScale,)
+
+
+
 
 
 

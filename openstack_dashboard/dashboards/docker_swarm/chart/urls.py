@@ -10,16 +10,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from django.conf.urls import url
 
-import horizon
+from openstack_dashboard.dashboards.docker_swarm.chart import views
 
-
-class DockerSwarm(horizon.Dashboard):
-    name = _("Docker_Swarm")
-    slug = "docker_swarm"
-    panels = ('docker_service','chart')  # Add your panels here.
-    default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
-
-
-horizon.register(DockerSwarm)
+urlpatterns = [
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^container_cpu_detail$', views.ContainerCPUDetailView.as_view(), name='container_cpu_detail'),
+    url(r'^container_ram_detail$', views.ContainerRAMDetailView.as_view(), name='container_ram_detail'),
+    url(r'^container_list$', views.ContainerListView.as_view(), name='container_list'),
+]
