@@ -1,6 +1,7 @@
 container_line_chart = {
     chart_timers: [],
     charts: [],
+    bisectDate: d3.bisector(function (d) { return d.x; }).left,
     setup_line_chart: function (selector) {
         var self = this;
         $(selector).each(function () {
@@ -123,7 +124,6 @@ function LineChart(selector) {
                     .attr("transform",
                     "translate(" + self.chart_format.margin.left + ","
                     + self.chart_format.margin.top + ")");
-
                 // Add the X Axis
                 self.xAxis = self.svg_element.append("g")
                     .attr("class", "x axis")
@@ -158,7 +158,21 @@ function LineChart(selector) {
                 containers_data.forEach(function (container_data) {
                     self.create_container_line(container_data);
                 });
-
+                // append the rectangle to capture mouse
+                self.svg_element.append("rect")
+                    .attr("width", self.chart_format.width)
+                    .attr("height", self.chart_format.height)
+                    .style("fill", "none")
+                    .style("pointer-events", "all")
+                    .on("mouseover", function () { })
+                    .on("mouseout", function () { })
+                    .on("mousemove", mousemove);
+                function mousemove() {
+                    var x0 = self.create_x_fn.invert(d3.mouse(this)[0]);
+                    console.log(x0);
+                }
+                self.focus = self.svg_element.append("g")
+                    .style("display", "none");
             });
         });
     };
@@ -241,22 +255,22 @@ function LineChart(selector) {
                     container_line.line.attr('d', self.usage_create_line_fn(new_container_data.value));
                 }
                 //create new line for new container
-                var data_of_new_containers = 
-                    self.get_data_of_new_containers(containers_data,compare_result.new_container_list);
+                var data_of_new_containers =
+                    self.get_data_of_new_containers(containers_data, compare_result.new_container_list);
                 data_of_new_containers.forEach(function (container_data) {
                     self.create_container_line(container_data);
                 });
             });
         })
     }
-    
-    this.get_data_of_new_containers = function(containers_data,new_container_list){
+
+    this.get_data_of_new_containers = function (containers_data, new_container_list) {
         var data_of_new_containers = []
-        containers_data.forEach(function(check_data){
+        containers_data.forEach(function (check_data) {
             var is_exist = $.grep(new_container_list, function (e) {
-                        return e == check_data.id;
-                    });
-            if(is_exist.length>0){
+                return e == check_data.id;
+            });
+            if (is_exist.length > 0) {
                 data_of_new_containers.push(check_data);
             }
         })
@@ -289,7 +303,6 @@ function LineChart(selector) {
             .attr("class", "line")
             .attr('stroke', container_data.color)
             .attr("d", self.usage_create_line_fn(container_data.value));
-        console.log(container_data);
         var container_legend = self.svg_legend_elements.append("g")
             .attr("class", "legend")
             .attr("transform", "translate(" + container_data.legend_index * 150 + ",0)");
