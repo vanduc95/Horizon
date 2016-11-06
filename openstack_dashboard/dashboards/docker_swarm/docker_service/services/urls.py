@@ -16,4 +16,6 @@ from openstack_dashboard.dashboards.docker_swarm.docker_service.services import 
 
 urlpatterns = [
     url(r'^create/$', views.CreateService.as_view(), name='create'),
+    url(r'^(?P<service_id>[^/]+)/detail/$',
+        views.DetailServiceView.as_view(), name='detail'),
 ]

@@ -10,9 +10,10 @@ def get_name_images():
     IMAGES = [('', _('Select Image'))]
     cli = Client(base_url='unix://var/run/docker.sock')
     for image in cli.images():
-        repo = image['RepoTags']
-        repoTags = repo[0]
-        IMAGES.append((repoTags, _(repoTags)))
+        if image['RepoTags'] != None:
+            repo = image['RepoTags']
+            repoTags = repo[0]
+            IMAGES.append((repoTags, _(repoTags)))
 
     return IMAGES
 
