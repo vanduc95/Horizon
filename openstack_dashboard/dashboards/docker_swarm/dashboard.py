@@ -15,11 +15,11 @@ from django.utils.translation import ugettext_lazy as _
 import horizon
 
 
-class Docker_Swarm(horizon.Dashboard):
+class DockerSwarm(horizon.Dashboard):
     name = _("Docker_Swarm")
     slug = "docker_swarm"
     panels = ('docker_service',)  # Add your panels here.
     default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
 
 
-horizon.register(Docker_Swarm)
+horizon.register(DockerSwarm)
