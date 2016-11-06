@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 from docker import Client
+from horizon import forms
 from horizon.utils import filters as filters_horizon
 from horizon import tables
 
@@ -37,13 +38,14 @@ class DeleteService(tables.DeleteAction):
     def delete(self, request, obj_id):
         cli = Client(base_url='unix://var/run/docker.sock')
         for service in cli.services():
-            if(service['ID'] == obj_id):
+            if (service['ID'] == obj_id):
                 cli.remove_service(obj_id)
                 break;
 
 
 class DockerServiceTable(tables.DataTable):
-    id = tables.Column('id', verbose_name='Service ID')
+    service_id = tables.Column('id', verbose_name='Service ID', truncate=15,
+                               link="horizon:docker_swarm:docker_service:services:detail")
     image = tables.Column('image', verbose_name='Image')
     name = tables.Column('name', verbose_name='Name')
     replicate = tables.Column('replicate', verbose_name='Replicate')
@@ -54,4 +56,4 @@ class DockerServiceTable(tables.DataTable):
     class Meta(object):
         name = "docker_service"
         verbose_name = _("Docker Service")
-        table_actions = (FilterImageAction, CreateService, DeleteService, )
+        table_actions = (FilterImageAction, CreateService, DeleteService,)

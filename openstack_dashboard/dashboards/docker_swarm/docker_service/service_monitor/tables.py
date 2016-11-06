@@ -15,8 +15,8 @@ class ContainerFixedFilter(tables.FixedFilterAction):
         def make_dict(text, value, icon):
             return dict(text=text, value=value, icon=icon)
 
-        buttons = [make_dict(_('Exited'), 'exited', 'fa-stop')]
-        buttons.append(make_dict(_('Running'), 'running', 'fa-play'))
+        buttons = [make_dict(_('Running'), 'running', 'fa-play')]
+        buttons.append(make_dict(_('Exited'), 'exited', 'fa-stop'))
         buttons.append(make_dict(_('Created'), 'created', 'fa-check-square'))
         return buttons
 

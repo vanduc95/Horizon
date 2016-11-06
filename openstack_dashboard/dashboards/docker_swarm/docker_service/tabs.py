@@ -42,7 +42,6 @@ class ServiceTab(tabs.TableTab):
             services.append(Service(id, image, name, replicate))
         return services
 
-
 class ServiceMonitorTab(tabs.TableTab):
     name = tbl_service_monitor.ContainerInServiceTable.Meta.verbose_name
     slug = tbl_service_monitor.ContainerInServiceTable.Meta.name
@@ -51,7 +50,7 @@ class ServiceMonitorTab(tabs.TableTab):
     template_name = ("docker_swarm/docker_service/service_monitor/detail_service_monitor.html")
 
     def get_container_in_service_data(self):
-        host_ip = ['0.0.0.0']
+        host_ip = ['0.0.0.0', '192.168.2.128']
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():
@@ -75,7 +74,6 @@ class ServiceMonitorTab(tabs.TableTab):
                                 Container(ct['Id'][:12], ct['Image'], ct['Command'], created, ct['State'], name, ip))
                 except:
                     print 'Cant connect', ip
-
             return containers
         else:
             return containers

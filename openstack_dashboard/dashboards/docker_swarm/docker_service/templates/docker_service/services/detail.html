@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load breadcrumb_nav %}
+
+{% block title %}{% trans "Service Details" %}{% endblock %}
+
+{% block page_header %}
+    <div class='page-header'>
+        {% breadcrumb_nav %}
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="detail">
+                <dl class="dl-horizontal">
+                    <dt>{% trans "Service Name" %}</dt>
+                    <dd>{{ service.name }}</dd>
+                    <dt>{% trans "Service ID" %}</dt>
+                    <dd>{{ service.id }}</dd>
+                    <dt>{% trans "Image" %}</dt>
+                    <dd>{{ service.image }}</dd>
+                    <dt>{% trans "Replicate" %}</dt>
+                    <dd>{{ service.replicate }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock %}
