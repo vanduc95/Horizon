@@ -10,16 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
-
-import horizon
+from horizon.test import helpers as test
 
 
-class DockerSwarm(horizon.Dashboard):
-    name = _("Docker_Swarm")
-    slug = "docker_swarm"
-    panels = ('docker_service','chart')  # Add your panels here.
-    default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
-
-
-horizon.register(DockerSwarm)
+class ChartTests(test.TestCase):
+    # Unit tests for chart.
+    def test_me(self):
+        self.assertTrue(1 + 1 == 2)

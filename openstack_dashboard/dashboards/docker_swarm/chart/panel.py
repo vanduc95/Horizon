@@ -13,13 +13,12 @@
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
+from openstack_dashboard.dashboards.docker_swarm import dashboard
 
 
-class DockerSwarm(horizon.Dashboard):
-    name = _("Docker_Swarm")
-    slug = "docker_swarm"
-    panels = ('docker_service','chart')  # Add your panels here.
-    default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
+class Chart(horizon.Panel):
+    name = _("Chart")
+    slug = "chart"
 
 
-horizon.register(DockerSwarm)
+dashboard.DockerSwarm.register(Chart)
