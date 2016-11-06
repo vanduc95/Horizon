@@ -289,7 +289,7 @@ function LineChart(selector) {
             .attr("class", "line")
             .attr('stroke', container_data.color)
             .attr("d", self.usage_create_line_fn(container_data.value));
-
+        console.log(container_data);
         var container_legend = self.svg_legend_elements.append("g")
             .attr("class", "legend")
             .attr("transform", "translate(" + container_data.legend_index * 150 + ",0)");
