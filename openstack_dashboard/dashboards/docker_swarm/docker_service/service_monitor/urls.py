@@ -11,13 +11,8 @@
 # under the License.
 
 from django.conf.urls import url
-
-
-from openstack_dashboard.dashboards.log_management.images import views
-
+from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^create/$',views.CreateImage.as_view(), name='create'),
-    url(r'^add/$',views.AddDockerHost.as_view(), name='add'),
+    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
 ]

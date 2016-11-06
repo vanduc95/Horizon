@@ -1,7 +1,3 @@
-/* Additional JavaScript for chart_dashboard. */
-// setup  ajax and handle select_date event
-
-
 container_line_chart = {
     chart_timers: [],
     charts: [],
@@ -322,3 +318,4 @@ function LineChart(selector) {
     };
 }
 container_line_chart.setup_line_chart('div[data-chart-type="container_line_chart"]');
+

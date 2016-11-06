@@ -14,12 +14,11 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-
 class DockerSwarm(horizon.Dashboard):
     name = _("Docker_Swarm")
     slug = "docker_swarm"
-    panels = ('chart',)  # Add your panels here.
-    default_panel = 'chart'  # Specify the slug of the dashboard's default panel.
+    panels = ('docker_service','chart')  # Add your panels here.
+    default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
 
 
 horizon.register(DockerSwarm)

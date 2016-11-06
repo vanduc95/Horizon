@@ -10,14 +10,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
+from horizon import tabs
+from openstack_dashboard.dashboards.docker_swarm.docker_service import tabs as service_tabs
 
 
-from openstack_dashboard.dashboards.log_management.images import views
+class IndexView(tabs.TabbedTableView):
+    # A very simple class-based view...
+    tab_group_class = service_tabs.DockerServiceTabs
+    template_name = 'docker_swarm/docker_service/index.html'
 
-
-urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^create/$',views.CreateImage.as_view(), name='create'),
-    url(r'^add/$',views.AddDockerHost.as_view(), name='add'),
-]
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        return context

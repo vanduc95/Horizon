@@ -19,25 +19,26 @@ class IndexView(views.APIView):
     # A very simple class-based view...
     template_name = 'log_management/config/index.html'
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         try:
             context = self.get_data(request, context, *args, **kwargs)
         except Exception:
             exceptions.handle(request)
         response = self.render_to_response(context)
+        max_age = 365 * 24 * 60 * 60  # one year
         try:
-            if 'save' in self.request.GET:
-                response.set_cookie('ERROR', self.request.GET['ERROR'], max_age=3600)
-                response.set_cookie('INFO', self.request.GET['INFO'], max_age=3600)
-                response.set_cookie('WARN', self.request.GET['WARN'], max_age=3600)
-                response.set_cookie('DEBUG', self.request.GET['DEBUG'], max_age=3600)
+            if 'save' in self.request.POST:
+                response.set_cookie('ERROR', self.request.POST['ERROR'], max_age=max_age)
+                response.set_cookie('INFO', self.request.POST['INFO'], max_age=max_age)
+                response.set_cookie('WARN', self.request.POST['WARN'], max_age=max_age)
+                response.set_cookie('DEBUG', self.request.POST['DEBUG'], max_age=max_age)
 
-            elif 'default' in self.request.GET:
-                response.set_cookie('ERROR', '#fe0404', max_age=3600)
-                response.set_cookie('INFO', '#4df919', max_age=3600)
-                response.set_cookie('WARN', '#faf204', max_age=3600)
-                response.set_cookie('DEBUG', '#707b7a', max_age=3600)
+            elif 'default' in self.request.POST:
+                response.set_cookie('ERROR', '#fe0404', max_age=max_age)
+                response.set_cookie('INFO', '#4df919', max_age=max_age)
+                response.set_cookie('WARN', '#faf204', max_age=max_age)
+                response.set_cookie('DEBUG', '#707b7a', max_age=max_age)
         except Exception:
             pass
 
@@ -63,13 +64,13 @@ class IndexView(views.APIView):
             context['DEBUG'] = '#707b7a'
 
         try:
-            if 'save' in self.request.GET:
-                context['ERROR'] = self.request.GET['ERROR']
-                context['INFO'] = self.request.GET['INFO']
-                context['WARN'] = self.request.GET['WARN']
-                context['DEBUG'] = self.request.GET['DEBUG']
+            if 'save' in self.request.POST:
+                context['ERROR'] = self.request.POST['ERROR']
+                context['INFO'] = self.request.POST['INFO']
+                context['WARN'] = self.request.POST['WARN']
+                context['DEBUG'] = self.request.POST['DEBUG']
 
-            elif 'default' in self.request.GET:
+            elif 'default' in self.request.POST:
                 context['ERROR'] = '#fe0404'
                 context['INFO'] = '#4df919'
                 context['WARN'] = '#faf204'
