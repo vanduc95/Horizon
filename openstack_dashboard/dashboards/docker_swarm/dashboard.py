@@ -14,6 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
+
 class DockerSwarm(horizon.Dashboard):
     name = _("Docker_Swarm")
     slug = "docker_swarm"

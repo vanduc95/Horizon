@@ -55,6 +55,14 @@ class UpdateRow(tables.Row):
         self.classes.append('category-' + category)
 
 
+class ConfigScale(tables.LinkAction):
+    name = "config_scale"
+    verbose_name = _("Config Scale")
+    url = "horizon:docker_swarm:docker_service:service_monitor:config"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+
 class ContainerInServiceTable(tables.DataTable):
     id = tables.Column('id', verbose_name='Container Id')
     image = tables.Column('image', verbose_name='Image')
@@ -70,26 +78,21 @@ class ContainerInServiceTable(tables.DataTable):
         row_class = UpdateRow
         name = "container_in_service"
         verbose_name = _("Container In Service")
-        table_actions = (ContainerFixedFilter,)
+        table_actions = (ContainerFixedFilter, ConfigScale)
 
 
-class ConfigScale(tables.LinkAction):
-    name = "config_scale"
-    verbose_name = _("Config Scale")
-    url = "horizon:docker_swarm:docker_service:service_monitor:config"
-    classes = ("ajax-modal",)
-    icon = "plus"
 
-class DockerServiceTable(tables.DataTable):
-    id = tables.Column('id', verbose_name='Service ID')
-    name = tables.Column('name', verbose_name='Name')
 
-    def __init__(self, request, *args, **kwargs):
-        super(DockerServiceTable, self).__init__(request, *args, **kwargs)
-
-    class Meta(object):
-        name = "docker_service1"
-        verbose_name = _("Docker Service1")
-        table_actions = (FilterImageAction,ConfigScale, )
+# class DockerServiceTable(tables.DataTable):
+#     id = tables.Column('id', verbose_name='Service ID')
+#     name = tables.Column('name', verbose_name='Name')
+#
+#     def __init__(self, request, *args, **kwargs):
+#         super(DockerServiceTable, self).__init__(request, *args, **kwargs)
+#
+#     class Meta(object):
+#         name = "docker_service1"
+#         verbose_name = _("Docker Service1")
+#         table_actions = (FilterImageAction,ConfigScale, )
 
 
