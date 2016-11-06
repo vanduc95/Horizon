@@ -51,7 +51,7 @@ class ServiceMonitorTab(tabs.TableTab):
     template_name = ("docker_swarm/docker_service/service_monitor/detail_service_monitor.html")
 
     def get_container_in_service_data(self):
-        host_ip = ['0.0.0.0', '192.168.2.129', '192.168.2.128']
+        host_ip = ['0.0.0.0']
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():

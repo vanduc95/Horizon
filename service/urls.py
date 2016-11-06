@@ -11,8 +11,10 @@
 # under the License.
 
 from django.conf.urls import url
-from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
+
+from openstack_dashboard.dashboards.docker_swarm.service import views
+
 
 urlpatterns = [
-    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
 ]

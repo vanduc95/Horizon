@@ -10,9 +10,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
+from horizon import views
 
-urlpatterns = [
-    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
-]
+
+class IndexView(views.APIView):
+    # A very simple class-based view...
+    template_name = 'docker_swarm/service/index.html'
+
+    def get_data(self, request, context, *args, **kwargs):
+        # Add data to the context here...
+        return context

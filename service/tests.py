@@ -10,9 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
+from horizon.test import helpers as test
 
-urlpatterns = [
-    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
-]
+
+class ServiceTests(test.TestCase):
+    # Unit tests for service.
+    def test_me(self):
+        self.assertTrue(1 + 1 == 2)

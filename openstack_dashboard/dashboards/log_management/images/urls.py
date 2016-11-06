@@ -12,6 +12,7 @@
 
 from django.conf.urls import url
 
+
 from openstack_dashboard.dashboards.log_management.images import views
 
 
