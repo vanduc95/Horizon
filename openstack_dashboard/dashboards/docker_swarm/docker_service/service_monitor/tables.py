@@ -78,21 +78,12 @@ class ContainerInServiceTable(tables.DataTable):
         row_class = UpdateRow
         name = "container_in_service"
         verbose_name = _("Container In Service")
-        table_actions = (ContainerFixedFilter, ConfigScale)
+
+        table_actions = (ContainerFixedFilter,ConfigScale,)
 
 
 
 
-# class DockerServiceTable(tables.DataTable):
-#     id = tables.Column('id', verbose_name='Service ID')
-#     name = tables.Column('name', verbose_name='Name')
-#
-#     def __init__(self, request, *args, **kwargs):
-#         super(DockerServiceTable, self).__init__(request, *args, **kwargs)
-#
-#     class Meta(object):
-#         name = "docker_service1"
-#         verbose_name = _("Docker Service1")
-#         table_actions = (FilterImageAction,ConfigScale, )
+
 
 
