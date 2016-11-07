@@ -16,11 +16,11 @@ path {
 div.tooltip {
     position: absolute;
     text-align: center;
-    width: 100px;
+    width: 200px;
     height: 60px;
     padding: 2px;
     font: 12px sans-serif;
-    background: lightsteelblue;
+    background: rgba(200, 54, 54, 0.5);
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
