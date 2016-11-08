@@ -49,4 +49,5 @@ class CreateServiceForm(forms.SelfHandlingForm):
         except Exception:
             exceptions.handle(request, _('Unable to create service.'))
             return False
+
         return True

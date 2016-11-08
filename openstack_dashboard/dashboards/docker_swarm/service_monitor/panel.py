@@ -10,12 +10,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
+from django.utils.translation import ugettext_lazy as _
 
-urlpatterns = [
-    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
-    url(r'^container_cpu_detail$', views.ContainerCPUDetailView.as_view(), name='container_cpu_detail'),
-    url(r'^container_ram_detail$', views.ContainerRAMDetailView.as_view(), name='container_ram_detail'),
-    url(r'^container_list$', views.ContainerListView.as_view(), name='container_list'),
-]
+import horizon
+from openstack_dashboard.dashboards.docker_swarm import dashboard
+
+class Service_Monitor(horizon.Panel):
+    name = _("Service_Monitor")
+    slug = "service_monitor"
+
+
+dashboard.DockerSwarm.register(Service_Monitor)

@@ -1,8 +1,14 @@
+{#{% extends 'base.html' %}#}
+{% extends 'docker_swarm/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Service_Monitor" %}{% endblock %}
 
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Service_Monitor") %}
+{% endblock page_header %}
 
 {% block main %}
-    <div class="xyz"><span id="xxx"></span></div>
-    <form class="form-horizontal" action="/docker_swarm/" method="GET">
+    <form class="form-horizontal" action="/docker_swarm/service_monitor/" method="GET">
 
         <div class="form-group">
             <label for="select" class="col-md-1 control-label">Service</label>
@@ -22,14 +28,12 @@
         </div>
 
     </form>
-
     <div class="row">
         <div class="col-sm-12">
             {{ table.render }}
         </div>
     </div>
 
-
     <div class="info row detail">
         <div class="col-sm-12">
             <hr class="header_rule"/>
@@ -37,8 +41,8 @@
                 <div class="col-sm-9">
                     <div class="chart"
                          data-chart-type="container_line_chart"
-                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"
-                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_cpu_detail" %}"
+                         data-container-list-url = "{% url "horizon:docker_swarm:service_monitor:container_list" %}"
+                         data-container-detail-url="{% url "horizon:docker_swarm:service_monitor:container_cpu_detail" %}"
                          data-form-selector='#line_chart_nova_log_form'
                          data-legend-selector="#legend"
                          data-smoother-selector="#smoother"
@@ -57,8 +61,8 @@
                 <div class="col-sm-9">
                     <div class="chart"
                          data-chart-type="container_line_chart"
-                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"
-                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_ram_detail" %}"
+                         data-container-list-url = "{% url "horizon:docker_swarm:service_monitor:container_list" %}"
+                         data-container-detail-url="{% url "horizon:docker_swarm:service_monitor:container_ram_detail" %}"
                          data-form-selector='#line_chart_nova_log_form'
                          data-legend-selector="#legend"
                          data-smoother-selector="#smoother"
@@ -69,5 +73,8 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
+
+
+
+

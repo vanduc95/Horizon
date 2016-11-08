@@ -18,7 +18,7 @@ import horizon
 class DockerSwarm(horizon.Dashboard):
     name = _("Docker_Swarm")
     slug = "docker_swarm"
-    panels = ('docker_service','chart')  # Add your panels here.
+    panels = ('docker_service','chart', 'service_monitor')  # Add your panels here.
     default_panel = 'docker_service'  # Specify the slug of the dashboard's default panel.
 
 
