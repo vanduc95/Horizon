@@ -2,7 +2,7 @@ from horizon import forms
 # from django.contrib import sessions
 import docker
 from openstack_dashboard.dashboards.docker_swarm.docker_service.scale_services import service
-
+from django.utils.translation import ugettext_lazy as _
 
 class ConfigScale(forms.SelfHandlingForm):
 
@@ -15,18 +15,52 @@ class ConfigScale(forms.SelfHandlingForm):
                                     required=False,
                                     widget=forms.Select(attrs={
                                         'class': 'switchable',
-                                        'data-slug': 'source'}),
+                                        'data-slug': 'image_source'}),
                                     choices=TYPE_CHOICE,)
 
-    maxCPU = forms.CharField(label='Max CPU to scale',)
+    maxCPU = forms.CharField(label='Max CPU to scale',
+                             # widget=forms.TextInput(attrs={
+                             #     'class': 'switched',
+                             #     'data-switch-on': 'image_source',
+                             #     'data-image_source-autoScale': _('Image Local')
+                             # })
+                             )
 
     minCPU = forms.CharField(label='Min CPU to scale',)
+                             # widget=forms.TextInput(attrs={
+                             #     'class': 'switched',
+                             #     'data-switch-on': 'image_source',
+                             #     'data-image_source-autoScale': _('Image Local')
+                             # }))
 
     maxRAM = forms.CharField(label='Max RAM to scale',)
+                             # widget=forms.TextInput(attrs={
+                             #     'class': 'switched',
+                             #     'data-switch-on': 'image_source',
+                             #     'data-image_source-autoScale': _('Image Local')
+                             # })
+                             # )
 
     minRAM = forms.CharField(label='Min RAM to scale',)
+                             # widget=forms.TextInput(attrs={
+                             #     'class': 'switched',
+                             #     'data-switch-on': 'image_source',
+                             #     'data-image_source-autoScale': _('Image Local')
+                             # })
+                             # )
 
-    numScale = forms.DecimalField(label='num replicate to scale',)
+    numScale = forms.DecimalField(label='num replicate to scale',
+                                  # image_repository=forms.CharField(
+                                  #     max_length=255,
+                                  #     label=_("Repository Image"),
+                                  #     help_text=_("Repository image"),
+                                  #     widget=forms.TextInput(attrs={
+                                  #         'class': 'switched',
+                                  #         'data-switch-on': 'image_source',
+                                  #         'data-image_source-userScale': _('Image Repo'),
+                                  #         'placeholder': 'Type image name in repository'
+                                  #     }))
+                                  )
 
     def __init__(self,request,*args,**kwargs):
         super(ConfigScale,self).__init__(self,*args,**kwargs)
@@ -50,7 +84,7 @@ class ConfigScale(forms.SelfHandlingForm):
         maxRAM = data['maxRAM']
         numScale = data['numScale']
         serviceID = data['service']
-        # print serviceID,numScale,type(serviceID),type(numScale),serviceID.encode('ascii','ignore'),int(numScale)
+        # print serviceID,numScale,type(serviceID),type(numScale),type(serviceID.encode('ascii','ignore'),int(numScale)
         #
         if type_config=='autoScale':
             request.session['minCPU']=minCPU

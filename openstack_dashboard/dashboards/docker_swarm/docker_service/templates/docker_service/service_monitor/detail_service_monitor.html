@@ -1,4 +1,9 @@
+{#{% extends 'docker_swarm/base2.html' %}#}
+{#{% load i18n %}#}
+{#{% block title %}{% trans "Docker_Service" %}{% endblock %}#}
+
 {% block main %}
+    <div class="xyz"><span id="xxx"></span></div>
     <form class="form-horizontal" action="/docker_swarm/" method="GET">
 
         <div class="form-group">
@@ -19,6 +24,7 @@
         </div>
 
     </form>
+
     <div class="row">
         <div class="col-sm-12">
             {{ table.render }}

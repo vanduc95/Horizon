@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+  {% include 'horizon/common/_sidebar.html' %}
+{% endblock %}
+
+{% block js %}
+    {% include "docker_swarm/_script_request.html" %}
+{% endblock %}

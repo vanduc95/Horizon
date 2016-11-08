@@ -1,10 +1,5 @@
-
-
-
-# from django.http.response import HttpResponse
 from docker import Client
 import docker
-
 
 def scale(serviceID,numReplicas):
     cli = Client(base_url="unix://var/run/docker.sock")
@@ -32,3 +27,4 @@ def scale(serviceID,numReplicas):
             return False
 
 
+scale('2zqwp165g0vind77ij8hzg1jy',5)
