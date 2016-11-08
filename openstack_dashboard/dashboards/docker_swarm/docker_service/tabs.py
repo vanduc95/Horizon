@@ -51,6 +51,7 @@ class ServiceMonitorTab(tabs.TableTab):
 
     def get_container_in_service_data(self):
         host_ip = ['0.0.0.0', '192.168.2.128']
+
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():
@@ -59,7 +60,6 @@ class ServiceMonitorTab(tabs.TableTab):
         containers = []
         if self.request.method == 'GET' and 'service' in self.request.GET \
                 and self.request.GET['service'] in services:
-
             serviceName = self.request.GET['service']
             for ip in host_ip:
                 try:
@@ -80,7 +80,6 @@ class ServiceMonitorTab(tabs.TableTab):
 
     def get_context_data(self, request, **kwargs):
         context = super(ServiceMonitorTab, self).get_context_data(request, **kwargs)
-
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():

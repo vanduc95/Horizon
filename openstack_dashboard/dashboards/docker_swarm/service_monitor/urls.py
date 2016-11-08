@@ -11,10 +11,11 @@
 # under the License.
 
 from django.conf.urls import url
-from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor import views
+
+from openstack_dashboard.dashboards.docker_swarm.service_monitor import views
 
 urlpatterns = [
-    url(r'^config/$', views.ConfigScaleForm.as_view(), name='config'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^container_cpu_detail$', views.ContainerCPUDetailView.as_view(), name='container_cpu_detail'),
     url(r'^container_ram_detail$', views.ContainerRAMDetailView.as_view(), name='container_ram_detail'),
     url(r'^container_list$', views.ContainerListView.as_view(), name='container_list'),
