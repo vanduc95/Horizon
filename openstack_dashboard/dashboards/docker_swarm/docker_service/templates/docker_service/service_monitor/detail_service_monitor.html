@@ -1,7 +1,12 @@
 
 
 {% block main %}
-    <div class="xyz"><span id="xxx"></span></div>
+    <div class="scale_container"
+         data-mode-scale-container-url="{% url "horizon:docker_swarm:docker_service:service_monitor:mode_scale" %}"
+         data-usage-container-url="{% url "horizon:docker_swarm:docker_service:service_monitor:service_detail" %}"
+         data-request-scale-container-url="{% url "horizon:docker_swarm:docker_service:service_monitor:scale_action" %}"
+         data-service-now="{{ selected }}">
+    </div>
     <form class="form-horizontal" action="/docker_swarm/" method="GET">
 
         <div class="form-group">
@@ -18,7 +23,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <input type="submit" class="btn btn-primary" value="Apply"/>
+            <input type="submit" class="btn btn-primary apply_btn_scale" value="Apply"/>
         </div>
 
     </form>
@@ -30,44 +35,44 @@
     </div>
 
 
-    <div class="info row detail">
-        <div class="col-sm-12">
-            <hr class="header_rule"/>
-            <div class="info row detail">
-                <div class="col-sm-9">
-                    <div class="chart"
-                         data-chart-type="container_line_chart"
-                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"
-                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_cpu_detail" %}"
-                         data-form-selector='#line_chart_nova_log_form'
-                         data-legend-selector="#legend"
-                         data-smoother-selector="#smoother"
-                         data-slider-selector="#slider">
-                    </div>
-                    <div class="legend"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="info row detail">
-        <div class="col-sm-12">
-            <hr class="header_rule"/>
-            <div class="info row detail">
-                <div class="col-sm-9">
-                    <div class="chart"
-                         data-chart-type="container_line_chart"
-                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"
-                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_ram_detail" %}"
-                         data-form-selector='#line_chart_nova_log_form'
-                         data-legend-selector="#legend"
-                         data-smoother-selector="#smoother"
-                         data-slider-selector="#slider">
-                    </div>
-                    <div class="legend"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+{#    <div class="info row detail">#}
+{#        <div class="col-sm-12">#}
+{#            <hr class="header_rule"/>#}
+{#            <div class="info row detail">#}
+{#                <div class="col-sm-9">#}
+{#                    <div class="chart"#}
+{#                         data-chart-type="container_line_chart"#}
+{#                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"#}
+{#                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_cpu_detail" %}"#}
+{#                         data-form-selector='#line_chart_nova_log_form'#}
+{#                         data-legend-selector="#legend"#}
+{#                         data-smoother-selector="#smoother"#}
+{#                         data-slider-selector="#slider">#}
+{#                    </div>#}
+{#                    <div class="legend"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="info row detail">#}
+{#        <div class="col-sm-12">#}
+{#            <hr class="header_rule"/>#}
+{#            <div class="info row detail">#}
+{#                <div class="col-sm-9">#}
+{#                    <div class="chart"#}
+{#                         data-chart-type="container_line_chart"#}
+{#                         data-container-list-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_list" %}"#}
+{#                         data-container-detail-url="{% url "horizon:docker_swarm:docker_service:service_monitor:container_ram_detail" %}"#}
+{#                         data-form-selector='#line_chart_nova_log_form'#}
+{#                         data-legend-selector="#legend"#}
+{#                         data-smoother-selector="#smoother"#}
+{#                         data-slider-selector="#slider">#}
+{#                    </div>#}
+{#                    <div class="legend"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 {% endblock %}

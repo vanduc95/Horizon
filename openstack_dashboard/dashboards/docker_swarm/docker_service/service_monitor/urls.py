@@ -18,4 +18,7 @@ urlpatterns = [
     url(r'^container_cpu_detail$', views.ContainerCPUDetailView.as_view(), name='container_cpu_detail'),
     url(r'^container_ram_detail$', views.ContainerRAMDetailView.as_view(), name='container_ram_detail'),
     url(r'^container_list$', views.ContainerListView.as_view(), name='container_list'),
+    url(r'^mode_scale$',views.ModeScaleContainer.as_view(),name='mode_scale'),
+    url(r'^scale_action',views.ScaleActionRequest.as_view(),name='scale_action'),
+    url(r'^service_detail',views.ServiceResourceDetail.as_view(),name='service_detail'),
 ]

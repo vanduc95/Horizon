@@ -1,66 +1,81 @@
 from horizon import forms
-# from django.contrib import sessions
 import docker
 from openstack_dashboard.dashboards.docker_swarm.docker_service.scale_services import service
 from django.utils.translation import ugettext_lazy as _
 
 class ConfigScale(forms.SelfHandlingForm):
-
-    TYPE_CHOICE = [['autoScale','Auto Scale'],
-                   ['userScale','User Scale']]
-
+    #
     service =forms.ChoiceField(label='Select Service to scale',
                                widget=forms.Select)
     type_config = forms.ChoiceField(label='Type Config',
-                                    required=False,
+                                    help_text=_('Choose type of config to scale container'),
                                     widget=forms.Select(attrs={
                                         'class': 'switchable',
-                                        'data-slug': 'image_source'}),
-                                    choices=TYPE_CHOICE,)
+                                        'data-slug': 'type_config'}),
+                                    choices=[('auto', _('Auto Scale')),
+                                             ('user', _('User Scale'))],)
 
+    resource_scale = forms.ChoiceField(label='resource config',
+                                       required=False,
+                                       widget=forms.Select(attrs={
+                                           'class':'switched',
+                                           # 'data-slug':'resource_scale',
+                                           'data-switch-on':'type_config',
+                                           'data-type_config-auto':_('Resource Scale')
+                                       }),
+                                       choices=[('cpu',_('CPU')),
+                                                ('ram',_('RAM'))],
+                                       )
     maxCPU = forms.CharField(label='Max CPU to scale',
-                             # widget=forms.TextInput(attrs={
-                             #     'class': 'switched',
-                             #     'data-switch-on': 'image_source',
-                             #     'data-image_source-autoScale': _('Image Local')
-                             # })
+                             required=False,
+                             widget=forms.TextInput(attrs={
+                                 'class': 'switched',
+                                 # 'data-switch-on': 'resource_scale',
+                                 # 'data-resource_scale-cpu': _('Max CPU')
+                                 'data-switch-on': 'type_config',
+                                 'data-type_config-auto': _('Max CPU')
+                             })
                              )
 
-    minCPU = forms.CharField(label='Min CPU to scale',)
-                             # widget=forms.TextInput(attrs={
-                             #     'class': 'switched',
-                             #     'data-switch-on': 'image_source',
-                             #     'data-image_source-autoScale': _('Image Local')
-                             # }))
+    minCPU = forms.CharField(label='Min CPU to scale',
+                             required=False,
+                             widget=forms.TextInput(attrs={
+                                 'class': 'switched',
+                                 # 'data-switch-on': 'resource_scale',
+                                 # 'data-resource_scale-cpu': _('MIN CPU')
+                                 'data-switch-on': 'type_config',
+                                 'data-type_config-auto': _('MIN CPU')
+                             }))
 
-    maxRAM = forms.CharField(label='Max RAM to scale',)
-                             # widget=forms.TextInput(attrs={
-                             #     'class': 'switched',
-                             #     'data-switch-on': 'image_source',
-                             #     'data-image_source-autoScale': _('Image Local')
-                             # })
-                             # )
+    maxRAM = forms.CharField(label='Max RAM to scale',
+                             required=False,
+                             widget=forms.TextInput(attrs={
+                                 'class': 'switched',
+                                 # 'data-switch-on': 'resource_scale',
+                                 # 'data-resource_scale-ram': _('MAX RAM')
+                                 'data-switch-on': 'type_config',
+                                 'data-type_config-auto': _('MAX RAM')
+                             })
+                             )
 
-    minRAM = forms.CharField(label='Min RAM to scale',)
-                             # widget=forms.TextInput(attrs={
-                             #     'class': 'switched',
-                             #     'data-switch-on': 'image_source',
-                             #     'data-image_source-autoScale': _('Image Local')
-                             # })
-                             # )
+    minRAM = forms.CharField(label='Min RAM to scale',
+                             required=False,
+                             widget=forms.TextInput(attrs={
+                                 'class': 'switched',
+                                 # 'data-switch-on': 'resource_scale',
+                                 # 'data-resource_scale-ram': _('MIN RAM')
+                                 'data-switch-on': 'type_config',
+                                 'data-type_config-auto': _('MIN RAM')
+                             })
+                             )
 
-    numScale = forms.DecimalField(label='num replicate to scale',
-                                  # image_repository=forms.CharField(
-                                  #     max_length=255,
-                                  #     label=_("Repository Image"),
-                                  #     help_text=_("Repository image"),
-                                  #     widget=forms.TextInput(attrs={
-                                  #         'class': 'switched',
-                                  #         'data-switch-on': 'image_source',
-                                  #         'data-image_source-userScale': _('Image Repo'),
-                                  #         'placeholder': 'Type image name in repository'
-                                  #     }))
-                                  )
+    numScale = forms.CharField(label='num replicate to scale',
+                                  required=False,
+                                  widget=forms.TextInput(attrs={
+                                          'class': 'switched',
+                                          'data-switch-on': 'type_config',
+                                          'data-type_config-user': _('NUM SCALE')
+                                }))
 
     def __init__(self,request,*args,**kwargs):
         super(ConfigScale,self).__init__(self,*args,**kwargs)
@@ -77,22 +92,64 @@ class ConfigScale(forms.SelfHandlingForm):
 
 
     def handle(self,request,data):
+        request.session['yyy']='test'
         type_config = data['type_config']
         minCPU = data['minCPU']
         maxCPU = data['maxCPU']
         minRAM = data['minRAM']
         maxRAM = data['maxRAM']
-        numScale = data['numScale']
-        serviceID = data['service']
-        # print serviceID,numScale,type(serviceID),type(numScale),type(serviceID.encode('ascii','ignore'),int(numScale)
-        #
-        if type_config=='autoScale':
-            request.session['minCPU']=minCPU
-            request.session['maxCPU']=maxCPU
-            request.session['minRAM']=minRAM
-            request.session['maxRAM']=maxRAM
-            request.session['numScale']=''
+        if data['numScale'] !='':
+            numScale = int(data['numScale'])
         else:
-            servicess = service.scale(serviceID.encode('ascii','ignore'),int(numScale))
-            print servicess
-        return True
+            numScale = 0
+        serviceID = data['service'].encode('ascii','ignore')
+        resource = data['resource_scale']
+        resetConfig(request,serviceID)
+        config = {}
+        config_setting = {
+            'CPU':{
+                'maxCPU':None,
+                'minCPU':None
+            },
+            'RAM':{
+                'maxRAM':None,
+                'minRAM':None
+            },
+            'REPLICAS':None,
+            'MODE':'',
+            'RESOURCE':''
+        }
+        servicess = True
+        if type_config=='auto':
+            config_setting['MODE']='auto'
+            if(resource=='cpu'):
+                config_setting['RESOURCE']='cpu'
+                config_setting['CPU']['maxCPU']= maxCPU
+                config_setting['CPU']['minCPU']=minCPU
+            else:
+                config_setting['RESOURCE']='ram'
+                config_setting['RAM']['maxRAM']=maxRAM
+                config_setting['RAM']['minRAM']=minRAM
+        else:
+            config_setting['MODE']='user'
+            config_setting['REPLICAS']= numScale
+            servicess = service.scale(serviceID,numScale)
+        config[serviceID]=config_setting
+
+        if (request.session.has_key('config')):
+            config_session = request.session['config']
+            config_session[serviceID]= config_setting
+            request.session['config']=config_session
+        else:
+            request.session['config']=config
+
+        if servicess :
+            return True
+        else:
+            return False
+
+def resetConfig(request,serviceID):
+    if 'config' in request.session:
+        if serviceID in request.session['config']:
+            request.session['config'][serviceID] = None
+    return True

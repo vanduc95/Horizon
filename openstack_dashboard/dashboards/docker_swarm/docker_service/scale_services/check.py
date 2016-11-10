@@ -1,30 +1,25 @@
-from docker import Client
-import docker
-
-def scale(serviceID,numReplicas):
-    cli = Client(base_url="unix://var/run/docker.sock")
-    service = cli.inspect_service(serviceID)
-    service_index = service['Version']['Index']
-    replicas = service['Spec']['Mode']['Replicated']['Replicas']
-    tasktamplate = service['Spec']['TaskTemplate']
-    container = tasktamplate['ContainerSpec']
-
-    taskObj = docker.types.TaskTemplate(container)
-
-    if (numReplicas==None):
-        try:
-            cli.update_service(serviceID, service_index, task_template=taskObj,
-                           mode={'Replicated': {'Replicas': replicas+1}})
-            return True
-        except Exception :
-            return False
-    else:
-        try:
-            cli.update_service(serviceID, service_index, task_template=taskObj,
-                           mode={'Replicated': {'Replicas': numReplicas}})
-            return True
-        except Exception :
-            return False
-
-
-scale('2zqwp165g0vind77ij8hzg1jy',5)
+# import requests
+# import json
+#
+# from docker import Client
+#
+# cli = Client(base_url='tcp://127.0.0.1:2376')
+# list_container = cli.containers()
+# list_container_of_service = []
+# for container in list_container:
+#     if container['Labels'] and container['Labels']['com.docker.swarm.service.name']=='desperate_dubinsky':
+#         list_container_of_service.append(container['Id'])
+#
+# response = requests.get('http://127.0.0.1:8080/api/v1.2/docker/')
+# containers = response.json()
+# result={}
+# for container in containers:
+#     if containers[container]['id'] in list_container_of_service:
+#         stats = []
+#         for status in containers[container]['stats']:
+#             element_stats = {}
+#             element_stats['timestamp'] =status['timestamp'][:19]
+#             element_stats['cpu'] = status['cpu']
+#             element_stats['ram'] = status['memory']
+#             stats.append(element_stats)
+#         result[containers[container]['id']]=stats

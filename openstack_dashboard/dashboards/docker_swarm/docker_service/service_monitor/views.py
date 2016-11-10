@@ -7,9 +7,10 @@ import django.views
 from docker import Client
 from openstack_dashboard.dashboards.docker_swarm.docker_service.service_monitor.cadvisor_api import docker_api
 import json
+import requests
 from django.http import HttpResponse
 import datetime
-
+from openstack_dashboard.dashboards.docker_swarm.docker_service.scale_services import service as service_scale
 
 class ConfigScaleForm(forms.ModalFormView):
     form_class = create_forms.ConfigScale
@@ -74,6 +75,81 @@ class ContainerListView(django.views.generic.TemplateView):
             container_list.append({'id': container['Id']})
         return HttpResponse(json.dumps(container_list), content_type='application/json')
 
+
+class ScaleActionRequest(django.views.generic.TemplateView):
+    def get(self,request,*args,**kwargs):
+        cli = Client(base_url='tcp://127.0.0.1:2376')
+        option = request.GET.get('option',None)
+        service_name = request.GET.get('service_id', None)
+
+        for service in cli.services():
+            if service['Spec']['Name'] == service_name:
+                service_id = service['ID']
+                break
+        scale = service_scale.scale(service_id,None,option=option)
+        if scale:
+            result = {'result':True}
+        else:
+            result = {'result':False}
+        return HttpResponse(json.dumps(result),content_type='application/json')
+
+class ServiceResourceDetail(django.views.generic.TemplateView):
+    def get(self,request,*args,**kwargs):
+        service_name = request.GET.get('service_id',None)
+        cli = Client(base_url='tcp://127.0.0.1:2376')
+        list_container = cli.containers()
+        list_container_of_service = []
+        for container in list_container:
+            if container['Labels'] and container['Labels']['com.docker.swarm.service.name'] == service_name:
+                list_container_of_service.append(container['Id'])
+
+        response = requests.get('http://127.0.0.1:8080/api/v1.2/docker/')
+        # containers = docker_api.get_all_container_data('127.0.0.1')
+        containers = response.json()
+        result = {}
+        for container in containers:
+            if containers[container]['id'] in list_container_of_service:
+                stats = []
+                for status in containers[container]['stats']:
+                    element_stats = {}
+                    element_stats['timestamp'] = status['timestamp'][:19]
+                    element_stats['cpu'] = status['cpu']['usage']['total']
+                    element_stats['ram'] = status['memory']['usage']
+                    stats.append(element_stats)
+                result[containers[container]['id']] = stats
+        return HttpResponse(json.dumps(result),content_type='application/json')
+
+class ModeScaleContainer(django.views.generic.TemplateView):
+    def get(self,request,*args,**kwargs):
+        cli = Client(base_url='tcp://127.0.0.1:2376')
+        services = cli.services()
+        result = ''
+        service_id= ''
+        service_name = request.GET.get('service_id',None)
+
+        for service in services:
+            if service['Spec']['Name']==service_name:
+                service_id = service['ID']
+                break
+
+        if request.session.has_key('config'):
+            config = request.session['config']
+            check_service = False
+            for key in config:
+                if key == service_id:
+                    result = config[key]
+                    check_service = True
+                    break
+            if not check_service:
+                result ={'result':False}
+        else:
+            result = {'result':False}
+
+        print result
+        return HttpResponse(json.dumps(result), content_type='application/json')
+
+# class UsageContainer(django.views.generic.TemplateView):
+#     def get(self,request,*args,):
 
 def get_interval(current, previous):
     cur = datetime.datetime.strptime(current[:-4], "%Y-%m-%dT%H:%M:%S.%f")

@@ -48,10 +48,15 @@ class ServiceMonitorTab(tabs.TableTab):
     table_classes = (tbl_service_monitor.ContainerInServiceTable,)
     # template_name = ("horizon/common/_detail_table.html")
     template_name = ("docker_swarm/docker_service/service_monitor/detail_service_monitor.html")
+    check_form = False
 
     def get_container_in_service_data(self):
-        host_ip = ['0.0.0.0', '192.168.2.128']
-
+        # host_ip = ['0.0.0.0', '192.168.2.128']
+        # check_form = False
+        if self.request.session.has_key('yyy') and self.request.session['yyy']=='test':
+            self.check_form = True
+            del self.request.session['yyy']
+        host_ip = ['0.0.0.0']
         cli = Client(base_url='unix://var/run/docker.sock')
         services = []
         for service in cli.services():
@@ -67,6 +72,23 @@ class ServiceMonitorTab(tabs.TableTab):
                     dict_container = cli.containers(all=True)
                     for ct in dict_container:
                         if len(ct['Labels'].keys()) != 0 and ct['Labels']['com.docker.swarm.service.name'] == serviceName:
+                            # convert data
+                            created = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ct['Created']))
+                            name = ct['Names'][0][1:]
+                            containers.append(
+                                Container(ct['Id'][:12], ct['Image'], ct['Command'], created, ct['State'], name, ip))
+                except:
+                    print 'Cant connect', ip
+            return containers
+        elif self.check_form and self.request.session.has_key('service_now'):
+            serviceName = self.request.session['service_now']
+            for ip in host_ip:
+                try:
+                    cli = Client(base_url='tcp://' + ip + ':2376')
+                    dict_container = cli.containers(all=True)
+                    for ct in dict_container:
+                        if len(ct['Labels'].keys()) != 0 and ct['Labels'][
+                            'com.docker.swarm.service.name'] == serviceName:
                             # convert data
                             created = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(ct['Created']))
                             name = ct['Names'][0][1:]
@@ -91,6 +113,11 @@ class ServiceMonitorTab(tabs.TableTab):
         if self.request.method == 'GET' and 'service' in self.request.GET:
             # and self.request.GET['service'] in context['services']
             context['selected'] = self.request.GET['service']
+            request.session['service_now']= self.request.GET['service']
+            # context['ser']
+        elif self.check_form and self.request.session.has_key('service_now'):
+            context['selected'] = self.request.session['service_now']
+            request.session['service_now'] = self.request.session['service_now']
         else:
             context['selected'] = '-1'
         return context
