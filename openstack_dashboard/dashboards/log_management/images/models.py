@@ -12,8 +12,7 @@ Base = declarative_base()
 CURRENT_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 PARENT_PATH = os.path.abspath(os.path.join(CURRENT_FOLDER_PATH, os.pardir))
 GRANDER_PARENT_PATH = os.path.abspath(os.path.join(PARENT_PATH, os.pardir))
-# print GRANDER_PARENT_PATH
-
+# print CURRENT_FOLDER_PATH
 
 
 class DockerHost(Base):
