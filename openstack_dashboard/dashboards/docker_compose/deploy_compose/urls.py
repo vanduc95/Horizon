@@ -12,11 +12,10 @@
 
 from django.conf.urls import url
 from django.conf.urls import include
-from openstack_dashboard.dashboards.service_management.container_service.service import urls as service_urls
-
-from openstack_dashboard.dashboards.service_management.container_service import views
+from openstack_dashboard.dashboards.docker_compose.deploy_compose import views
+from openstack_dashboard.dashboards.docker_compose.deploy_compose.services import urls as service_urls
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'service/', include(service_urls, namespace='service')),
+    url(r'services/', include(service_urls, namespace='services')),
 ]
