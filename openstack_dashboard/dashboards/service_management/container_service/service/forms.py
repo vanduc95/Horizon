@@ -4,24 +4,25 @@ from horizon import forms
 
 
 class CreateServiceForm(forms.SelfHandlingForm):
-    NUM_CHOICE = [('2',_('2')),
+    NUM_CHOICE = [        
+                  ('', _("Select container numbers")),
+                  ('2',_('2')),
                   ('3',_('3')),
                   ('4',_('4')),
                   ('5',_('5')),
                   ('6',_('6')),]
     service_name = forms.CharField(max_length=255,
-                                   label=_("Name Service"),
+                                   label=_("Service Name"),
                                    required=True)
-    network = forms.ChoiceField(label=_("Choose network"),
-                                required=False)
-    container_number = forms.ChoiceField(label=_("Number Container"),
-                                         required=False,
+    network = forms.ChoiceField(label=_("Network for Containers"))
+    container_number = forms.ChoiceField(label=_("Container Number"),
+                                         required=True,
                                          choices=NUM_CHOICE,)
 
     def __init__(self,request,*args,**kwargs):
         super(CreateServiceForm, self).__init__(self, *args, **kwargs)
         cli = docker_api.connect_docker()
-        list_network = []
+        list_network = [('', _("Select image which will be used for create new container"))]
         for network in cli.networks():
             net = []
             net.append(network['Id'])

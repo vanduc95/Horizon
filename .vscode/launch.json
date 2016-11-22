@@ -45,7 +45,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "${workspaceRoot}/.venv/bin/python",
             "program": "${workspaceRoot}/manage.py",
             "args": [
                 "runserver",
