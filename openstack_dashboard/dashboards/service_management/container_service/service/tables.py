@@ -54,6 +54,14 @@ from horizon import tables
 #         docker_host = docker_host_id
 
 
+class CreateService(tables.LinkAction):
+    name = "create_service"
+    verbose_name = _("Create Service")
+    url = "horizon:service_management:container_service:service:create"
+    classes = ("ajax-modal",)
+    icon = "plus"
+
+
 class ServiceTable(tables.DataTable):
     id = tables.Column("id")
     name = tables.Column("name", verbose_name="Host Name")
@@ -65,5 +73,5 @@ class ServiceTable(tables.DataTable):
     class Meta(object):
         verbose_name = "Services"
         name = 'services'
-        # table_actions = (HostFilter, AddService, DeleteService,)
+        table_actions = (CreateService,)
         # row_actions = (UpdateService, DeleteService,)
