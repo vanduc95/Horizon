@@ -12,6 +12,7 @@ class Service(Base):
     __tablename__ = 'Service'
 
     id = Column(Integer, primary_key=True)
+    name_service = Column(String)
     container_id = Column(String)
     service_id = Column(String)
 

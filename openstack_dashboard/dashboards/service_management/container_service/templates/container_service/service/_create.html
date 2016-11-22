@@ -16,3 +16,13 @@
      {% endif %}
   </p>
 {% endblock %}
+
+{% block modal-js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var num_container = $('#id_container_number').val();
+            console.log(num_container);
+        });
+    </script>
+{% endblock %}
+
