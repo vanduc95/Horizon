@@ -80,3 +80,5 @@ class HostTable(tables.DataTable):
         name = 'docker_hosts'
         table_actions = (HostFilter, AddDockerHost, DeleteDockerHost,)
         row_actions = (UpdateDockerHost, DeleteDockerHost,)
+
+
