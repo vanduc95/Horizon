@@ -30,7 +30,34 @@ class ContainerTab(tabs.TableTab):
     template_name = INFO_DETAIL_TEMPLATE_NAME
 
     def get_containers_data(self):
-        return []
+        container_list = []
+        try:
+
+            docker_cli = Client(base_url='tcp://' + '127.0.0.1' + ':2376')
+            containers = docker_cli.containers(all=True)
+            for container in containers:
+                names = container['Names']
+                service_name = 'not set'
+                container_id = container['Id']
+                state = container['State']
+                status = container['Status']
+                image = container['Image']
+                ips = []
+                ports = []
+                for network_name, network_detail in container['NetworkSettings']['Networks'].iteritems():
+                    ips.append(network_name + " : " + network_detail['IPAddress'])
+                for port in container['Ports']:
+                    ports.append(port['Type'] + ":" + str(port['PublicPort']) + "->" + str(port['PrivatePort']))
+                container_list.append(
+                    ContainerData(
+                        container_id, names,service_name, state, status, ips, ports, image
+                    )
+                )
+        except Exception:
+            container_list = []
+            msg = _('Container list can not be retrieved. Error has been fired!')
+            exceptions.handle(self.request, msg)
+        return container_list
 
 
 class ServiceTab(tabs.TableTab):
@@ -53,3 +80,15 @@ class ContainerAndServiceTabs(tabs.TabGroup):
     slug = "container_and_service"
     tabs = (ContainerTab, ServiceTab)
     sticky = True
+
+
+class ContainerData:
+    def __init__(self, container_id, names, service_name, state, status, ips, ports, image):
+        self.id = container_id
+        self.names = names
+        self.service_name = service_name
+        self.status = status
+        self.state = state
+        self.image = image
+        self.ips = ips
+        self.ports = ports
