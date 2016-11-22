@@ -10,13 +10,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from django.conf.urls import include
-from openstack_dashboard.dashboards.service_management.container_service.service import urls as service_urls
+from django.utils.translation import ugettext_lazy as _
 
-from openstack_dashboard.dashboards.service_management.container_service import views
+import horizon
+from openstack_dashboard.dashboards.docker_compose import dashboard
 
-urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'service/', include(service_urls, namespace='service')),
-]
+class DeployCompose(horizon.Panel):
+    name = _("Deploy Compose")
+    slug = "deploy_compose"
+
+
+dashboard.DockerCompose.register(DeployCompose)

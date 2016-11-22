@@ -10,13 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from django.conf.urls import include
-from openstack_dashboard.dashboards.service_management.container_service.service import urls as service_urls
+from horizon.test import helpers as test
 
-from openstack_dashboard.dashboards.service_management.container_service import views
 
-urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'service/', include(service_urls, namespace='service')),
-]
+class Deploy_ComposeTests(test.TestCase):
+    # Unit tests for deploy_compose.
+    def test_me(self):
+        self.assertTrue(1 + 1 == 2)
