@@ -50,7 +50,7 @@ function requestScale(option){
 
     delayInterval.isRunnig = true;
     console.log('timeouting');
-    delayInterval.handle = setTimeout(delayIntervalHandle,120000);
+    delayInterval.handle = setTimeout(delayIntervalHandle,180000);
 
     url = $('.scale_container').data('request-scale-container-url')+'?option='+option+'&service_id='+serviceID;
     $.ajax({

@@ -144,5 +144,5 @@ class CreateView(workflows.WorkflowView):
     workflow_class = create_container_workflows.CreateRunningContainer
     template_name = 'docker_management/containers/create.html'
     context_object_name = "workflow"
-    ajax_template_name = 'docker_management/containers/_create.html'
+    ajax_template_name = 'docker_management/containers/create_service.html'
     # ajax_template_name = 'docker_management/networks/create.html'

@@ -43,5 +43,5 @@ class AddDockerHost(forms.SelfHandlingForm):
         session.add(host)
         session.commit()
         session.close()
-        messages.success(request,'successfully',fail_silently=False)
+        messages.success(request, 'successfully', fail_silently=False)
         return True
