@@ -36,10 +36,10 @@ class Database_service:
 
     def get_service_id(self):
         max = 0
-        for service_id in self.session.query(Service.service_id):
-            if service_id > max:
-                max = service_id
-        max +=1
+        for service in self.session.query(Service):
+            if service.service_id > max:
+                max = service.service_id
+        max += 1
         return max
 
     def add_service(self,service):
