@@ -20,6 +20,17 @@
 {% block modal-js %}
     <script type="text/javascript">
         $(document).ready(function () {
+            var images = []
+            console.log("{% url "horizon:service_management:container_service:service:image_docker" %}")
+            $.ajax({
+                url: "{% url "horizon:service_management:container_service:service:image_docker" %}",
+                success: function (data) {
+                    images = data;
+                },
+                error: function (e) {
+                    console.log('error')
+                }
+            });
             var form_body = $('#create_service_form').find("fieldset");
             form_body.find('#container_list_form').remove();
             var container_list_form = document.createElement('div');
@@ -86,27 +97,16 @@
                             .appendTo(container_image)
                     {#                    var container_image_input = $(document.createElement('input'))#}
                     {#                    container_image_input#}
-                    {#                        .addClass('form-control')#}
-                    {#                        .attr('id','id_container_image'+i.toString())#}
-                    {#                        .attr('name','container_image'+i.toString())#}
-                    {#                        .attr('type','text')#}
-                    {#                        .appendTo(container_image_input_wrapper);#}
+                    {#                            .addClass('form-control')#}
+                    {#                            .attr('id', 'id_container_image' + i.toString())#}
+                    {#                            .attr('name', 'container_image' + i.toString())#}
+                    {#                            .attr('type', 'text')#}
+                    {#                            .appendTo(container_image_input_wrapper);#}
 
-                    var images = [{
-                                value: 1,
-                                text: 'Ubuntu'
-                            }, {
-                                value: 2,
-                                text: 'Redis'
-                            }, {
-                                value: 3,
-                                text: 'alipas'
-                            }];
-
-                            var sel = $('<select>').addClass('form-control').attr('name', 'container_image' + i.toString()).appendTo(container_image_input_wrapper);
-                            $(images).each(function () {
-                                sel.append($("<option>").attr('value', this.value).text(this.text));
-                            });
+                    var sel = $('<select>').addClass('form-control').attr('name', 'container_image' + i.toString()).appendTo(container_image_input_wrapper);
+                    $(images).each(function () {
+                        sel.append($("<option>").attr('value', this['name_image']).text(this['name_image']));
+                    });
 
 
                     //Command
