@@ -73,6 +73,7 @@ class ServiceTab(tabs.TableTab):
             self.host_ip = host_ip
 
     def get_services_data(self):
+
         return []
 
 

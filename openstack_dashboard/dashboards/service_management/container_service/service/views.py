@@ -6,6 +6,9 @@ from django.core.urlresolvers import reverse
 from horizon import exceptions
 from horizon import views
 from docker import Client
+import django.views
+from django.http import HttpResponse
+import json
 
 
 class CreateService(forms.ModalFormView):
@@ -17,3 +20,15 @@ class CreateService(forms.ModalFormView):
     success_url = reverse_lazy("horizon:service_management:container_service:index")
     page_title = _("Create An Service")
 
+
+class ImageDockerRequest(django.views.generic.TemplateView):
+    def get(self, request, *args, **kwargs):
+        cli = Client(base_url='unix://var/run/docker.sock')
+        image_docker = []
+        for image in cli.images():
+            if image['RepoTags'] != None:
+                repo = image['RepoTags']
+                repoTags = repo[0]
+                image_docker.append({'name_image': repoTags})
+
+        return HttpResponse(json.dumps(image_docker), content_type='application/json')
