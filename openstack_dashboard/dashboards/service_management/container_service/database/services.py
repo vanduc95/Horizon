@@ -14,28 +14,37 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     name_service = Column(String)
     container_id = Column(String)
-    service_id = Column(String)
+    service_id = Column(Integer)
 
     def __repr__(self):
         return self.id
 
 
-engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/database/service.db', echo=True)
+engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
 
-# class DatabaseService:
-#     def __init__(self):
-#         self.session = Session()
-#
-#     def get_list_service(self):
-#         list_service = self.session.query(Service.service_id)
-#         return list_service
-#
-#     def close(self):
-#         self.session.close()
+# db_session = scoped_session(sessionmaker(autocommit=False,
+#                                          autoflush=False,
+#                                          bind=engine))
+
+class Database_service:
+    def __init__(self):
+        self.session = Session()
+
+    def get_service_id(self):
+        max = 0
+        for service_id in self.session.query(Service.service_id):
+            if service_id > max:
+                max = service_id
+        max +=1
+        return max
+
+    def add_service(self,service):
+        self.session.add(service)
+        self.session.commit()
+
+    def close(self):
+        self.session.close()
