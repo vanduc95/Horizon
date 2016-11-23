@@ -45,8 +45,8 @@ def create_service():
         container = cli.create_container(name=container['name'],
                              command=container['command'],
                              networking_config=network_config,
-                             environment=container['evn'],
+                             environment=container['enviroment'],
                              ports=container['post'],
                              image=container['image'])
         cli.start(container)
-create_service()
+# create_service()
