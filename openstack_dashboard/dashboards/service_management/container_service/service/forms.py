@@ -33,8 +33,6 @@ class CreateServiceForm(forms.SelfHandlingForm):
             list_network.append(net)
         self.fields['network'].choices = list_network
 
-        request.session['test'] = 'vanduc'
-        request.session.set_expiry(3600*24)
 
     def handle(self, request, data):
 
@@ -75,4 +73,3 @@ class CreateServiceForm(forms.SelfHandlingForm):
             return True
         else:
             return False
-
