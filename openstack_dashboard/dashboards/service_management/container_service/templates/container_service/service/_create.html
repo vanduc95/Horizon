@@ -6,15 +6,15 @@
 
 
 {% block modal-body-right %}
-  <h3>{% trans "Description:" %}</h3>
-  <p>
-     <strong>{% trans "Please note: " %}</strong>
-     {% if HORIZON_IMAGES_ALLOW_UPLOAD %}
-         {% trans "If you select an image via an HTTP/HTTPS URL, the Image Location field MUST be a valid and direct URL to the image binary; it must also be accessible to the Image Service. URLs that redirect or serve error pages will result in unusable images." %}
-     {% else %}
-         {% trans "The Image Location field MUST be a valid and direct URL to the image binary. URLs that redirect or serve error pages will result in unusable images." %}
-     {% endif %}
-  </p>
+    <h3>{% trans "Description:" %}</h3>
+    <p>
+        <strong>{% trans "Please note: " %}</strong>
+        {% if HORIZON_IMAGES_ALLOW_UPLOAD %}
+            {% trans "If you select an image via an HTTP/HTTPS URL, the Image Location field MUST be a valid and direct URL to the image binary; it must also be accessible to the Image Service. URLs that redirect or serve error pages will result in unusable images." %}
+        {% else %}
+            {% trans "The Image Location field MUST be a valid and direct URL to the image binary. URLs that redirect or serve error pages will result in unusable images." %}
+        {% endif %}
+    </p>
 {% endblock %}
 
 {% block modal-js %}
@@ -30,7 +30,7 @@
                 var container_list_form = $("#container_list_form").empty();
                 var num_container = $(this).val();
                 console.log(num_container);
-                
+
                 for (var i = 0; i < num_container; i++) {
                     var container_form_group = document.createElement('div');
                     $(container_form_group)
@@ -40,12 +40,12 @@
                     container_form_header
                             .addClass('container-form-header')
                             .appendTo(container_form_group);
-                    var container_form_header_content =$(document.createElement('h3'));
+                    var container_form_header_content = $(document.createElement('h3'));
                     container_form_header_content
                             .addClass('label label-default')
-                            .text('Information for container '+(i+1).toString())
+                            .text('Information for container ' + (i + 1).toString())
                             .appendTo(container_form_header);
-                    
+
                     //Name
                     var container_name = $(document.createElement('div'));
                     container_name
@@ -54,22 +54,22 @@
                     var container_name_label = $(document.createElement('label'));
                     container_name_label
                             .addClass('control-label')
-                            .attr('for','id_container_name'+i.toString())
+                            .attr('for', 'id_container_name' + i.toString())
                             .text('Container Name')
                             .appendTo(container_name);
-                                        
+
                     var container_name_input_wrapper = $(document.createElement('div'));
                     container_name_input_wrapper
-                        .appendTo(container_name)
+                            .appendTo(container_name)
                     var container_name_input = $(document.createElement('input'))
                     container_name_input
-                        .addClass('form-control')
-                        .attr('id','id_container_name'+i.toString())
-                        .attr('name','container_name'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_name_input_wrapper);
+                            .addClass('form-control')
+                            .attr('id', 'id_container_name' + i.toString())
+                            .attr('name', 'container_name' + i.toString())
+                            .attr('type', 'text')
+                            .appendTo(container_name_input_wrapper);
 
-
+                    // Image
                     var container_image = $(document.createElement('div'));
                     container_image
                             .addClass('form-group')
@@ -77,21 +77,39 @@
                     var container_image_label = $(document.createElement('label'));
                     container_image_label
                             .addClass('control-label')
-                            .attr('for','id_container_image'+i.toString())
+                            .attr('for', 'id_container_image' + i.toString())
                             .text('Image')
-                            .appendTo(container_image);               
+                            .appendTo(container_image);
+
                     var container_image_input_wrapper = $(document.createElement('div'));
                     container_image_input_wrapper
-                        .appendTo(container_image)
-                    var container_image_input = $(document.createElement('input'))
-                    container_image_input
-                        .addClass('form-control')
-                        .attr('id','id_container_image'+i.toString())
-                        .attr('name','container_image'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_image_input_wrapper);
-                    
-                    
+                            .appendTo(container_image)
+                    {#                    var container_image_input = $(document.createElement('input'))#}
+                    {#                    container_image_input#}
+                    {#                        .addClass('form-control')#}
+                    {#                        .attr('id','id_container_image'+i.toString())#}
+                    {#                        .attr('name','container_image'+i.toString())#}
+                    {#                        .attr('type','text')#}
+                    {#                        .appendTo(container_image_input_wrapper);#}
+
+                    var images = [{
+                                value: 1,
+                                text: 'Ubuntu'
+                            }, {
+                                value: 2,
+                                text: 'Redis'
+                            }, {
+                                value: 3,
+                                text: 'alipas'
+                            }];
+
+                            var sel = $('<select>').addClass('form-control').attr('name', 'container_image' + i.toString()).appendTo(container_image_input_wrapper);
+                            $(images).each(function () {
+                                sel.append($("<option>").attr('value', this.value).text(this.text));
+                            });
+
+
+                    //Command
                     var container_command = $(document.createElement('div'));
                     container_command
                             .addClass('form-group')
@@ -99,20 +117,20 @@
                     var container_command_label = $(document.createElement('label'));
                     container_command_label
                             .addClass('control-label')
-                            .attr('for','id_container_command'+i.toString())
+                            .attr('for', 'id_container_command' + i.toString())
                             .text('Command')
                             .appendTo(container_command);
-                                        
+
                     var container_command_input_wrapper = $(document.createElement('div'));
                     container_command_input_wrapper
-                        .appendTo(container_command)
+                            .appendTo(container_command)
                     var container_command_input = $(document.createElement('input'))
                     container_command_input
-                        .addClass('form-control')
-                        .attr('id','id_container_command'+i.toString())
-                        .attr('name','container_command'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_command_input_wrapper);
+                            .addClass('form-control')
+                            .attr('id', 'id_container_command' + i.toString())
+                            .attr('name', 'container_command' + i.toString())
+                            .attr('type', 'text')
+                            .appendTo(container_command_input_wrapper);
 
 
                     var container_IP = $(document.createElement('div'));
@@ -122,20 +140,20 @@
                     var container_IP_label = $(document.createElement('label'));
                     container_IP_label
                             .addClass('control-label')
-                            .attr('for','id_container_IP'+i.toString())
+                            .attr('for', 'id_container_IP' + i.toString())
                             .text('IP')
                             .appendTo(container_IP);
-                                        
+
                     var container_IP_input_wrapper = $(document.createElement('div'));
                     container_IP_input_wrapper
-                        .appendTo(container_IP)
+                            .appendTo(container_IP)
                     var container_IP_input = $(document.createElement('input'))
                     container_IP_input
-                        .addClass('form-control')
-                        .attr('id','id_container_IP'+i.toString())
-                        .attr('name','container_IP'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_IP_input_wrapper);
+                            .addClass('form-control')
+                            .attr('id', 'id_container_IP' + i.toString())
+                            .attr('name', 'container_IP' + i.toString())
+                            .attr('type', 'text')
+                            .appendTo(container_IP_input_wrapper);
 
 
                     var container_Internal_External_Port = $(document.createElement('div'));
@@ -145,22 +163,22 @@
                     var container_Internal_External_Port_label = $(document.createElement('label'));
                     container_Internal_External_Port_label
                             .addClass('control-label')
-                            .attr('for','id_container_Internal_External_Port'+i.toString())
+                            .attr('for', 'id_container_Internal_External_Port' + i.toString())
                             .text('Internal:External Port')
                             .appendTo(container_Internal_External_Port);
-                                        
+
                     var container_Internal_External_Port_input_wrapper = $(document.createElement('div'));
                     container_Internal_External_Port_input_wrapper
-                        .appendTo(container_Internal_External_Port)
+                            .appendTo(container_Internal_External_Port)
                     var container_Internal_External_Port_input = $(document.createElement('input'))
                     container_Internal_External_Port_input
-                        .addClass('form-control')
-                        .attr('id','id_container_Internal_External_Port'+i.toString())
-                        .attr('name','container_Internal_External_Port'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_Internal_External_Port_input_wrapper);
+                            .addClass('form-control')
+                            .attr('id', 'id_container_Internal_External_Port' + i.toString())
+                            .attr('name', 'container_Internal_External_Port' + i.toString())
+                            .attr('type', 'text')
+                            .appendTo(container_Internal_External_Port_input_wrapper);
 
-                                        
+
                     var container_environment = $(document.createElement('div'));
                     container_environment
                             .addClass('form-group')
@@ -168,22 +186,22 @@
                     var container_environment_label = $(document.createElement('label'));
                     container_environment_label
                             .addClass('control-label')
-                            .attr('for','id_container_environment'+i.toString())
+                            .attr('for', 'id_container_environment' + i.toString())
                             .text('Env variable')
                             .appendTo(container_environment);
-                                        
+
                     var container_environment_input_wrapper = $(document.createElement('div'));
                     container_environment_input_wrapper
-                        .appendTo(container_environment)
+                            .appendTo(container_environment)
                     var container_environment_input = $(document.createElement('input'))
                     container_environment_input
-                        .addClass('form-control')
-                        .attr('id','id_container_environment'+i.toString())
-                        .attr('name','container_environment'+i.toString())
-                        .attr('type','text')
-                        .appendTo(container_environment_input_wrapper);
-                    
-                }   
+                            .addClass('form-control')
+                            .attr('id', 'id_container_environment' + i.toString())
+                            .attr('name', 'container_environment' + i.toString())
+                            .attr('type', 'text')
+                            .appendTo(container_environment_input_wrapper);
+
+                }
             });
         });
     </script>

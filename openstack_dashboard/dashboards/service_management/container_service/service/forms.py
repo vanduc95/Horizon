@@ -22,7 +22,7 @@ class CreateServiceForm(forms.SelfHandlingForm):
     def __init__(self,request,*args,**kwargs):
         super(CreateServiceForm, self).__init__(self, *args, **kwargs)
         cli = docker_api.connect_docker()
-        list_network = [('', _("Select image which will be used for create new container"))]
+        list_network = [('', _("Select network"))]
         for network in cli.networks():
             net = []
             net.append(network['Id'])
@@ -30,5 +30,9 @@ class CreateServiceForm(forms.SelfHandlingForm):
             list_network.append(net)
         self.fields['network'].choices = list_network
 
+        request.session['test'] = 'vanduc'
+        request.session.set_expiry(3600*24)
+
     def handle(self, request, data):
+        # print request.
         return True
