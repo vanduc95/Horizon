@@ -48,11 +48,11 @@ class CreateServiceForm(forms.SelfHandlingForm):
             env = request.POST['container_environment' + suffix]
             arr_env = env.split(';')
             container['environment'] = arr_env
-
+            
             container['command'] = request.POST['container_command' + suffix]
             ports = request.POST['container_Internal_External_Port' + suffix]
             container['port'] = ports.split(';')
-
+        
             container['id'] = request.POST['container_IP' + suffix]
             containers.append(container)
         service_config = {
