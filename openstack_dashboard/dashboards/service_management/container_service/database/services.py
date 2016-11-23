@@ -20,7 +20,7 @@ class Service(Base):
         return self.id
 
 
-engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/database/service.db', echo=True)
+engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
