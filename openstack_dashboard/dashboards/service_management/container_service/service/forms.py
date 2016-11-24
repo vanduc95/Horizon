@@ -86,15 +86,15 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 cli.start(container)
                 container_run_success.append(container['Id'])
             time.sleep(10)
-            # try:
-            db_service = database_service.Database_service()
-            service_id = db_service.get_service_id()
+
+            db_service = database_service.DatabaseService()
+            service = database_service.Service(service_name=service_name)
+
             for container in container_run_success:
-                service = database_service.Service(
-                    service_name=service_name,
-                    container_name=container,
-                    service_id=service_id)
-                db_service.add_service(service)
+                container_db = database_service.Container(container_id=container)
+                service.container.append(container_db)
+
+            db_service.add_service(service)
             db_service.close()
             messages.success(request, 'Create service successful')
             return True
