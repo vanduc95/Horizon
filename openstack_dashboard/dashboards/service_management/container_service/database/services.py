@@ -12,8 +12,8 @@ class Service(Base):
     __tablename__ = 'Service'
 
     id = Column(Integer, primary_key=True)
-    service_name = Column(String)
-    container_name = Column(String)
+    service_name = Column(String(50))
+    container_name = Column(String(50))
     service_id = Column(Integer)
 
     def __repr__(self):

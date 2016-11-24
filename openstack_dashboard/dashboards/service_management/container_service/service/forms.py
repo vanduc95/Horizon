@@ -66,7 +66,6 @@ class CreateServiceForm(forms.SelfHandlingForm):
         }
         container_run_success = []
         try:
-            # docker_api.create_service(service_config)
             cli = docker_api.connect_docker()
             networks = cli.networks(ids=[service_config['networkID'], ])
             network = networks[0]
@@ -84,18 +83,18 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 cli.start(container)
                 container_run_success.append(container['Id'])
             time.sleep(10)
+            # try:
             db_service = database_service.Database_service()
             service_id = db_service.get_service_id()
             for container in container_run_success:
-                service = database_service.Service(service_name=service_name, container_name=container['Id'],
+                service = database_service.Service(service_name=service_name, container_name=container,
                                                    service_id=service_id)
                 db_service.add_service(service)
             db_service.close()
             messages.success(request, 'Create service successful')
             return True
-        except Exception:
+        except Exception as e:
             cli = docker_api.connect_docker()
-            # containers_exists = cli.containers()
             for container_id in container_run_success:
                 cli.stop(container_id)
                 time.sleep(3)
@@ -103,6 +102,6 @@ class CreateServiceForm(forms.SelfHandlingForm):
             redirect = reverse("horizon:service_management:container_service:index")
 
             exceptions.handle(request,
-                              _('False information about container'),
+                              _(e.explanation),
                               redirect=redirect)
             return False
