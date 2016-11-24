@@ -44,18 +44,32 @@ class ContainerTab(tabs.TableTab):
                 image = container['Image']
                 ips = []
                 ports = []
-                for network_name, network_detail in container['NetworkSettings']['Networks'].iteritems():
-                    ips.append(network_name + " : " + network_detail['IPAddress'])
+                for network_name, network_detail in\
+                        container['NetworkSettings']['Networks'].iteritems():
+                    ips.append(network_name + " : " +
+                               network_detail['IPAddress'])
                 for port in container['Ports']:
-                    ports.append(port['Type'] + ":" + str(port['PublicPort']) + "->" + str(port['PrivatePort']))
+                    if 'PublicPort' in port:
+                        public_port = port['PublicPort']
+                    else:
+                        public_port = 'not set'
+                    if 'PrivatePort' in port:
+                        private_port = port['PrivatePort']
+                    else:
+                        private_port = 'not set'
+                    ports.append(
+                        port['Type'] + ":" + str(public_port) + "->" +
+                        str(private_port))
                 container_list.append(
                     ContainerData(
-                        container_id, names,service_name, state, status, ips, ports, image
+                        container_id,
+                        names, service_name, state,
+                        status, ips, ports, image
                     )
                 )
-        except Exception:
+        except Exception as e:
             container_list = []
-            msg = _('Container list can not be retrieved. Error has been fired!')
+            msg = _(e.message)
             exceptions.handle(self.request, msg)
         return container_list
 
@@ -67,6 +81,7 @@ class ServiceTab(tabs.TableTab):
     template_name = INFO_DETAIL_TEMPLATE_NAME
 
     class DockerHostData:
+
         def __init__(self, id, name, host_ip):
             self.id = id
             self.name = name
@@ -84,6 +99,7 @@ class ContainerAndServiceTabs(tabs.TabGroup):
 
 
 class ContainerData:
+
     def __init__(self, container_id, names, service_name, state, status, ips, ports, image):
         self.id = container_id
         self.names = names

@@ -1,6 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
-from openstack_dashboard.dashboards.service_management.container_service.service.docker_api import docker_api
-from openstack_dashboard.dashboards.service_management.container_service.database import services as database_service
+from openstack_dashboard.dashboards.service_management.container_service.\
+    service.docker_api import docker_api
+from openstack_dashboard.dashboards.service_management.container_service.\
+    database import services as database_service
 from horizon import forms
 from horizon import messages
 import time
@@ -74,12 +76,13 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 network_name: cli.create_endpoint_config()
             })
             for container in containers:
-                container = cli.create_container(name=container['name'],
-                                                 command=container['command'],
-                                                 networking_config=network_config,
-                                                 environment=container['environment'],
-                                                 ports=container['port'],
-                                                 image=container['image'])
+                container = cli.create_container(
+                    name=container['name'],
+                    command=container['command'],
+                    networking_config=network_config,
+                    environment=container['environment'],
+                    ports=container['port'],
+                    image=container['image'])
                 cli.start(container)
                 container_run_success.append(container['Id'])
             time.sleep(10)
@@ -87,8 +90,10 @@ class CreateServiceForm(forms.SelfHandlingForm):
             db_service = database_service.Database_service()
             service_id = db_service.get_service_id()
             for container in container_run_success:
-                service = database_service.Service(service_name=service_name, container_name=container,
-                                                   service_id=service_id)
+                service = database_service.Service(
+                    service_name=service_name,
+                    container_name=container,
+                    service_id=service_id)
                 db_service.add_service(service)
             db_service.close()
             messages.success(request, 'Create service successful')
@@ -99,7 +104,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 cli.stop(container_id)
                 time.sleep(3)
                 cli.remove_container(container_id)
-            redirect = reverse("horizon:service_management:container_service:index")
+            redirect = reverse(
+                "horizon:service_management:container_service:index")
 
             exceptions.handle(request,
                               _(e.explanation),
