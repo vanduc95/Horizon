@@ -12,20 +12,15 @@ def create_service(service_config):
     networks = cli.networks(ids=[service_config['networkID'], ])
     network = networks[0]
     network_name = network['Name']
-    print (network_name)
     network_config = cli.create_networking_config({
         network_name: cli.create_endpoint_config()
     })
-    try:
-        for container in containers:
-            container = cli.create_container(name=container['name'],
-                                             command=container['command'],
-                                             networking_config=network_config,
-                                             environment=container['environment'],
-                                             ports=container['port'],
-                                             image=container['image'])
-            cli.start(container)
-        return True
-    except Exception:
-        print Exception.message
-        return False
+    for container in containers:
+        container = cli.create_container(name=container['name'],
+                                         command=container['command'],
+                                         networking_config=network_config,
+                                         environment=container['environment'],
+                                         ports=container['port'],
+                                         image=container['image'])
+        cli.start(container)
+

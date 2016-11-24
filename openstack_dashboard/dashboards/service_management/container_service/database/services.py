@@ -12,13 +12,18 @@ class Service(Base):
     __tablename__ = 'Service'
 
     id = Column(Integer, primary_key=True)
-    name_service = Column(String)
-    container_id = Column(String)
+    service_name = Column(String)
+    container_name = Column(String)
     service_id = Column(Integer)
 
     def __repr__(self):
         return self.id
 
+    # def __unicode__(self):
+    #     return u'%s' % self.container_id
+    #
+    # def __str__(self):
+    #     return '%s' % self.container_id
 
 engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
 Base.metadata.create_all(engine)
@@ -26,9 +31,6 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
 
-# db_session = scoped_session(sessionmaker(autocommit=False,
-#                                          autoflush=False,
-#                                          bind=engine))
 
 class Database_service:
     def __init__(self):
