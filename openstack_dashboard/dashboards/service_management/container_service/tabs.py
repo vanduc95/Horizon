@@ -19,6 +19,8 @@ from openstack_dashboard.dashboards.service_management.container_service.contain
     import tables as container_tables
 from openstack_dashboard.dashboards.service_management.container_service.service \
     import tables as service_tables
+from openstack_dashboard.dashboards.service_management.container_service.database \
+    import services as database_service
 
 INFO_DETAIL_TEMPLATE_NAME = 'horizon/common/_detail_table.html'
 
@@ -80,16 +82,19 @@ class ServiceTab(tabs.TableTab):
     slug = service_tables.ServiceTable.Meta.name
     template_name = INFO_DETAIL_TEMPLATE_NAME
 
-    class DockerHostData:
+    class ServiceData:
 
-        def __init__(self, id, name, host_ip):
+        def __init__(self, id, name):
             self.id = id
             self.name = name
-            self.host_ip = host_ip
 
     def get_services_data(self):
-
-        return []
+        services = []
+        db_service = database_service.DatabaseService()
+        for service in db_service.session.query(database_service.Service):
+            services.append(ServiceTab.ServiceData(service.id,service.service_name))
+        db_service.close()
+        return services
 
 
 class ContainerAndServiceTabs(tabs.TabGroup):

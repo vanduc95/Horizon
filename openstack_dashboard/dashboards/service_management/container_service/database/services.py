@@ -13,6 +13,8 @@ class Service(Base):
 
     id = Column(Integer, primary_key=True)
     service_name = Column(String(50))
+    container = relationship("Container", back_populates="service",
+                             cascade="all, delete, delete-orphan",)
 
     def __repr__(self):
         return self.id
@@ -30,7 +32,7 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
-Service.container = relationship("Container", order_by=Container.id, back_populates="service")
+# Service.container = relationship("Container", order_by=Container.id, back_populates="service")
 
 engine = create_engine('sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
 Base.metadata.create_all(engine)
