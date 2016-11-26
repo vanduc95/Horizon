@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Integer, Column, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import os.path
+
 
 Base = declarative_base()
 CURRENT_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -32,20 +33,20 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
-# Service.container = relationship(
-#     "Container", order_by=Container.id, back_populates="service")
+# Base.metadata.create_all(engine)
+
 
 engine = create_engine(
-    'sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
-Base.metadata.create_all(engine)
-
-Session = sessionmaker(bind=engine)
+    'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
+db_session = scoped_session(sessionmaker(autocommit=False,
+                                         autoflush=False,
+                                         bind=engine))
 
 
 class DatabaseService:
 
     def __init__(self):
-        self.session = Session()
+        self.session = db_session
 
     def add_service(self, obj):
         self.session.add(obj)
@@ -60,13 +61,28 @@ class DatabaseService:
             filter(Service.id == service_id).one().container
         return container_list
 
-    def close(self):
-        self.session.close()
 
-
-# new_db = DatabaseService()
+new_db = DatabaseService()
 # service_list = new_db.get_service_list()
 # for service in service_list:
 #     container_list = new_db.get_containers_in_service(service.id)
 #     for container in container_list:
 #         print(container.container_id)
+
+# new_db = DatabaseService()
+# new_service = Service(service_name='4123')
+# new_db.session.add(new_service)
+# new_db.session.commit()
+# new_ctn_1 = Container(container_id='21321')
+# new_ctn_2 = Container(container_id='12313')
+# new_service.container = [new_ctn_1, new_ctn_2]
+# new_db.session.commit()
+# print(new_service.id)
+# delete_service = new_db.session.query(
+#     Service).filter(Service.id == '3').first()
+# container_delete_list = delete_service.container
+
+# new_db.session.delete(delete_service)
+# for container in container_delete_list:
+#     new_db.session.delete(container)
+# new_db.session.commit()

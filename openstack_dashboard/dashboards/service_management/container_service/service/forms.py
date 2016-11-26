@@ -22,7 +22,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
     service_name = forms.CharField(max_length=255,
                                    label=_("Service Name"),
                                    required=True)
-    network = forms.ChoiceField(label=_("Network for Containers"))
+    network = forms.ChoiceField(
+        label=_("Network for Containers"), required=True)
     container_number = forms.ChoiceField(label=_("Container Number"),
                                          required=True,
                                          choices=NUM_CHOICE, )
@@ -91,7 +92,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
             service = database_service.Service(service_name=service_name)
 
             for container in container_run_success:
-                container_db = database_service.Container(container_id=container)
+                container_db = database_service.Container(
+                    container_id=container)
                 service.container.append(container_db)
 
             db_service.add_service(service)
