@@ -33,14 +33,19 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
-# Base.metadata.create_all(engine)
-
 
 engine = create_engine(
     'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
+
+# Base.metadata.create_all(engine)
+
+
+def get_service_list():
+    service_list = db_session.query(Service).all()
+    return service_list
 
 
 class DatabaseService:
@@ -60,6 +65,9 @@ class DatabaseService:
         container_list = self.session.query(Service).\
             filter(Service.id == service_id).one().container
         return container_list
+
+    def close(self):
+        pass
 
 
 new_db = DatabaseService()
