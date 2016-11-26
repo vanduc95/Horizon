@@ -31,6 +31,7 @@ class ContainerTable(tables.DataTable):
                                  verbose_name=_("Container Id"), truncate=10)
     name = tables.Column(get_names,
                          verbose_name=_("Names"))
+    command = tables.Column('command', verbose_name=_('Command'))
     state = tables.Column('state',
                           verbose_name=_("State"))
     status = tables.Column('status',

@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
-
+from openstack_dashboard.dashboards.service_management.container_service.database import services as database_service
+from openstack_dashboard.dashboards.service_management.container_service.service.docker_api import docker_api
 from horizon import exceptions
 from horizon import tables
 
@@ -31,27 +32,36 @@ from horizon import tables
 #     # policy_rules = (("network", "update_network"),)
 #
 #
-# class DeleteService(tables.DeleteAction):
-#     @staticmethod
-#     def action_present(count):
-#         return ungettext_lazy(
-#             u"Delete Docker Host",
-#             u"Delete Docker Hosts",
-#             count
-#         )
-#
-#     @staticmethod
-#     def action_past(count):
-#         return ungettext_lazy(
-#             u"Deleted Docker Host",
-#             u"Deleted Docker Hosts",
-#             count
-#         )
-#
-#     # policy_rules = (("network", "delete_network"),)
-#
-#     def delete(self, request, docker_host_id):
-#         docker_host = docker_host_id
+class DeleteService(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            u"Delete Service",
+            u"Delete Services",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            u"Delete Service",
+            u"Delete Services",
+            count
+        )
+
+    # policy_rules = (("network", "delete_network"),)
+
+    def delete(self, request, service_id):
+        cli = docker_api.connect_docker()
+        db_service = database_service.DatabaseService()
+        for container in db_service.session.query(database_service.Container). \
+                filter(database_service.Container.service_id == service_id):
+            cli.stop(container.container_id)
+            cli.remove_container(container.container_id)
+        service = db_service.session.query(database_service.Service). \
+            filter(database_service.Service.id == int(service_id)).first()
+        db_service.session.delete(service)
+        db_service.close()
 
 
 class CreateService(tables.LinkAction):
@@ -64,14 +74,14 @@ class CreateService(tables.LinkAction):
 
 class ServiceTable(tables.DataTable):
     id = tables.Column("id")
-    name = tables.Column("name", verbose_name="Host Name")
-    docker_host_ip = tables.Column("host_ip", verbose_name="Host IP")
+    name = tables.Column("name", verbose_name="Service Name")
 
     def __init__(self, request, *args, **kwargs):
         super(ServiceTable, self).__init__(request, *args, **kwargs)
 
     class Meta(object):
         verbose_name = "Services"
+        multi_select = True
         name = 'services'
-        table_actions = (CreateService,)
-        # row_actions = (UpdateService, DeleteService,)
+        table_actions = (CreateService, DeleteService,)
+        row_actions = (DeleteService,)
