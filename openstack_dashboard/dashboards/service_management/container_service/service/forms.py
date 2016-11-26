@@ -4,6 +4,8 @@ from openstack_dashboard.dashboards.service_management.container_service.databas
 from horizon import forms
 from horizon import messages
 import time
+from django.utils.safestring import mark_safe
+
 
 class CreateServiceForm(forms.SelfHandlingForm):
     NUM_CHOICE = [
@@ -33,6 +35,28 @@ class CreateServiceForm(forms.SelfHandlingForm):
             list_network.append(net)
         self.fields['network'].choices = list_network
 
+    def clean(self):
+        cleaned_data = super(CreateServiceForm, self).clean()
+        if self.data['service_name']:
+            msg = _("The subnet in the Network Address is "
+                    "too small.")
+            self._errors['service_name'] = self.error_class([msg])
+
+        if self.data['container_number'] != '':
+            msg = ''
+            for i in range(int(self.data['container_number'])):
+                msg += '<b>Container' + str(i) + '</b><br/>'
+                if self.data['container_IP' + str(i)] == '':
+                    msg += 'name container is required' + '<br/>'
+                if self.data['container_Internal_External_Port' + str(i)] == '':
+                    msg += 'container_Internal_External_Port is required' + '<br/>'
+                if self.data['container_environment' + str(i)] == '':
+                    msg += 'container_environment is required' + '<br/>'
+
+            self.data['container_number'] = 'Select container number'
+
+            if msg != '':
+                raise forms.ValidationError(mark_safe(msg))
 
     def handle(self, request, data):
 
@@ -48,11 +72,11 @@ class CreateServiceForm(forms.SelfHandlingForm):
             env = request.POST['container_environment' + suffix]
             arr_env = env.split(';')
             container['environment'] = arr_env
-            
+
             container['command'] = request.POST['container_command' + suffix]
             ports = request.POST['container_Internal_External_Port' + suffix]
             container['port'] = ports.split(';')
-        
+
             container['id'] = request.POST['container_IP' + suffix]
             containers.append(container)
         service_config = {
@@ -66,10 +90,12 @@ class CreateServiceForm(forms.SelfHandlingForm):
             db_service = database_service.Database_service()
             service_id = db_service.get_service_id()
             for container in containers:
-                service =database_service.Service(name_service=service_name, container_id=container['id'], service_id=service_id)
+                service = database_service.Service(name_service=service_name, container_id=container['id'],
+                                                   service_id=service_id)
                 db_service.add_service(service)
             db_service.close()
-            messages.success(request,'create service successful')
+            messages.success(request, 'create service successful')
             return True
         else:
             return False
+        
