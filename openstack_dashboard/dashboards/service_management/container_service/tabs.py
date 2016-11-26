@@ -15,13 +15,12 @@ from django.utils.translation import ugettext_lazy as _
 from docker import Client
 from horizon import exceptions
 from horizon import tabs
-from openstack_dashboard.dashboards.service_management.container_service.container \
-    import tables as container_tables
-from openstack_dashboard.dashboards.service_management.container_service.service \
-    import tables as service_tables
-from openstack_dashboard.dashboards.service_management.container_service.database \
-    import services as database_service
-
+from openstack_dashboard.dashboards.service_management.\
+    container_service.container import tables as container_tables
+from openstack_dashboard.dashboards.service_management.\
+    container_service.service import tables as service_tables
+from openstack_dashboard.dashboards.service_management.container_service.\
+    database import services as database_service
 INFO_DETAIL_TEMPLATE_NAME = 'horizon/common/_detail_table.html'
 
 
@@ -34,41 +33,49 @@ class ContainerTab(tabs.TableTab):
     def get_containers_data(self):
         container_list = []
         try:
-
             docker_cli = Client(base_url='tcp://' + '127.0.0.1' + ':2376')
-            containers = docker_cli.containers(all=True)
-            for container in containers:
-                names = container['Names']
-                service_name = 'not set'
-                container_id = container['Id']
-                state = container['State']
-                status = container['Status']
-                image = container['Image']
-                ips = []
-                ports = []
-                for network_name, network_detail in\
-                        container['NetworkSettings']['Networks'].iteritems():
-                    ips.append(network_name + " : " +
-                               network_detail['IPAddress'])
-                for port in container['Ports']:
-                    if 'PublicPort' in port:
-                        public_port = port['PublicPort']
-                    else:
-                        public_port = 'not set'
-                    if 'PrivatePort' in port:
-                        private_port = port['PrivatePort']
-                    else:
-                        private_port = 'not set'
-                    ports.append(
-                        port['Type'] + ":" + str(public_port) + "->" +
-                        str(private_port))
-                container_list.append(
-                    ContainerData(
-                        container_id,
-                        names, service_name, state,
-                        status, ips, ports, image
+            db_session = database_service.DatabaseService()
+            for service in db_session.get_service_list():
+                service_name = service.service_name
+                for container_info in db_session.\
+                        get_containers_in_service(service.id):
+                    container = docker_cli.containers(
+                        filters={'id': container_info.container_id, },
+                        all=True
+                    )[0]
+                    names = container['Names']
+                    command = container['Command']
+                    service_name = service_name
+                    container_id = container['Id']
+                    state = container['State']
+                    status = container['Status']
+                    image = container['Image']
+                    ips = []
+                    ports = []
+                    for network_name, network_detail in\
+                            container['NetworkSettings']['Networks']\
+                            .iteritems():
+                        ips.append(network_name + " : " +
+                                   network_detail['IPAddress'])
+                    for port in container['Ports']:
+                        if 'PublicPort' in port:
+                            public_port = port['PublicPort']
+                        else:
+                            public_port = 'not set'
+                        if 'PrivatePort' in port:
+                            private_port = port['PrivatePort']
+                        else:
+                            private_port = 'not set'
+                        ports.append(
+                            port['Type'] + ":" + str(public_port) + "->" +
+                            str(private_port))
+                    container_list.append(
+                        ContainerData(
+                            container_id, names,
+                            service_name, command, state,
+                            status, ips, ports, image
+                        )
                     )
-                )
         except Exception as e:
             container_list = []
             msg = _(e.message)
@@ -105,9 +112,11 @@ class ContainerAndServiceTabs(tabs.TabGroup):
 
 class ContainerData:
 
-    def __init__(self, container_id, names, service_name, state, status, ips, ports, image):
+    def __init__(self, container_id, names, service_name,
+                 command, state, status, ips, ports, image):
         self.id = container_id
         self.names = names
+        self.command = command
         self.service_name = service_name
         self.status = status
         self.state = state
