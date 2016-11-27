@@ -76,6 +76,7 @@ class ContainerTab(tabs.TableTab):
                             status, ips, ports, image
                         )
                     )
+            db_session.close()
         except Exception as e:
             container_list = []
             msg = _(e.message)

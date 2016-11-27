@@ -63,10 +63,3 @@ class DatabaseService:
     def close(self):
         self.session.close()
 
-
-# new_db = DatabaseService()
-# service_list = new_db.get_service_list()
-# for service in service_list:
-#     container_list = new_db.get_containers_in_service(service.id)
-#     for container in container_list:
-#         print(container.container_id)

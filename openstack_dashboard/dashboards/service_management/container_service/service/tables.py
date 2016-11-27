@@ -58,9 +58,10 @@ class DeleteService(tables.DeleteAction):
                 filter(database_service.Container.service_id == service_id):
             cli.stop(container.container_id)
             cli.remove_container(container.container_id)
-        service = db_service.session.query(database_service.Service). \
-            filter(database_service.Service.id == int(service_id)).first()
-        db_service.session.delete(service)
+        for service in db_service.session.query(database_service.Service). \
+            filter(database_service.Service.id == int(service_id)):
+            db_service.session.delete(service)
+            db_service.session.commit()
         db_service.close()
 
 
