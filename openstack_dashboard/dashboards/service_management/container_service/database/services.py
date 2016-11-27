@@ -33,6 +33,7 @@ class Container(Base):
         return self.id
 
 
+
 engine = create_engine(
     'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -66,3 +67,4 @@ class DatabaseService:
 
     def close(self):
         pass
+

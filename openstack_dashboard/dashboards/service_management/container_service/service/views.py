@@ -4,6 +4,8 @@ from horizon import forms
 from openstack_dashboard.dashboards.service_management.container_service.service import forms as create_forms
 from django.core.urlresolvers import reverse
 from horizon import exceptions
+from openstack_dashboard.dashboards.service_management.container_service.database \
+    import services as database_service
 from horizon import views
 from docker import Client
 import django.views
@@ -53,3 +55,15 @@ class NetworkDetailRequest(django.views.generic.TemplateView):
 
 
         return HttpResponse(json.dumps(network_detail), content_type='application/json')
+
+
+class ListContainerInServiceRequest(django.views.generic.TemplateView):
+    def get(self,request,*args,**kwargs):
+        service_id = request.GET.get('service_id',None)
+        containers_id = []
+        for container_id in database_service.db_session.query(database_service.Container).\
+            filter(database_service.Container.service_id== service_id):
+            containers_id.append(container_id)
+        result = {'container_list': containers_id}
+        return HttpResponse(json.dumps(result),content_type='application/json')
+
