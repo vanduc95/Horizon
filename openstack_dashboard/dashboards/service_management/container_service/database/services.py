@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Integer, Column, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import os.path
+
 
 Base = declarative_base()
 CURRENT_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -32,20 +33,25 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
-# Service.container = relationship(
-#     "Container", order_by=Container.id, back_populates="service")
 
 engine = create_engine(
-    'sqlite:///' + CURRENT_FOLDER_PATH + '/service.db', echo=True)
+    'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
+db_session = scoped_session(sessionmaker(autocommit=False,
+                                         autoflush=False,
+                                         bind=engine))
+
 Base.metadata.create_all(engine)
 
-Session = sessionmaker(bind=engine)
+
+def get_service_list():
+    service_list = db_session.query(Service).all()
+    return service_list
 
 
 class DatabaseService:
 
     def __init__(self):
-        self.session = Session()
+        self.session = db_session
 
     def add_service(self, obj):
         self.session.add(obj)
@@ -61,5 +67,6 @@ class DatabaseService:
         return container_list
 
     def close(self):
-        self.session.close()
+        pass
 
+new_db = DatabaseService()

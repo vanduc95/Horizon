@@ -8,6 +8,8 @@ from horizon import messages
 import time
 from django.core.urlresolvers import reverse
 from horizon import exceptions
+# from openstack_dashboard.dashboards.service_management.\
+#     container_service.database import services as ctn_service
 
 
 class CreateServiceForm(forms.SelfHandlingForm):
@@ -22,7 +24,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
     service_name = forms.CharField(max_length=255,
                                    label=_("Service Name"),
                                    required=True)
-    network = forms.ChoiceField(label=_("Network for Containers"))
+    network = forms.ChoiceField(
+        label=_("Network for Containers"), required=True)
     container_number = forms.ChoiceField(label=_("Container Number"),
                                          required=True,
                                          choices=NUM_CHOICE, )
@@ -42,6 +45,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
         request.session.set_expiry(3600 * 24)
 
     def handle(self, request, data):
+        # first_service = db_service.db_session.\
+        # query(ctn_service.Service).first()
         containers = []
         networkID = request.POST["network"]
         service_name = request.POST["service_name"]
@@ -91,7 +96,8 @@ class CreateServiceForm(forms.SelfHandlingForm):
             service = database_service.Service(service_name=service_name)
 
             for container in container_run_success:
-                container_db = database_service.Container(container_id=container)
+                container_db = database_service.Container(
+                    container_id=container)
                 service.container.append(container_db)
 
             db_service.add_service(service)

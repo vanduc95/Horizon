@@ -28,7 +28,8 @@ class ContainerTab(tabs.TableTab):
     table_classes = (container_tables.ContainerTable,)
     name = container_tables.ContainerTable.Meta.verbose_name
     slug = container_tables.ContainerTable.Meta.name
-    template_name = INFO_DETAIL_TEMPLATE_NAME
+    template_name = "service_management/container_service/container/" +\
+        "container_table.html"
 
     def get_containers_data(self):
         container_list = []
@@ -100,7 +101,8 @@ class ServiceTab(tabs.TableTab):
         services = []
         db_service = database_service.DatabaseService()
         for service in db_service.session.query(database_service.Service):
-            services.append(ServiceTab.ServiceData(service.id,service.service_name))
+            services.append(ServiceTab.ServiceData(
+                service.id, service.service_name))
         db_service.close()
         return services
 
