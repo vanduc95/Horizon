@@ -32,12 +32,6 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
-<<<<<<< HEAD
-
-# Base.metadata.create_all(engine)
-
-=======
->>>>>>> 1b14515af9b233a71a0a2cc0dde2abac4c3591de
 
 engine = create_engine(
     'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
@@ -72,9 +66,3 @@ class DatabaseService:
 
     def close(self):
         pass
-<<<<<<< HEAD
-
-=======
->>>>>>> 1b14515af9b233a71a0a2cc0dde2abac4c3591de
-
-new_db = DatabaseService()

@@ -60,17 +60,17 @@ class CreateServiceForm(forms.SelfHandlingForm):
             msg = ''
             for i in range(int(self.data['container_number'])):
                 error = False
-                if self.data['container_IP' + str(i)]:
-                    ip = self.data['container_IP' + str(i)]
-                    for obj in ip.split(';'):
-                        if len(obj.split(':')) != 2:
-                            msg += 'container_IP wrong format' + '<br/>'
-                            error = True
-                            break
+                # if self.data['container_IP' + str(i)]:
+                #     ip = self.data['container_IP' + str(i)]
+                #     for obj in ip.split(';'):
+                #         if len(obj.split(':')) != 2:
+                #             msg += 'container_IP wrong format' + '<br/>'
+                #             error = True
+                #             break
 
-                if self.data['container_Internal_External_Port' + str(i)]:
-                    msg += 'container_Internal_External_Port is required' + '<br/>'
-                    error = True
+                # if self.data['container_Internal_External_Port' + str(i)]:
+                #     msg += 'container_Internal_External_Port is required' + '<br/>'
+                #     error = True
 
                 if self.data['container_environment' + str(i)]:
                     env = self.data['container_environment' + str(i)]
