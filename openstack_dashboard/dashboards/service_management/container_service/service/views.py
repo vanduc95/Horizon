@@ -39,8 +39,8 @@ class ListContainerInServiceRequest(django.views.generic.TemplateView):
     def get(self,request,*args,**kwargs):
         service_id = request.GET.get('service_id',None)
         containers_id = []
-        for container_id in database_service.db_session.query(database_service.Container).\
+        for container in database_service.db_session.query(database_service.Container).\
             filter(database_service.Container.service_id== service_id):
-            containers_id.append(container_id)
+            containers_id.append(container.container_id)
         result = {'container_list': containers_id}
         return HttpResponse(json.dumps(result),content_type='application/json')
