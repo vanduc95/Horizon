@@ -1,5 +1,4 @@
 container_line_chart = {
-    chart_timers: [],
     charts: [],
     setup_line_chart: function (selector) {
         var self = this;
@@ -10,12 +9,14 @@ container_line_chart = {
             var chart = this;
             var new_chart = new LineChart(chart);
             new_chart.create_chart(container_line_chart);
-            // self.charts.push(new_chart);
-            // setInterval(function () {
-            //     new_chart.update_charts();
-            // }, 1000);
         });
     },
+    clear_chart_list:function(){
+        this.charts.forEach(function(chart){
+            chart.destroy();
+        })
+        this.charts=[];
+    }
 };
 formatTime = d3.time.format("%H:%M:%S");
 
@@ -61,14 +62,176 @@ function LineChart(selector) {
             .orient("left").ticks(10);
     };
 
-    this.set_container_list = function () {
+
+    this.get_container_list = function () {
         var self = this;
         container_url_list = $(this.chart_selector).data('container-list-url');
-        return $.getJSON(container_url_list, function (data) {
-            data.forEach(function (container) {
-                self.containers.push(container.id);
+        return $.getJSON(container_url_list);
+    };
+
+
+    this.create_chart = function (chart_group) {
+        this.set_chart_format();
+        var self = this;
+        $.when(this.get_container_list())
+            .done(function (container_list) {
+                if (container_list.length > 0) {
+                    container_list.forEach(function (container) {
+                        self.containers.push(container.id);
+                    });
+                    self.get_containers_data_and_render_chart(chart_group);
+                }
+                else {
+                    horizon.alert('warning', gettext('There is no running container!'));
+                }
+            })
+            .fail(function (jqXHR, error, errorThrown) {
+                horizon.alert('error', gettext('Can not receive container list !. Reason : ' +
+                    jqXHR.responseJSON.reason));
             });
-        });
+    };
+
+
+    this.get_containers_data_and_render_chart = function (chart_group) {
+        var self = this;
+        $.when
+            .apply($, self.containers.map(function (id) {
+                //after received container list, we must get data of each container
+                var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
+                return $.ajax(container_detail_url);
+            }))
+            .done(function () {
+                containers_data = self.process_received_containers_data(arguments);
+                self.scale_domain_range(containers_data);
+
+
+                //create chart_container (svg),x Axis, and y Axis
+                // Adds the svg elements
+                self.svg_element = d3.select($(self.chart_selector).get(0))
+                    .append("svg")
+                    .attr("width", self.chart_format.width + self.chart_format.margin.left
+                    + self.chart_format.margin.right)
+                    .attr("height", self.chart_format.height + self.chart_format.margin.top
+                    + self.chart_format.margin.bottom)
+                    .append("g")
+                    .attr("transform",
+                    "translate(" + self.chart_format.margin.left + ","
+                    + self.chart_format.margin.top + ")");
+                // Add the X Axis
+                self.xAxis = self.svg_element.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + self.chart_format.height + ")")
+                    .call(self.create_xAxis_fn);
+
+                // Add the Y Axis
+                self.yAxis = self.svg_element.append("g")
+                    .attr("class", "y axis")
+                    .call(self.create_yAxis_fn);
+                //Add yAxis unit
+                self.yAxis
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text(containers_data[0].unit);
+
+
+                //create legend_container
+                var legend_elements = $(self.chart_selector).parent().find('.legend');
+                self.svg_legend_elements = d3.select(legend_elements.get(0))
+                    .append("svg")
+                    .attr("width", self.chart_format.width + self.chart_format.margin.left
+                    + self.chart_format.margin.right)
+                    .attr("height", 60)
+                    .append("g")
+                    .attr("transform",
+                    "translate(5,5)");
+
+                //create container line and container legend 
+                //and put them to legend_container and 
+                //chart_container
+                containers_data.forEach(function (container_data) {
+                    self.create_container_line(container_data);
+                });
+
+
+                //create area to capture mouse move event
+                self.focus_catcher = self.svg_element.append("rect");
+                self.focus_catcher
+                    .attr("width", self.chart_format.width)
+                    .attr("height", self.chart_format.height)
+                    .style("fill", "none")
+                    .style("pointer-events", "all")
+                    .on("mouseover", function () {
+                        container_line_chart.tool_tip.style("opacity", 1);
+                        self.focus.style("display", null);
+                        self.focus.visible = true;
+                    })
+                    .on("mouseout", function () {
+                        container_line_chart.tool_tip.style("opacity", 0);
+                        self.focus.style("display", "none");
+                        self.focus.visible = false;
+                    })
+                    .on("mousemove", mousemove);
+                function mousemove() {
+                    var mouse_x0 = d3.mouse(this)[0];
+                    self.focus_x = mouse_x0;
+                    self.tool_tip_x = d3.event.pageX;
+                    self.tool_tip_y = d3.event.pageY;
+                    self.set_tool_tip(mouse_x0);
+                }
+                self.focus = self.svg_element.append("g");
+                self.focus.style("display", "none");
+
+                //add chart to chart group and set timer for this chart
+                chart_group.charts.push(self);
+                self.timer = setInterval(function () {
+                    self.update_charts();
+                }, 1000)
+            })
+            .fail(function (jqXHR, error, errorThrown) {
+                horizon.alert('error', gettext('Can not receive container data !. Reason : ' +
+                    jqXHR.responseJSON.reason));
+            });
+    }
+
+    this.set_tool_tip = function (mouse_x0) {
+
+        var self = this;
+        var x0 = self.create_x_fn.invert(mouse_x0);
+        // var x0 = self.create_x_fn.invert(d3.mouse(self.focus_catcher[0][0])[0]);
+        var focus = self.focus;
+        focus.selectAll("*").remove();
+        var tool_tip = container_line_chart.tool_tip;
+        var div_text = '<span style="color:' + "red" + '">' + "now is: " + formatTime(x0) + "</span>";
+        var bisectDate = d3.bisector(function (d) {
+            return d.x;
+        }).left;
+        this.lines.forEach(function (line) {
+            // console.log(line);
+            if (line.data[0].x <= x0 && line.data[(line.data.length) - 1].x >= x0) {
+                var i = bisectDate(line.data, x0, 1),
+                    d = line.data[i];
+                focus.append("circle")
+                    .attr("class", "y")
+                    .style("fill", line.color)
+                    .style("stroke", line.color)
+                    .attr("r", 4).attr("transform",
+                    "translate(" + self.create_x_fn(d.x) + "," +
+                    self.create_y_fn(d.y) + ")");
+                div_text += "<br/>" + '<span style="color:' + line.color + '">'
+                    + line.name + " : " + Math.round(d.y * 10000) / 10000 + "</span>";
+            }
+            // d0 = line.data[i - 1],
+            // d1 = line.data[i],
+            // d = x0 - d0.x > d1.x - x0 ? d1 : d0;
+
+        })
+        tool_tip.html(div_text)
+            .style("left", (self.tool_tip_x + 20) + "px")
+            .style("top", (self.tool_tip_y - 80) + "px");
+        // console.log(div_text);
     };
 
     //process received data, extract content from server response, formating container data
@@ -106,121 +269,6 @@ function LineChart(selector) {
         }) * 1.25]);
     };
 
-    this.create_chart = function (chart_group) {
-        this.set_chart_format();
-        var self = this;
-        $.when(this.set_container_list())
-            .done(function () {
-                $.when
-                    .apply($, self.containers.map(function (id) {
-                        //after received container list, we must get data of each container
-                        var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
-                        return $.ajax(container_detail_url);
-                    }))
-                    .done(function () {
-                        containers_data = self.process_received_containers_data(arguments);
-                        self.scale_domain_range(containers_data);
-
-
-                        //create chart_container (svg),x Axis, and y Axis
-                        // Adds the svg elements
-                        self.svg_element = d3.select($(self.chart_selector).get(0))
-                            .append("svg")
-                            .attr("width", self.chart_format.width + self.chart_format.margin.left
-                            + self.chart_format.margin.right)
-                            .attr("height", self.chart_format.height + self.chart_format.margin.top
-                            + self.chart_format.margin.bottom)
-                            .append("g")
-                            .attr("transform",
-                            "translate(" + self.chart_format.margin.left + ","
-                            + self.chart_format.margin.top + ")");
-                        // Add the X Axis
-                        self.xAxis = self.svg_element.append("g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + self.chart_format.height + ")")
-                            .call(self.create_xAxis_fn);
-
-                        // Add the Y Axis
-                        self.yAxis = self.svg_element.append("g")
-                            .attr("class", "y axis")
-                            .call(self.create_yAxis_fn);
-                        //Add yAxis unit
-                        self.yAxis
-                            .append("text")
-                            .attr("transform", "rotate(-90)")
-                            .attr("y", 6)
-                            .attr("dy", ".71em")
-                            .style("text-anchor", "end")
-                            .text(containers_data[0].unit);
-
-
-                        //create legend_container
-                        var legend_elements = $(self.chart_selector).parent().find('.legend');
-                        self.svg_legend_elements = d3.select(legend_elements.get(0))
-                            .append("svg")
-                            .attr("width", self.chart_format.width + self.chart_format.margin.left
-                            + self.chart_format.margin.right)
-                            .attr("height", 60)
-                            .append("g")
-                            .attr("transform",
-                            "translate(5,5)");
-
-                        //create container line and container legend 
-                        //and put them to legend_container and 
-                        //chart_container
-                        containers_data.forEach(function (container_data) {
-                            self.create_container_line(container_data);
-                        });
-
-
-                        //create area to capture mouse move event
-                        self.focus_catcher = self.svg_element.append("rect");
-                        self.focus_catcher
-                            .attr("width", self.chart_format.width)
-                            .attr("height", self.chart_format.height)
-                            .style("fill", "none")
-                            .style("pointer-events", "all")
-                            .on("mouseover", function () {
-                                container_line_chart.tool_tip.style("opacity", 1);
-                                self.focus.style("display", null);
-                                self.focus.visible = true;
-                            })
-                            .on("mouseout", function () {
-                                container_line_chart.tool_tip.style("opacity", 0);
-                                self.focus.style("display", "none");
-                                self.focus.visible = false;
-                            })
-                            .on("mousemove", mousemove);
-                        function mousemove() {
-                            var mouse_x0 = d3.mouse(this)[0];
-                            self.focus_x = mouse_x0;
-                            self.tool_tip_x = d3.event.pageX;
-                            self.tool_tip_y = d3.event.pageY;
-                            self.set_tool_tip(mouse_x0);
-                        }
-                        self.focus = self.svg_element.append("g");
-                        self.focus.style("display", "none");
-
-                        //add chart to chart group and set timer for this chart
-                        chart_group.charts.push(self);
-                        self.timer = setInterval(function () {
-                            self.update_charts();
-                        }, 1000)
-                    })
-                    .fail(function () {
-                        console.log('I fire if one or more requests failed.');
-                    });
-            })
-            .fail(function () {
-                console.log('I fire if one or more requests failed.');
-            });
-    };
-
-    this.get_container_list = function () {
-        var self = this;
-        container_url_list = $(this.chart_selector).data('container-list-url');
-        return $.getJSON(container_url_list);
-    };
 
     this.compare_container_list = function (current_container_list, updated_container_list) {
         var CompareResult = function (removed_container_list, new_container_list) {
@@ -250,98 +298,82 @@ function LineChart(selector) {
 
     this.update_charts = function () {
         var self = this;
-        $.when(this.get_container_list()).done(function (data) {
-            var updated_container_list = [];
-            data.forEach(function (container) {
-                updated_container_list.push(container.id);
-            });
-            var compare_result = self.compare_container_list(self.containers, updated_container_list);
-
-            //remove exited containers
-            compare_result.removed_container_list.forEach(function (id) {
-                var container_line = $.grep(self.lines, function (e) { return e.id == id; })[0];
-                container_line.line.remove();
-                container_line.line.legend.remove();
-                var ctn_index = self.lines.indexOf(container_line);
-                self.lines.splice(ctn_index, 1);
-                var ctn_id = $.grep(self.containers, function (e) { return e == id; })[0];
-                var id_index = self.containers.indexOf(ctn_id);
-                self.containers.splice(id_index, 1);
-            });
-
-            // add new containers and update old containers
-            //self.add_new_containers(compare_result.new_container_list);
-            self.containers = self.containers.concat(compare_result.new_container_list);
-            //            console.log(self.containers);
-            $.when.apply($, self.containers.map(function (id) {
-                var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
-                return $.ajax(container_detail_url);
-            })).done(function () {
-
-                containers_data = self.process_received_containers_data(arguments);
-                self.scale_domain_range(containers_data);
-                //update xAxis and yAxis
-                self.xAxis.call(self.create_xAxis_fn);
-                self.yAxis.call(self.create_yAxis_fn);
-
-                //update data for exist containers
-                for (var i = 0; i < self.lines.length; i++) {
-                    // console.log(containers_data[i].id);
-                    var container_line = self.lines[i];
-                    var new_container_data = $.grep(containers_data, function (e) {
-                        return e.id == container_line.id;
-                    })[0];
-                    container_line.line.attr('d', self.usage_create_line_fn(new_container_data.value));
-                    container_line.data = new_container_data.value;
-                }
-                //create new line for new container
-                var data_of_new_containers =
-                    self.get_data_of_new_containers(containers_data, compare_result.new_container_list);
-                data_of_new_containers.forEach(function (container_data) {
-                    self.create_container_line(container_data);
+        $.when(this.get_container_list())
+            .done(function (data) {
+                var updated_container_list = [];
+                data.forEach(function (container) {
+                    updated_container_list.push(container.id);
                 });
-                if (self.focus.visible == true) {
-                    self.set_tool_tip(self.focus_x);
-                }
-            });
-        })
-    };
-    this.set_tool_tip = function (mouse_x0) {
 
-        var self = this;
-        var x0 = self.create_x_fn.invert(mouse_x0);
-        // var x0 = self.create_x_fn.invert(d3.mouse(self.focus_catcher[0][0])[0]);
-        var focus = self.focus;
-        focus.selectAll("*").remove();
-        var tool_tip = container_line_chart.tool_tip;
-        var div_text = '<span style="color:' + "red" + '">' + "now is: " + formatTime(x0) + "</span>";
-        var bisectDate = d3.bisector(function (d) {
-            return d.x;
-        }).left;
-        this.lines.forEach(function (line) {
-            if (line.data[0].x <= x0) {
-                var i = bisectDate(line.data, x0, 1),
-                    d = line.data[i];
-                focus.append("circle")
-                    .attr("class", "y")
-                    .style("fill", line.color)
-                    .style("stroke", line.color)
-                    .attr("r", 4).attr("transform",
-                    "translate(" + self.create_x_fn(d.x) + "," +
-                    self.create_y_fn(d.y) + ")");
-                div_text += "<br/>" + '<span style="color:' + line.color + '">'
-                    + line.name + " : " + Math.round(d.y * 10000) / 10000 + "</span>";
-            }
-            // d0 = line.data[i - 1],
-            // d1 = line.data[i],
-            // d = x0 - d0.x > d1.x - x0 ? d1 : d0;
+                //first, compare current_container_list with new_container_list received from server
+                var compare_result = self.compare_container_list(self.containers, updated_container_list);
+                //remove exited containers
+                compare_result.removed_container_list.forEach(function (id) {
+                    var container_line = $.grep(self.lines, function (e) { return e.id == id; })[0];
+                    container_line.line.remove();
+                    container_line.line.legend.remove();
+                    var ctn_index = self.lines.indexOf(container_line);
+                    self.lines.splice(ctn_index, 1);
+                    var ctn_id = $.grep(self.containers, function (e) { return e == id; })[0];
+                    var id_index = self.containers.indexOf(ctn_id);
+                    self.containers.splice(id_index, 1);
+                });
+                // add new containers and update old containers
+                //self.add_new_containers(compare_result.new_container_list);
+                self.containers = self.containers.concat(compare_result.new_container_list);
+                //            console.log(self.containers);
+                $.when.apply($, self.containers.map(function (id) {
+                    var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
+                    return $.ajax(container_detail_url);
+                }))
+                    .done(function () {
+                        containers_data = self.process_received_containers_data(arguments);
 
-        })
-        tool_tip.html(div_text)
-            .style("left", (self.tool_tip_x + 20) + "px")
-            .style("top", (self.tool_tip_y - 80) + "px");
-        // console.log(div_text);
+                        //re scale data to fit with new data
+                        self.scale_domain_range(containers_data);
+                        //update xAxis and yAxis
+                        self.xAxis.call(self.create_xAxis_fn);
+                        self.yAxis.call(self.create_yAxis_fn);
+
+
+                        //update data for exist containers
+                        for (var i = 0; i < self.lines.length; i++) {
+                            var container_line = self.lines[i];
+                            var new_container_data = $.grep(containers_data, function (e) {
+                                return e.id == container_line.id;
+                            })[0];
+                            container_line.line.attr('d', self.usage_create_line_fn(new_container_data.value));
+                            container_line.data = new_container_data.value;
+                        }
+
+                        //get data for new containers
+                        var data_of_new_containers =
+                            self.get_data_of_new_containers(containers_data, compare_result.new_container_list);
+
+                        //create new line for new container
+                        data_of_new_containers.forEach(function (container_data) {
+                            self.create_container_line(container_data);
+                        });
+
+                        //refresh tool_tip
+                        if (self.focus.visible == true) {
+                            self.set_tool_tip(self.focus_x);
+                        }
+                    })
+                    .fail(function (jqXHR, error, errorThrown) {
+                        horizon.alert('error', gettext('Can not receive container data !. Reason : ' +
+                            jqXHR.responseJSON.reason));
+                        clearInterval(self.timer);
+
+                    });
+            })
+            .fail(function (jqXHR, error, errorThrown) {
+                horizon.alert('error', gettext('Can not receive container list !. Reason : ' +
+                    jqXHR.responseJSON.reason));
+                clearInterval(self.timer);
+            })
     };
+
     this.get_data_of_new_containers = function (containers_data, new_container_list) {
         var data_of_new_containers = []
         containers_data.forEach(function (check_data) {
@@ -408,6 +440,11 @@ function LineChart(selector) {
         self.lines.push(new ContainerLine(container_data.id, container_line,
             container_data.color, container_data.legend_index, container_data.value, container_name()));
     };
+    this.destroy = function () {
+        clearInterval(this.timer);
+        this.svg_legend_elements.remove();
+        this.svg_element.remove();
+    }
 }
 container_line_chart.setup_line_chart('div[data-chart-type="container_line_chart"]');
 

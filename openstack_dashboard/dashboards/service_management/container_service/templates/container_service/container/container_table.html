@@ -5,7 +5,7 @@
     <div class="form-group">
         <label for="item_select" class="control-label col-sm-2" style="color:#31708f">Select service to view:</label>
         <div class="col-sm-3">
-            <select class="form-control inputstl" id="item_select">
+            <select class="form-control inputstl" id="service_select_chart">
                     <option disabled selected value> -- Select a service --</option>
                     {% for service in service_list %}
                         <option value="{{service.id }}" data-item-name="{{ service.service_name }}">
