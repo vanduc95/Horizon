@@ -1,11 +1,13 @@
 from django.utils.translation import ugettext_lazy as _
-from openstack_dashboard.dashboards.service_management.container_service.\
+from openstack_dashboard.dashboards.service_management.container_service. \
     service.docker_api import docker_api
-from openstack_dashboard.dashboards.service_management.container_service.\
+from openstack_dashboard.dashboards.service_management.container_service. \
     database import services as database_service
 from horizon import forms
 from horizon import messages
 import time
+from openstack_dashboard.dashboards.service_management.container_service.database import services as db_service
+from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from horizon import exceptions
 # from openstack_dashboard.dashboards.service_management.\
@@ -41,8 +43,52 @@ class CreateServiceForm(forms.SelfHandlingForm):
             list_network.append(net)
         self.fields['network'].choices = list_network
 
-        request.session['test'] = 'vanduc'
-        request.session.set_expiry(3600 * 24)
+    def clean(self):
+        cleaned_data = super(CreateServiceForm, self).clean()
+        # service_list = db_service.db_session.query(db_service.Service).all()
+        list_service = ['1', '2', '3', '4', '5']
+
+        # Validate name service
+        if self.data['service_name'] and (self.data['service_name'] in list_service):
+            msg = _("Name service exists!")
+            self._errors['service_name'] = self.error_class([msg])
+            self.data['container_number'] = 'Select container number'
+            return cleaned_data
+
+        # Validate info about containers
+        if self.data['container_number']:
+            msg = ''
+            for i in range(int(self.data['container_number'])):
+                error = False
+                if self.data['container_IP' + str(i)]:
+                    ip = self.data['container_IP' + str(i)]
+                    for obj in ip.split(';'):
+                        if len(obj.split(':')) != 2:
+                            msg += 'container_IP wrong format' + '<br/>'
+                            error = True
+                            break
+
+                if self.data['container_Internal_External_Port' + str(i)]:
+                    msg += 'container_Internal_External_Port is required' + '<br/>'
+                    error = True
+
+                if self.data['container_environment' + str(i)]:
+                    env = self.data['container_environment' + str(i)]
+                    for obj in env.split(';'):
+                        if len(obj.split(':')) != 2:
+                            msg += 'container environment wrong format' + '<br/>'
+                            error = True
+                            break
+
+                if error:
+                    msg = '<b>Container' + str(i) + '</b><br/>' + msg
+
+            if msg != '':
+                self.data['container_number'] = 'Select container number'
+                raise forms.ValidationError(mark_safe(msg))
+                return cleaned_data
+
+        return cleaned_data
 
     def handle(self, request, data):
         # first_service = db_service.db_session.\

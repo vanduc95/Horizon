@@ -9,16 +9,16 @@ container_line_chart = {
         $(selector).each(function () {
             var chart = this;
             var new_chart = new LineChart(chart);
-            new_chart.create_chart(container_line_chart);
-            // self.charts.push(new_chart);
-            // setInterval(function () {
-            //     new_chart.update_charts();
-            // }, 1000);
+            new_chart.create_chart();
+            self.charts.push(new_chart);
+            newchart.time_interval = setInterval(function () {
+                new_chart.update_charts();
+            }, 1000);
         });
     },
 };
-formatTime = d3.time.format("%H:%M:%S");
 
+formatTime = d3.time.format("%H:%M:%S");
 function ContainerLine(id, line, color, legend_index, data, name) {
     this.id = id;
     this.color = color;
@@ -71,7 +71,7 @@ function LineChart(selector) {
         });
     };
 
-    //process received data, extract content from server response, formating container data
+    //process received data
     this.process_received_containers_data = function (arguments) {
         var results = [];
         if (arguments[1] == "success") {
@@ -90,7 +90,7 @@ function LineChart(selector) {
         return results;
     };
 
-    // Scale the range of the container_data with the dimension of chart
+    // Scale the range of the data
     this.scale_domain_range = function (containers_data) {
         var combine_containers_data = [];
         for (var i = 0; i < containers_data.length; i++) {
@@ -106,114 +106,92 @@ function LineChart(selector) {
         }) * 1.25]);
     };
 
-    this.create_chart = function (chart_group) {
+    this.create_chart = function () {
         this.set_chart_format();
         var self = this;
-        $.when(this.set_container_list())
-            .done(function () {
-                $.when
-                    .apply($, self.containers.map(function (id) {
-                        //after received container list, we must get data of each container
-                        var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
-                        return $.ajax(container_detail_url);
-                    }))
-                    .done(function () {
-                        containers_data = self.process_received_containers_data(arguments);
-                        self.scale_domain_range(containers_data);
+        $.when(this.set_container_list()).done(function () {
+            $.when.apply($, self.containers.map(function (id) {
+                var container_detail_url = $(self.chart_selector).data('container-detail-url') + "?id=" + id;
+                return $.ajax(container_detail_url);
+            })).done(function () {
 
+                containers_data = self.process_received_containers_data(arguments);
+                self.scale_domain_range(containers_data);
 
-                        //create chart_container (svg),x Axis, and y Axis
-                        // Adds the svg elements
-                        self.svg_element = d3.select($(self.chart_selector).get(0))
-                            .append("svg")
-                            .attr("width", self.chart_format.width + self.chart_format.margin.left
-                            + self.chart_format.margin.right)
-                            .attr("height", self.chart_format.height + self.chart_format.margin.top
-                            + self.chart_format.margin.bottom)
-                            .append("g")
-                            .attr("transform",
-                            "translate(" + self.chart_format.margin.left + ","
-                            + self.chart_format.margin.top + ")");
-                        // Add the X Axis
-                        self.xAxis = self.svg_element.append("g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + self.chart_format.height + ")")
-                            .call(self.create_xAxis_fn);
+                // Adds the svg elements
+                self.svg_element = d3.select($(self.chart_selector).get(0))
+                    .append("svg")
+                    .attr("width", self.chart_format.width + self.chart_format.margin.left
+                    + self.chart_format.margin.right)
+                    .attr("height", self.chart_format.height + self.chart_format.margin.top
+                    + self.chart_format.margin.bottom)
+                    .append("g")
+                    .attr("transform",
+                    "translate(" + self.chart_format.margin.left + ","
+                    + self.chart_format.margin.top + ")");
+                // Add the X Axis
+                self.xAxis = self.svg_element.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + self.chart_format.height + ")")
+                    .call(self.create_xAxis_fn);
 
-                        // Add the Y Axis
-                        self.yAxis = self.svg_element.append("g")
-                            .attr("class", "y axis")
-                            .call(self.create_yAxis_fn);
-                        //Add yAxis unit
-                        self.yAxis
-                            .append("text")
-                            .attr("transform", "rotate(-90)")
-                            .attr("y", 6)
-                            .attr("dy", ".71em")
-                            .style("text-anchor", "end")
-                            .text(containers_data[0].unit);
+                // Add the Y Axis
+                self.yAxis = self.svg_element.append("g")
+                    .attr("class", "y axis")
+                    .call(self.create_yAxis_fn);
+                //Add yAxis unit
+                self.yAxis
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text(containers_data[0].unit);
 
+                //add_legend_manager_element
+                var legend_elements = $(self.chart_selector).parent().find('.legend');
+                self.svg_legend_elements = d3.select(legend_elements.get(0))
+                    .append("svg")
+                    .attr("width", self.chart_format.width + self.chart_format.margin.left
+                    + self.chart_format.margin.right)
+                    .attr("height", 60)
+                    .append("g")
+                    .attr("transform",
+                    "translate(5,5)");
 
-                        //create legend_container
-                        var legend_elements = $(self.chart_selector).parent().find('.legend');
-                        self.svg_legend_elements = d3.select(legend_elements.get(0))
-                            .append("svg")
-                            .attr("width", self.chart_format.width + self.chart_format.margin.left
-                            + self.chart_format.margin.right)
-                            .attr("height", 60)
-                            .append("g")
-                            .attr("transform",
-                            "translate(5,5)");
-
-                        //create container line and container legend 
-                        //and put them to legend_container and 
-                        //chart_container
-                        containers_data.forEach(function (container_data) {
-                            self.create_container_line(container_data);
-                        });
-
-
-                        //create area to capture mouse move event
-                        self.focus_catcher = self.svg_element.append("rect");
-                        self.focus_catcher
-                            .attr("width", self.chart_format.width)
-                            .attr("height", self.chart_format.height)
-                            .style("fill", "none")
-                            .style("pointer-events", "all")
-                            .on("mouseover", function () {
-                                container_line_chart.tool_tip.style("opacity", 1);
-                                self.focus.style("display", null);
-                                self.focus.visible = true;
-                            })
-                            .on("mouseout", function () {
-                                container_line_chart.tool_tip.style("opacity", 0);
-                                self.focus.style("display", "none");
-                                self.focus.visible = false;
-                            })
-                            .on("mousemove", mousemove);
-                        function mousemove() {
-                            var mouse_x0 = d3.mouse(this)[0];
-                            self.focus_x = mouse_x0;
-                            self.tool_tip_x = d3.event.pageX;
-                            self.tool_tip_y = d3.event.pageY;
-                            self.set_tool_tip(mouse_x0);
-                        }
-                        self.focus = self.svg_element.append("g");
-                        self.focus.style("display", "none");
-
-                        //add chart to chart group and set timer for this chart
-                        chart_group.charts.push(self);
-                        self.timer = setInterval(function () {
-                            self.update_charts();
-                        }, 1000)
+                //create container line and container legend
+                containers_data.forEach(function (container_data) {
+                    self.create_container_line(container_data);
+                });
+                // append the rectangle to capture mouse
+                self.focus_catcher = self.svg_element.append("rect");
+                self.focus_catcher
+                    .attr("width", self.chart_format.width)
+                    .attr("height", self.chart_format.height)
+                    .style("fill", "none")
+                    .style("pointer-events", "all")
+                    .on("mouseover", function () {
+                        container_line_chart.tool_tip.style("opacity", 1);
+                        self.focus.style("display", null);
+                        self.focus.visible = true;
                     })
-                    .fail(function () {
-                        console.log('I fire if one or more requests failed.');
-                    });
-            })
-            .fail(function () {
-                console.log('I fire if one or more requests failed.');
+                    .on("mouseout", function () {
+                        container_line_chart.tool_tip.style("opacity", 0);
+                        self.focus.style("display", "none");
+                        self.focus.visible = false;
+                    })
+                    .on("mousemove", mousemove);
+                function mousemove() {
+                    var mouse_x0 = d3.mouse(this)[0];
+                    self.focus_x = mouse_x0;
+                    self.tool_tip_x = d3.event.pageX;
+                    self.tool_tip_y = d3.event.pageY;
+                    self.set_tool_tip(mouse_x0);
+                }
+                self.focus = self.svg_element.append("g");
+                self.focus.style("display", "none");
             });
+        });
     };
 
     this.get_container_list = function () {
