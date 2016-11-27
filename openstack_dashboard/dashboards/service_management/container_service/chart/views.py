@@ -9,77 +9,91 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from docker import Client
 import django.views
 import json
 from django.http import HttpResponse
+from django.http import Http404
 import datetime
 # import time
-
 from openstack_dashboard.dashboards.service_management.container_service\
     .chart import cadvisor_api
+
+HOST_IP = '127.0.0.1'
 
 
 class ContainerCPUDetailView(django.views.generic.TemplateView):
 
     def get(self, request, *args, **kwargs):
-        cli = Client(base_url='tcp://127.0.0.1:2376')
         container_id = request.GET.get('id', None)
-        container_name = cli.containers(
-            filters={"id": container_id})[0]['Names'][0]
-        containers_info = cadvisor_api.get_container_detail(
-            host_ip='127.0.0.1', container_id=container_id)
-        data_timestamp_list = []
-        data = {}
-        data['name'] = container_name
-        data['unit'] = 'Cores'
-        index = 1
-        data_list = containers_info['/docker/' + container_id]
-        while index < len(data_list):
-            cur = data_list[index]
-            prev = data_list[index - 1]
-            interval_nano = get_interval(cur['timestamp'], prev['timestamp'])
-            cpu_usage = (cur['cpu']['usage']['total'] -
-                         prev['cpu']['usage']['total']) / interval_nano
-            data_timestamp_list.append(
-                {'y': cpu_usage, 'x': cur['timestamp']})
-            index += 1
-        data['value'] = data_timestamp_list
-        data['id'] = container_id
-        return HttpResponse(json.dumps(data), content_type='application/json')
+        container_data = cadvisor_api.get_container_detail(
+            host_ip=HOST_IP, container_id=container_id)
+        if container_data != 'Error':
+            container_name = container_data['name']
+            containers_info = container_data['realtime_data']
+            data_timestamp_list = []
+            data = {}
+            data['name'] = container_name
+            data['unit'] = 'Cores'
+            index = 1
+            data_list = containers_info['/docker/' + container_id]
+            while index < len(data_list):
+                cur = data_list[index]
+                prev = data_list[index - 1]
+                interval_nano = get_interval(
+                    cur['timestamp'], prev['timestamp'])
+                cpu_usage = (cur['cpu']['usage']['total'] -
+                             prev['cpu']['usage']['total']) / interval_nano
+                data_timestamp_list.append(
+                    {'y': cpu_usage, 'x': cur['timestamp']})
+                index += 1
+            data['value'] = data_timestamp_list
+            data['id'] = container_id
+            return HttpResponse(json.dumps(data),
+                                content_type='application/json')
+
+        else:
+            raise Http404(
+                'Can not retreive cpu data for container ' + container_id)
 
 
 class ContainerRAMDetailView(django.views.generic.TemplateView):
 
     def get(self, request, *args, **kwargs):
-        cli = Client(base_url='tcp://127.0.0.1:2376')
         container_id = request.GET.get('id', None)
-        container_name = cli.containers(
-            filters={"id": container_id})[0]['Names'][0]
-        containers_info = cadvisor_api.get_container_detail(
-            host_ip='127.0.0.1', container_id=container_id)
-        data_timestamp_list = []
-        data = {}
-        data['name'] = container_name
-        data['unit'] = 'MB'
-        for value_unit in containers_info['/docker/' + container_id]:
-            data_timestamp_list.append(
-                {'y': float(value_unit['memory']['usage']) / (1024 * 1024),
-                 'x': value_unit['timestamp']})
-        data['value'] = data_timestamp_list
-        data['id'] = container_id
-        return HttpResponse(json.dumps(data), content_type='application/json')
+        container_data = cadvisor_api.get_container_detail(
+            host_ip=HOST_IP, container_id=container_id)
+        if container_data != 'Error':
+            container_name = container_data['name']
+            container_ram_data = container_data['realtime_data']
+            data_timestamp_list = []
+            data = {}
+            data['name'] = container_name
+            data['unit'] = 'MB'
+            for value_unit in container_ram_data['/docker/' + container_id]:
+                data_timestamp_list.append(
+                    {'y': float(value_unit['memory']['usage']) / (1024 * 1024),
+                     'x': value_unit['timestamp']})
+            data['value'] = data_timestamp_list
+            data['id'] = container_id
+            return HttpResponse(json.dumps(data),
+                                content_type='application/json')
+        else:
+            raise Http404(
+                'Can not retreive ram data for container ' + container_id)
 
 
 class ContainerListView(django.views.generic.TemplateView):
 
     def get(self, request, *args, **kwargs):
         container_list = []
-        cli = Client(base_url='tcp://127.0.0.1:2376')
-        for container in cli.containers():
-            container_list.append({'id': container['Id']})
-        return HttpResponse(json.dumps(container_list),
-                            content_type='application/json')
+        container_list_data = cadvisor_api.get_container_list(HOST_IP)
+        if container_list_data != "Error":
+            for container in container_list_data:
+                container_list.append({'id': container['Id']})
+            return HttpResponse(json.dumps(container_list),
+                                content_type='application/json')
+        else:
+            raise Http404('Can not retreive container list')
 
 
 def get_interval(current, previous):
