@@ -32,15 +32,25 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
+<<<<<<< HEAD
 
 # Base.metadata.create_all(engine)
 
+=======
+>>>>>>> 1b14515af9b233a71a0a2cc0dde2abac4c3591de
 
 engine = create_engine(
     'sqlite:///' + CURRENT_FOLDER_PATH + '/service.sqlite', echo=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
+
+Base.metadata.create_all(engine)
+
+
+def get_service_list():
+    service_list = db_session.query(Service).all()
+    return service_list
 
 
 class DatabaseService:
@@ -62,29 +72,9 @@ class DatabaseService:
 
     def close(self):
         pass
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1b14515af9b233a71a0a2cc0dde2abac4c3591de
 
 new_db = DatabaseService()
-# service_list = new_db.get_service_list()
-# for service in service_list:
-#     container_list = new_db.get_containers_in_service(service.id)
-#     for container in container_list:
-#         print(container.container_id)
-
-# new_db = DatabaseService()
-# new_service = Service(service_name='4123')
-# new_db.session.add(new_service)
-# new_db.session.commit()
-# new_ctn_1 = Container(container_id='21321')
-# new_ctn_2 = Container(container_id='12313')
-# new_service.container = [new_ctn_1, new_ctn_2]
-# new_db.session.commit()
-# print(new_service.id)
-# delete_service = new_db.session.query(
-#     Service).filter(Service.id == '3').first()
-# container_delete_list = delete_service.container
-
-# new_db.session.delete(delete_service)
-# for container in container_delete_list:
-#     new_db.session.delete(container)
-# new_db.session.commit()

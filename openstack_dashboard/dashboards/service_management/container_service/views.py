@@ -11,7 +11,10 @@
 # under the License.
 from django.utils.translation import ugettext_lazy as _
 from horizon import tabs
-from openstack_dashboard.dashboards.service_management.container_service import tabs as docker_tabs
+from openstack_dashboard.dashboards.service_management.container_service\
+    import tabs as docker_tabs
+from openstack_dashboard.dashboards.service_management.container_service\
+    .database import services as db_service
 
 
 class IndexView(tabs.TabbedTableView):
@@ -21,4 +24,8 @@ class IndexView(tabs.TabbedTableView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
+        service_list = db_service.get_service_list()
+        for service in service_list:
+            print(service.id)
+        context['service_list'] = service_list
         return context

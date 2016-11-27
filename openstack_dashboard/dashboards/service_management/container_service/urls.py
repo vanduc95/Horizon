@@ -12,11 +12,15 @@
 
 from django.conf.urls import url
 from django.conf.urls import include
-from openstack_dashboard.dashboards.service_management.container_service.service import urls as service_urls
-
-from openstack_dashboard.dashboards.service_management.container_service import views
+from openstack_dashboard.dashboards.service_management.container_service\
+    .service import urls as service_urls
+from openstack_dashboard.dashboards.service_management.container_service\
+    import views
+from openstack_dashboard.dashboards.service_management.container_service\
+    .chart import urls as chart_urls
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'service/', include(service_urls, namespace='service')),
+    url(r'chart/', include(chart_urls, namespace='chart')),
 ]
