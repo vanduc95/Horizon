@@ -109,7 +109,7 @@
                             .attr('required', 'true')
                             .appendTo(container_image_input_wrapper);
 
-                    sel.append($("<option>").val('').attr('disabled', "").attr('selected', "").text('--select image--'));
+                    sel.append($("<option>").val('').attr('disabled', "").text('--select image--'));
                     $(images).each(function () {
                         sel.append($("<option>").attr('value', this['name_image']).text(this['name_image']));
                     });

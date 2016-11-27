@@ -4,7 +4,6 @@ from sqlalchemy import Integer, Column, String, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import os.path
 
-
 Base = declarative_base()
 CURRENT_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,7 +14,7 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     service_name = Column(String(50))
     container = relationship("Container", back_populates="service",
-                             cascade="all, delete, delete-orphan",)
+                             cascade="all, delete, delete-orphan", )
 
     def __repr__(self):
         return self.id
@@ -33,6 +32,7 @@ class Container(Base):
     def __repr__(self):
         return self.id
 
+
 # Base.metadata.create_all(engine)
 
 
@@ -44,7 +44,6 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 
 
 class DatabaseService:
-
     def __init__(self):
         self.session = db_session
 
@@ -57,9 +56,12 @@ class DatabaseService:
         return service_list
 
     def get_containers_in_service(self, service_id):
-        container_list = self.session.query(Service).\
+        container_list = self.session.query(Service). \
             filter(Service.id == service_id).one().container
         return container_list
+
+    def close(self):
+        pass
 
 
 new_db = DatabaseService()
