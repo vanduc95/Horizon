@@ -1,0 +1,59 @@
+
+{{ table.render }}
+
+<div class="form-horizontal" style="padding-top: 30px">
+    <div class="form-group">
+        <label for="item_select" class="control-label col-sm-2" style="color:#31708f">Select service to view:</label>
+        <div class="col-sm-3">
+            <select class="form-control inputstl" id="item_select">
+                    <option disabled selected value> -- Select a service --</option>
+                    {% for service in service_list %}
+                        <option value="{{service.id }}" data-item-name="{{ service.service_name }}">
+                            {{ service.service_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+        </div>
+        <br>
+    </div>
+</div>
+
+<div class="line-chart">
+    <div class="info row detail">
+        <div class="col-sm-12">
+            <hr class="header_rule"/>
+            <div class="info row detail">
+                <div class="col-sm-9">
+                    <div class="chart"
+                         data-chart-type="container_line_chart"
+                         data-container-list-url = "{% url "horizon:service_management:container_service:chart:container_list" %}"
+                         data-container-detail-url="{% url "horizon:service_management:container_service:chart:container_cpu_detail" %}"
+                         data-legend-selector="#legend"
+                         data-smoother-selector="#smoother"
+                         data-slider-selector="#slider">
+                    </div>                        
+                    <div class="legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info row detail">
+        <div class="col-sm-12">
+            <hr class="header_rule"/>
+            <div class="info row detail">
+                <div class="col-sm-9">
+                    <div class="chart"
+                         data-chart-type="container_line_chart"
+                         data-container-list-url = "{% url "horizon:service_management:container_service:chart:container_list" %}"
+                         data-container-detail-url="{% url "horizon:service_management:container_service:chart:container_ram_detail" %}"
+                         data-legend-selector="#legend"
+                         data-smoother-selector="#smoother"
+                         data-slider-selector="#slider">
+                    </div>
+                    <div class="legend"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

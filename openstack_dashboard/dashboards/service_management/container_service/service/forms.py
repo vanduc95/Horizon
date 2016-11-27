@@ -89,76 +89,73 @@ class CreateServiceForm(forms.SelfHandlingForm):
         return cleaned_data
 
     def handle(self, request, data):
-        # containers = []
-        # networkID = request.POST["network"]
-        # service_name = request.POST["service_name"]
-        # num_of_container = int(request.POST['container_number'])
-        # for i in range(0, num_of_container):
-        #     suffix = str(i)
-        #     container = {}
-        #     container['name'] = request.POST['container_name' + suffix]
-        #     container['image'] = request.POST['container_image' + suffix]
-        #     env = request.POST['container_environment' + suffix]
-        #     arr_env = env.split(';')
-        #     container['environment'] = arr_env
-        #
-        #     container['command'] = request.POST['container_command' + suffix]
-        #     ports = request.POST['container_Internal_External_Port' + suffix]
-        #     container['port'] = ports.split(';')
-        #
-        #     container['id'] = request.POST['container_IP' + suffix]
-        #     containers.append(container)
-        # service_config = {
-        #     'service_name': service_name,
-        #     'networkID': networkID,
-        #     'containers': containers,
-        # }
-        # container_run_success = []
-        # try:
-        #     cli = docker_api.connect_docker()
-        #     networks = cli.networks(ids=[service_config['networkID'], ])
-        #     network = networks[0]
-        #     network_name = network['Name']
-        #     network_config = cli.create_networking_config({
-        #         network_name: cli.create_endpoint_config()
-        #     })
-        #     for container in containers:
-        #         container = cli.create_container(
-        #             name=container['name'],
-        #             command=container['command'],
-        #             networking_config=network_config,
-        #             environment=container['environment'],
-        #             ports=container['port'],
-        #             image=container['image'])
-        #         cli.start(container)
-        #         container_run_success.append(container['Id'])
-        #     time.sleep(10)
-        #
-        #     db_service = database_service.DatabaseService()
-        #     service = database_service.Service(service_name=service_name)
-        #
-        #     for container in container_run_success:
-        #         container_db = database_service.Container(
-        #             container_id=container)
-        #         service.container.append(container_db)
-        #
-        #     db_service.add_service(service)
-        #     db_service.close()
-        #     messages.success(request, 'Create service successful')
-        #     return True
-        # except Exception as e:
-        #     cli = docker_api.connect_docker()
-        #     for container_id in container_run_success:
-        #         cli.stop(container_id)
-        #         time.sleep(3)
-        #         cli.remove_container(container_id)
-        #     redirect = reverse(
-        #         "horizon:service_management:container_service:index")
-        #
-        #     exceptions.handle(request,
-        #                       _(e.explanation),
-        #                       redirect=redirect)
-        #     return False
-        print (request.POST['container_number'])
-        pass
-        return True
+        containers = []
+        networkID = request.POST["network"]
+        service_name = request.POST["service_name"]
+        num_of_container = int(request.POST['container_number'])
+        for i in range(0, num_of_container):
+            suffix = str(i)
+            container = {}
+            container['name'] = request.POST['container_name' + suffix]
+            container['image'] = request.POST['container_image' + suffix]
+            env = request.POST['container_environment' + suffix]
+            arr_env = env.split(';')
+            container['environment'] = arr_env
+
+            container['command'] = request.POST['container_command' + suffix]
+            ports = request.POST['container_Internal_External_Port' + suffix]
+            container['port'] = ports.split(';')
+
+            container['id'] = request.POST['container_IP' + suffix]
+            containers.append(container)
+        service_config = {
+            'service_name': service_name,
+            'networkID': networkID,
+            'containers': containers,
+        }
+        container_run_success = []
+        try:
+            cli = docker_api.connect_docker()
+            networks = cli.networks(ids=[service_config['networkID'], ])
+            network = networks[0]
+            network_name = network['Name']
+            network_config = cli.create_networking_config({
+                network_name: cli.create_endpoint_config()
+            })
+            for container in containers:
+                container = cli.create_container(
+                    name=container['name'],
+                    command=container['command'],
+                    networking_config=network_config,
+                    environment=container['environment'],
+                    ports=container['port'],
+                    image=container['image'])
+                cli.start(container)
+                container_run_success.append(container['Id'])
+            time.sleep(10)
+
+            db_service = database_service.DatabaseService()
+            service = database_service.Service(service_name=service_name)
+
+            for container in container_run_success:
+                container_db = database_service.Container(
+                    container_id=container)
+                service.container.append(container_db)
+
+            db_service.add_service(service)
+            db_service.close()
+            messages.success(request, 'Create service successful')
+            return True
+        except Exception as e:
+            cli = docker_api.connect_docker()
+            for container_id in container_run_success:
+                cli.stop(container_id)
+                time.sleep(3)
+                cli.remove_container(container_id)
+            redirect = reverse(
+                "horizon:service_management:container_service:index")
+
+            exceptions.handle(request,
+                              _(e.explanation),
+                              redirect=redirect)
+            return False
