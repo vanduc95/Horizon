@@ -32,3 +32,24 @@ class ImageDockerRequest(django.views.generic.TemplateView):
                 image_docker.append({'name_image': repoTags})
 
         return HttpResponse(json.dumps(image_docker), content_type='application/json')
+
+
+class NetworkDetailRequest(django.views.generic.TemplateView):
+    def get(self, request, *args, **kwargs):
+        network_id = request.GET.get('id', None)
+        cli = Client(base_url='unix://var/run/docker.sock')
+        network_info = cli.networks(ids=[network_id, ])[0]
+        name = network_info['Name']
+        try:
+            subnet = network_info['IPAM']['Config'][0]['Subnet']
+        except:
+            subnet = 'None'
+        try:
+            gateway = network_info['IPAM']['Config'][0]['Gateway']
+        except:
+            gateway = 'None'
+
+        network_detail = {'name': name, 'subnet': subnet, 'gateway': gateway}
+
+
+        return HttpResponse(json.dumps(network_detail), content_type='application/json')

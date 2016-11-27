@@ -10,8 +10,6 @@ from openstack_dashboard.dashboards.service_management.container_service.databas
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from horizon import exceptions
-# from openstack_dashboard.dashboards.service_management.\
-#     container_service.database import services as ctn_service
 
 
 class CreateServiceForm(forms.SelfHandlingForm):
@@ -45,11 +43,13 @@ class CreateServiceForm(forms.SelfHandlingForm):
 
     def clean(self):
         cleaned_data = super(CreateServiceForm, self).clean()
-        # service_list = db_service.db_session.query(db_service.Service).all()
-        list_service = ['1', '2', '3', '4', '5']
+        services_name = []
+        for service in db_service.db_session.query(db_service.Service).all():
+            services_name.append(service.service_name)
+        # list_service = ['1', '2', '3', '4', '5']
 
         # Validate name service
-        if self.data['service_name'] and (self.data['service_name'] in list_service):
+        if self.data['service_name'] and (self.data['service_name'] in services_name):
             msg = _("Name service exists!")
             self._errors['service_name'] = self.error_class([msg])
             self.data['container_number'] = 'Select container number'
@@ -58,31 +58,47 @@ class CreateServiceForm(forms.SelfHandlingForm):
         # Validate info about containers
         if self.data['container_number']:
             msg = ''
+            containers_name_input = []
+
             for i in range(int(self.data['container_number'])):
                 error = False
+                mes = ''
                 # if self.data['container_IP' + str(i)]:
-                #     ip = self.data['container_IP' + str(i)]
-                #     for obj in ip.split(';'):
-                #         if len(obj.split(':')) != 2:
-                #             msg += 'container_IP wrong format' + '<br/>'
-                #             error = True
-                #             break
+                # if
 
-                # if self.data['container_Internal_External_Port' + str(i)]:
-                #     msg += 'container_Internal_External_Port is required' + '<br/>'
-                #     error = True
+                if self.data['container_Internal_External_Port' + str(i)]:
+                    int_ext_port = self.data['container_Internal_External_Port' + str(i)]
+                    for obj in int_ext_port.split(';'):
+                        if len(obj.split(':')) != 2:
+                            mes += 'container_Internal_External_Port wrong format' + '<br/>'
+                            error = True
+                            break
 
                 if self.data['container_environment' + str(i)]:
                     env = self.data['container_environment' + str(i)]
                     for obj in env.split(';'):
                         if len(obj.split(':')) != 2:
-                            msg += 'container environment wrong format' + '<br/>'
+                            mes += 'container environment wrong format' + '<br/>'
                             error = True
                             break
 
                 if error:
-                    msg = '<b>Container' + str(i) + '</b><br/>' + msg
+                    mes = '<b>Container' + str(i) + '</b><br/>' + mes
+                    msg += mes
 
+            # Validate duplicate container name
+            for i in range(int(self.data['container_number'])):
+                containers_name_input.append(self.data['container_name' + str(i)])
+            if len(containers_name_input) != len(set(containers_name_input)):
+                msg += '<br>Error duplicate name containers'
+            else:
+                cli = docker_api.connect_docker()
+                for ct in cli.containers(all=True):
+                    name = ct['Names'][0][1:]
+                    if name in containers_name_input:
+                        msg += '<br>Name container exits!'
+
+            # If have error
             if msg != '':
                 self.data['container_number'] = 'Select container number'
                 raise forms.ValidationError(mark_safe(msg))
@@ -132,7 +148,7 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 for port in container['port']:
                     arr = port.split(':')
                     ports.append(arr[0])
-                    if arr[1]=='None':
+                    if arr[1] == 'None':
                         port_bindings[arr[0]] = None
                     else:
                         port_bindings[arr[0]] = arr[1]

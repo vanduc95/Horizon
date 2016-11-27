@@ -7,14 +7,8 @@
 
 {% block modal-body-right %}
     <h3>{% trans "Description:" %}</h3>
-    <p>
-        <strong>{% trans "Please note: " %}</strong>
-        {% if HORIZON_IMAGES_ALLOW_UPLOAD %}
-            {% trans "If you select an image via an HTTP/HTTPS URL, the Image Location field MUST be a valid and direct URL to the image binary; it must also be accessible to the Image Service. URLs that redirect or serve error pages will result in unusable images." %}
-        {% else %}
-            {% trans "The Image Location field MUST be a valid and direct URL to the image binary. URLs that redirect or serve error pages will result in unusable images." %}
-        {% endif %}
-    </p>
+    <p> Input information to create service</p>
+    <p id="des"></p>
 {% endblock %}
 
 {% block modal-js %}
@@ -37,6 +31,26 @@
             $(container_list_form)
                     .attr('id', 'container_list_form')
                     .appendTo(form_body)
+
+            $('#id_network').on('change', function () {
+                var network_id = $('#id_network').val();
+                if (network_id == '') {
+                    $('#des').empty()
+                }
+                else {
+                    $.ajax({
+                        url: "{% url "horizon:service_management:container_service:service:network_detail" %}" + '?id=' + network_id,
+                        success: function (data) {
+                            $('#des').html('Network ' + data['name'] + '<br>Subnet: ' + data['subnet'] + '<br>Gateway: ' + data['gateway']);
+                        },
+                        error: function (e) {
+                            console.log('error')
+                        }
+
+                    });
+                }
+
+            });
             $('#id_container_number').on('change', function () {
                 var container_list_form = $("#container_list_form").empty();
                 var num_container = $(this).val();
@@ -160,8 +174,8 @@
                             .attr('id', 'id_container_IP' + i.toString())
                             .attr('name', 'container_IP' + i.toString())
                             .attr('type', 'text')
-{#                            .attr('pattern','/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')#}
-{#                            .attr('title','IP format fail')#}
+                            {#                            .attr('pattern','/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')#}
+                            {#                            .attr('title','IP format fail')#}
                             .appendTo(container_IP_input_wrapper);
 
                     // Internal:External Port
