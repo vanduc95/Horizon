@@ -81,15 +81,38 @@ class CreateServiceForm(forms.SelfHandlingForm):
                 network_config = cli.create_networking_config({
                     network_name: cli.create_endpoint_config(ipv4_address=container['ip'])
                 })
-                container = cli.create_container(
-                    name=container['name'],
-                    command=container['command'],
-                    networking_config=network_config,
-                    environment=container['environment'],
-                    ports=container['port'],
-                    image=container['image'])
-                cli.start(container)
-                container_run_success.append(container['Id'])
+                ports = []
+                port_bindings = {}
+                for port in container['port']:
+                    arr = port.split(':')
+                    ports.append(arr[0])
+                    if arr[1]=='None':
+                        port_bindings[arr[0]] = None
+                    else:
+                        port_bindings[arr[0]] = arr[1]
+
+                host_config = cli.create_host_config(port_bindings=port_bindings)
+                if network_name == 'bridge':
+                    container = cli.create_container(
+                        name=container['name'],
+                        command=container['command'],
+                        host_config=host_config,
+                        environment=container['environment'],
+                        ports=ports,
+                        image=container['image'])
+                    cli.start(container)
+                    container_run_success.append(container['Id'])
+                else:
+                    container = cli.create_container(
+                        name=container['name'],
+                        command=container['command'],
+                        networking_config=network_config,
+                        host_config=host_config,
+                        environment=container['environment'],
+                        ports=ports,
+                        image=container['image'])
+                    cli.start(container)
+                    container_run_success.append(container['Id'])
             time.sleep(10)
 
             db_service = database_service.DatabaseService()
@@ -102,7 +125,12 @@ class CreateServiceForm(forms.SelfHandlingForm):
 
             db_service.add_service(service)
             db_service.close()
-            messages.success(request, 'Create service successful')
+            msg = None
+            if network_name == 'bridge':
+                msg = 'Create service successful. With bridge network, ip container not support defined by user'
+            else:
+                msg = 'Create service successful'
+            messages.success(request, msg)
             return True
         except Exception as e:
             cli = docker_api.connect_docker()
