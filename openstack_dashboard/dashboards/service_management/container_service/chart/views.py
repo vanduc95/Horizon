@@ -12,7 +12,7 @@
 import django.views
 import json
 from django.http import HttpResponse
-from django.http import Http404
+# from django.http import Http404
 import datetime
 # import time
 from openstack_dashboard.dashboards.service_management.container_service\
@@ -52,8 +52,14 @@ class ContainerCPUDetailView(django.views.generic.TemplateView):
                                 content_type='application/json')
 
         else:
-            raise Http404(
-                'Can not retreive cpu data for container ' + container_id)
+            context = {
+                'status': '400',
+                'reason': 'Cannot retreive container data from cadvisor_api'
+            }
+            response = HttpResponse(json.dumps(context),
+                                    content_type='application/json')
+            response.status_code = 400
+            return response
 
 
 class ContainerRAMDetailView(django.views.generic.TemplateView):
@@ -78,8 +84,14 @@ class ContainerRAMDetailView(django.views.generic.TemplateView):
             return HttpResponse(json.dumps(data),
                                 content_type='application/json')
         else:
-            raise Http404(
-                'Can not retreive ram data for container ' + container_id)
+            context = {
+                'status': '400',
+                'reason': 'Cannot retreive container data from cadvisor_api'
+            }
+            response = HttpResponse(json.dumps(context),
+                                    content_type='application/json')
+            response.status_code = 400
+            return response
 
 
 class ContainerListView(django.views.generic.TemplateView):
@@ -93,7 +105,14 @@ class ContainerListView(django.views.generic.TemplateView):
             return HttpResponse(json.dumps(container_list),
                                 content_type='application/json')
         else:
-            raise Http404('Can not retreive container list')
+            context = {
+                'status': '400',
+                'reason': 'cannot get container list from Docker Client'
+            }
+            response = HttpResponse(json.dumps(context),
+                                    content_type='application/json')
+            response.status_code = 400
+            return response
 
 
 def get_interval(current, previous):
