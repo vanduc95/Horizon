@@ -48,6 +48,7 @@ def get_service_list():
 
 
 class DatabaseService:
+
     def __init__(self):
         self.session = db_session
 
@@ -66,6 +67,3 @@ class DatabaseService:
 
     def close(self):
         pass
-
-
-new_db = DatabaseService()
