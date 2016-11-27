@@ -64,7 +64,7 @@ class CreateServiceForm(forms.SelfHandlingForm):
             ports = request.POST['container_Internal_External_Port' + suffix]
             container['port'] = ports.split(';')
 
-            container['id'] = request.POST['container_IP' + suffix]
+            container['ip'] = request.POST['container_IP' + suffix]
             containers.append(container)
         service_config = {
             'service_name': service_name,
@@ -77,10 +77,10 @@ class CreateServiceForm(forms.SelfHandlingForm):
             networks = cli.networks(ids=[service_config['networkID'], ])
             network = networks[0]
             network_name = network['Name']
-            network_config = cli.create_networking_config({
-                network_name: cli.create_endpoint_config()
-            })
             for container in containers:
+                network_config = cli.create_networking_config({
+                    network_name: cli.create_endpoint_config(ipv4_address=container['ip'])
+                })
                 container = cli.create_container(
                     name=container['name'],
                     command=container['command'],
