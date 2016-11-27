@@ -57,7 +57,7 @@ class NetworkDetailRequest(django.views.generic.TemplateView):
         return HttpResponse(json.dumps(network_detail), content_type='application/json')
 
 
-class ListContainerInServiceRequest(django.views.generic.TemplateView):
+class GetContainerListInService(django.views.generic.TemplateView):
     def get(self,request,*args,**kwargs):
         service_id = request.GET.get('service_id',None)
         containers_id = []
@@ -65,5 +65,17 @@ class ListContainerInServiceRequest(django.views.generic.TemplateView):
             filter(database_service.Container.service_id== service_id):
             containers_id.append(container.container_id)
         result = {'container_list': containers_id}
+        return HttpResponse(json.dumps(result),content_type='application/json')
+
+class GetServiceList(django.views.generic.TemplateView):
+    def get(self, request, *args,**kwargs):
+        service_list = []
+        for service in database_service.db_session.query(database_service.Service):
+            service_dic = {'service_id':service.id,
+                           'service_name':service.service_name}
+            service_list.append(service_dic)
+        result = {
+            'service_list':service_list,
+        }
         return HttpResponse(json.dumps(result),content_type='application/json')
 
